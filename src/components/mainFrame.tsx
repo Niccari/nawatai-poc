@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Divider, Flex } from "@chakra-ui/react";
 import AppBar from "./appBar";
 import ServiceProviderFooter from "./serviceProviderFooter";
 import Sitemap from "./sitemap";
@@ -11,10 +11,11 @@ const MainFrame = ({ children }: Props): JSX.Element => {
   return (
     <Flex direction={{ base: "column" }} w="100%" minH="100vh">
       <AppBar />
-      <Flex p="2" grow={1}>
+      <Flex grow={1}>
         <Box>
-          <Box>{children}</Box>
-          <Box mt={4}>
+          <Box p="2">{children}</Box>
+          <Divider mt={2} orientation="horizontal" />
+          <Box mt={2} p="2">
             <Sitemap />
           </Box>
         </Box>
