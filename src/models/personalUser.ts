@@ -1,13 +1,11 @@
-export type PersonalUserWithoutId = {
+export type PersonalUser = {
+  id: string;
   name: string;
-  iconImageId: string;
+  uid: string;
+  iconImageId?: string;
   profile?: string;
   url?: string;
   twitterUserId?: string;
   evalCounts: number;
   signUpAt: Date;
 };
-
-export interface PersonalUser extends PersonalUserWithoutId {
-  id: string;
-}
