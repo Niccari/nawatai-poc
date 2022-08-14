@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import AppBar from "./appBar";
 import ServiceProviderFooter from "./serviceProviderFooter";
 import Sitemap from "./sitemap";
@@ -12,10 +12,12 @@ const MainFrame = ({ children }: Props): JSX.Element => {
     <Flex direction={{ base: "column" }} w="100%" minH="100vh">
       <AppBar />
       <Flex p="2" grow={1}>
-        <VStack>
+        <Box>
           <Box>{children}</Box>
-          <Sitemap />
-        </VStack>
+          <Box mt={4}>
+            <Sitemap />
+          </Box>
+        </Box>
       </Flex>
       <ServiceProviderFooter />
     </Flex>

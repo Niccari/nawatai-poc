@@ -9,7 +9,26 @@ import {
 const colors = {
   brand: defaultTheme.colors.red,
 };
-const theme = extendTheme({ colors });
+const theme = extendTheme({
+  colors,
+  textStyles: {
+    h1: {
+      fontSize: ["20px", "24px"],
+      fontWeight: "bold",
+      lineHeight: "110%",
+    },
+    h2: {
+      fontSize: ["18px", "20px"],
+      fontWeight: "bold",
+      lineHeight: "110%",
+    },
+    h3: {
+      fontSize: ["16px", "18px"],
+      fontWeight: "bold",
+      lineHeight: "110%",
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
