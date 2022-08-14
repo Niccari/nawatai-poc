@@ -7,6 +7,10 @@ import {
   Divider,
   HStack,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
 import Link from "next/link";
@@ -15,7 +19,7 @@ import { useUserNotification } from "../modules/notifications/hooks";
 type Props = {};
 
 const AppBar = ({}: Props): JSX.Element => {
-  const { isLogin } = useLoginState();
+  const { user, login, logout } = useLoginState();
   const { hasNotification } = useUserNotification();
 
   return (
@@ -28,7 +32,7 @@ const AppBar = ({}: Props): JSX.Element => {
         </Link>
 
         <HStack alignItems="center" spacing="2">
-          {isLogin && (
+          {user && (
             <>
               <IconButton
                 type="button"
@@ -42,21 +46,32 @@ const AppBar = ({}: Props): JSX.Element => {
                   )}
                 </Avatar>
               </IconButton>
-              <IconButton
-                type="button"
-                variant="unstyled"
-                aria-label="UserIcon"
-                onClick={() => {}}
-              >
-                <Avatar name="username" src="" w="100%" h="100%" />
-              </IconButton>
+              <Menu>
+                <MenuButton
+                  w="40px"
+                  h="40px"
+                  type="button"
+                  aria-label="UserIcon"
+                >
+                  <Avatar
+                    border="1px solid #EEE"
+                    background="#FFF"
+                    src={user?.photoURL ?? ""}
+                    w="100%"
+                    h="100%"
+                  />
+                </MenuButton>
+                <MenuList onClick={logout}>
+                  <MenuItem>ログアウト</MenuItem>
+                </MenuList>
+              </Menu>
               <Button colorScheme="orange" size="sm">
                 名付けを求める
               </Button>
             </>
           )}
-          {!isLogin && (
-            <Button colorScheme="orange" size="sm">
+          {!user && (
+            <Button colorScheme="orange" size="sm" onClick={login}>
               ログイン
             </Button>
           )}
