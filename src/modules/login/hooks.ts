@@ -10,28 +10,22 @@ import useSWR from "swr";
 import { PersonalUser } from "../../models/personalUser";
 import { authClient } from "../../services/firebaseOnClient";
 
-const fetcher = async (url: string): Promise<PersonalUser | undefined> => {
-  if (url.endsWith("/")) {
-    return undefined;
+const fetcher = async (url: string): Promise<PersonalUser> => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`${response.status}: ${response.statusText}`);
   }
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      return undefined;
-    }
-    return response.json();
-  } catch (e) {
-    return undefined;
-  }
+  return response.json();
 };
 
 export const useLoginState = () => {
-  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
-  const { data, error } = useSWR<PersonalUser | undefined, Error>(
-    `/api/users/${firebaseUser?.uid ?? ""}`,
+  const [firebaseUser, setFirebaseUser] = useState<User | null | undefined>(
+    undefined
+  );
+  const { data, isValidating } = useSWR<PersonalUser, Error>(
+    firebaseUser ? `/api/users/${firebaseUser.uid}` : null,
     fetcher
   );
-  console.log(data);
   const login = async () => {
     const provider = new GoogleAuthProvider();
     signInWithRedirect(authClient, provider);
@@ -47,5 +41,13 @@ export const useLoginState = () => {
     });
   }, []);
 
-  return { firebaseUser, personalUser: data, login, logout };
+  return {
+    firebaseUser,
+    personalUser: data,
+    isLoading: Boolean(firebaseUser === undefined || isValidating),
+    isNotRegistered: Boolean(firebaseUser && !isValidating && !data),
+    isLogined: Boolean(firebaseUser && !isValidating && data),
+    login,
+    logout,
+  };
 };

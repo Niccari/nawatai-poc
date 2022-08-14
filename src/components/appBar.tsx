@@ -70,7 +70,7 @@ const AppBar = ({}: Props): JSX.Element => {
               </Button>
             </>
           )}
-          {!firebaseUser && !personalUser && (
+          {firebaseUser === null && !personalUser && (
             <Button colorScheme="orange" size="sm" onClick={login}>
               ログイン
             </Button>
