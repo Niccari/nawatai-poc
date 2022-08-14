@@ -19,7 +19,7 @@ import { useUserNotification } from "../modules/notifications/hooks";
 type Props = {};
 
 const AppBar = ({}: Props): JSX.Element => {
-  const { user, login, logout } = useLoginState();
+  const { firebaseUser, personalUser, login, logout } = useLoginState();
   const { hasNotification } = useUserNotification();
 
   return (
@@ -32,7 +32,7 @@ const AppBar = ({}: Props): JSX.Element => {
         </Link>
 
         <HStack alignItems="center" spacing="2">
-          {user && (
+          {firebaseUser && personalUser && (
             <>
               <IconButton
                 type="button"
@@ -56,7 +56,7 @@ const AppBar = ({}: Props): JSX.Element => {
                   <Avatar
                     border="1px solid #EEE"
                     background="#FFF"
-                    src={user?.photoURL ?? ""}
+                    src={firebaseUser?.photoURL ?? ""}
                     w="100%"
                     h="100%"
                   />
@@ -70,7 +70,7 @@ const AppBar = ({}: Props): JSX.Element => {
               </Button>
             </>
           )}
-          {!user && (
+          {!firebaseUser && !personalUser && (
             <Button colorScheme="orange" size="sm" onClick={login}>
               ログイン
             </Button>

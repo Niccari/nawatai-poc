@@ -6,10 +6,12 @@ import {
   User,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { PersonalUser } from "../../models/personalUser";
 import { authClient } from "../../services/firebaseOnClient";
 
 export const useLoginState = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
+  const [personalUser, setPersonalUser] = useState<PersonalUser | null>(null);
 
   const login = async () => {
     const provider = new GoogleAuthProvider();
@@ -22,9 +24,9 @@ export const useLoginState = () => {
 
   useEffect(() => {
     onAuthStateChanged(authClient, (newUser) => {
-      setUser(newUser);
+      setFirebaseUser(newUser);
     });
   }, []);
 
-  return { user, login, logout };
+  return { firebaseUser, personalUser, login, logout, setPersonalUser };
 };

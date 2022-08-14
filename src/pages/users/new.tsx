@@ -30,7 +30,7 @@ export type PersonalUserWithoutId = {
 };
 
 const CreateNewUserPage: NextPage<Props> = ({}) => {
-  const { user } = useLoginState();
+  const { firebaseUser } = useLoginState();
   const [id, setId] = useState(Math.random().toString(32).slice(2));
   const [name, setName] = useState("");
   const [userIconUrl, setUserIconUrl] = useState("");
@@ -40,11 +40,11 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
   const isNameError = name === "";
 
   useEffect(() => {
-    if (user) {
-      setName(user.displayName ?? "");
-      setUserIconUrl(user.photoURL ?? "");
+    if (firebaseUser) {
+      setName(firebaseUser.displayName ?? "");
+      setUserIconUrl(firebaseUser.photoURL ?? "");
     }
-  }, [user]);
+  }, [firebaseUser]);
   return (
     <MainFrame>
       <PrimaryText textStyle="h1" mt={4}>
