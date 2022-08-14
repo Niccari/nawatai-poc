@@ -13,21 +13,16 @@ import {
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
 import MainFrame from "../../components/mainFrame";
 import { PrimaryText, SecondaryText } from "../../element/text";
+import {
+  PersonalUser,
+  PersonalUserWillSubmit,
+} from "../../models/personalUser";
 import { useLoginState } from "../../modules/login/hooks";
 
 type Props = {};
-
-export type PersonalUserWithoutId = {
-  name: string;
-  iconImageId?: string;
-  profile?: string;
-  url?: string;
-  twitterUserId?: string;
-  evalCounts: number;
-  signUpAt: Date;
-};
 
 const CreateNewUserPage: NextPage<Props> = ({}) => {
   const { firebaseUser } = useLoginState();
@@ -45,6 +40,9 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
       setUserIconUrl(firebaseUser.photoURL ?? "");
     }
   }, [firebaseUser]);
+
+  const { mutate } = useSWRConfig();
+
   return (
     <MainFrame>
       <PrimaryText textStyle="h1" mt={4}>
@@ -60,7 +58,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
         src={userIconUrl}
       ></Avatar>
       <Box mt={4}>
-        <form onSubmit={() => {}}>
+        <div>
           <Stack spacing={2}>
             <FormControl isInvalid={isIdError}>
               <FormLabel>ユーザID</FormLabel>
@@ -99,10 +97,30 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
               />
             </FormControl>
           </Stack>
-          <Button type="submit" mt={4}>
+          <Button
+            mt={4}
+            onClick={() => {
+              if (!firebaseUser) {
+                return;
+              }
+              const { uid } = firebaseUser;
+              const personalUser: PersonalUserWillSubmit = {
+                id: uid,
+                name,
+                userId: id,
+                profile,
+              };
+              mutate(`/api/users/${uid}`, async () => {
+                await fetch("/api/users/new", {
+                  method: "POST",
+                  body: JSON.stringify(personalUser),
+                });
+              });
+            }}
+          >
             これでOK!
           </Button>
-        </form>
+        </div>
       </Box>
     </MainFrame>
   );
