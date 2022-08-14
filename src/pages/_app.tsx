@@ -6,11 +6,7 @@ import {
   theme as defaultTheme,
 } from "@chakra-ui/react";
 
-const colors = {
-  brand: defaultTheme.colors.red,
-};
 const theme = extendTheme({
-  colors,
   textStyles: {
     h1: {
       fontSize: ["20px", "24px"],

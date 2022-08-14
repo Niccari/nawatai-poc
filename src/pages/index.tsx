@@ -1,11 +1,14 @@
 import "./index.module.css";
 import type { NextPage } from "next";
 import MainFrame from "../components/mainFrame";
+import { PrimaryText } from "../element/text";
 
 const Dashboard: NextPage = () => {
   return (
     <div>
-      <MainFrame>ダッシュボードページ</MainFrame>
+      <MainFrame>
+        <PrimaryText>ダッシュボードページ</PrimaryText>
+      </MainFrame>
     </div>
   );
 };

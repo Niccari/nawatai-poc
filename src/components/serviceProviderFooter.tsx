@@ -1,4 +1,5 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Divider, Flex } from "@chakra-ui/react";
+import { PlaceholderText } from "../element/text";
 
 type Props = {};
 
@@ -12,7 +13,7 @@ const ServiceProviderFooter = ({}: Props): JSX.Element => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Text color="#212121">2022 Niccari</Text>
+          <PlaceholderText>2022 Niccari</PlaceholderText>
         </a>
       </Flex>
     </>

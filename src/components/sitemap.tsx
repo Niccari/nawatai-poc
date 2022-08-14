@@ -1,20 +1,21 @@
 import { Box, Link, Stack, Text } from "@chakra-ui/react";
+import { PrimaryText } from "../element/text";
 
 type Props = {};
 
 const Sitemap = ({}: Props): JSX.Element => {
   return (
     <Box w="100vw">
-      <Text textStyle="h2">サイトマップ</Text>
+      <PrimaryText textStyle="h2">サイトマップ</PrimaryText>
       <Stack spacing={2} mt={2}>
         <Link href="/info/story">
-          <Text>nawataiについて</Text>
+          <PrimaryText>nawataiについて</PrimaryText>
         </Link>
         <Link href="/info/tos">
-          <Text>利用規約</Text>
+          <PrimaryText>利用規約</PrimaryText>
         </Link>
         <Link href="/info/privacy">
-          <Text>プライバシーポリシー</Text>
+          <PrimaryText>プライバシーポリシー</PrimaryText>
         </Link>
       </Stack>
     </Box>
