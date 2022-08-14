@@ -1,4 +1,6 @@
+import { Box, Flex } from "@chakra-ui/react";
 import AppBar from "./appBar";
+import ServiceProviderFooter from "./serviceProviderFooter";
 
 type Props = {
   children: React.ReactNode;
@@ -6,10 +8,13 @@ type Props = {
 
 const MainFrame = ({ children }: Props): JSX.Element => {
   return (
-    <>
+    <Flex direction={{ base: "column" }} minH="100vh">
       <AppBar />
-      {children}
-    </>
+      <Flex p="2" grow={1}>
+        {children}
+      </Flex>
+      <ServiceProviderFooter />
+    </Flex>
   );
 };
 
