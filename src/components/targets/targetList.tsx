@@ -1,18 +1,18 @@
-import { Center, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
-import { PrimaryText } from "../../element/text";
+import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { useNamingTargets } from "../../modules/namingTarget/hooks";
 import LoadError from "../loadException/loadError";
 import NoContent from "../loadException/noContent";
+import Pager from "./pager";
 import TargetSquare from "./targetSquare";
 
 type Props = {
   genre: NamingTargetListGenre;
-  pages: number;
+  page: number;
 };
 
-const TargetList = ({ genre, pages }: Props): JSX.Element => {
-  const { targets, targetsError } = useNamingTargets(genre, pages);
+const TargetList = ({ genre, page }: Props): JSX.Element => {
+  const { targets, targetsError } = useNamingTargets(genre, page);
 
   if (targets === undefined) {
     return (
@@ -33,16 +33,24 @@ const TargetList = ({ genre, pages }: Props): JSX.Element => {
           return "ホットな名付け対象一覧";
       }
     })();
-    return <NoContent objectName={objectName} />;
+    return (
+      <Box>
+        <NoContent objectName={objectName} />
+        <Pager page={page} genre={genre} />
+      </Box>
+    );
   }
   return (
-    <SimpleGrid columns={[1, null, 2, 3]} gap={4}>
-      {targets.map((t) => (
-        <GridItem key={t.id}>
-          <TargetSquare target={t} />
-        </GridItem>
-      ))}
-    </SimpleGrid>
+    <Box>
+      <SimpleGrid columns={[1, null, 2, 3]} gap={4}>
+        {targets.map((t) => (
+          <GridItem key={t.id}>
+            <TargetSquare target={t} />
+          </GridItem>
+        ))}
+      </SimpleGrid>
+      <Pager page={page} genre={genre} />
+    </Box>
   );
 };
 

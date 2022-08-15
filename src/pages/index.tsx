@@ -12,7 +12,7 @@ const Dashboard: NextPage = () => {
     <>
       <PrimaryText textStyle="h2">⏰ 名付け募集中！</PrimaryText>
       <Box mt={2}>
-        <TargetList genre={NamingTargetListGenre.LATEST} pages={1} />
+        <TargetList genre={NamingTargetListGenre.LATEST} page={1} />
       </Box>
     </>
   );
