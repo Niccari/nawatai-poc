@@ -19,11 +19,9 @@ import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import MainFrame from "../../components/mainFrame";
 import { PrimaryText, SecondaryText } from "../../element/text";
-import {
-  PersonalUser,
-  PersonalUserWillSubmit,
-} from "../../models/personalUser";
+import { PersonalUserWillSubmit } from "../../models/personalUser";
 import { useLoginState } from "../../modules/login/hooks";
+import { useRouterToDashboard } from "../../modules/route/hooks";
 
 type Props = {};
 
@@ -34,28 +32,25 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
   const [userIconUrl, setUserIconUrl] = useState("");
   const [profile, setProfile] = useState("");
 
-  const router = useRouter();
+  const [isInitialized, setIsInitialized] = useState(false);
+
   const { mutate } = useSWRConfig();
 
   const isIdError = !/^[0-9a-zA-Z-_]*$/.exec(id);
   const isNameError = name === "";
 
+  useRouterToDashboard();
   useEffect(() => {
-    if (isLogined) {
-      router.push("/");
-    }
-  }, [isLogined, router]);
-
-  useEffect(() => {
-    if (!isLoading && firebaseUser) {
+    if (!isLoading && firebaseUser && !isInitialized) {
+      setIsInitialized(true);
       setName(firebaseUser.displayName ?? "");
       setUserIconUrl(firebaseUser.photoURL ?? "");
     }
-  }, [firebaseUser, isLoading]);
+  }, [firebaseUser, isLoading, isInitialized]);
 
   return (
     <MainFrame>
-      {isLoading ||
+      {!isInitialized ||
         (isLogined && (
           <Flex justifyContent="center" alignItems="center">
             <Spinner />

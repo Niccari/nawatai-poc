@@ -41,12 +41,14 @@ export const useLoginState = () => {
     });
   }, []);
 
+  const isAuthed = Boolean(firebaseUser);
   return {
     firebaseUser,
     personalUser: data,
     isLoading: Boolean(firebaseUser === undefined || isValidating),
-    isNotRegistered: Boolean(firebaseUser && !isValidating && !data),
-    isLogined: Boolean(firebaseUser && !isValidating && data),
+    isAuthed,
+    isNotRegistered: isAuthed && Boolean(!isValidating && !data),
+    isLogined: isAuthed && Boolean(!isValidating && data),
     login,
     logout,
   };
