@@ -14,10 +14,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
-import MainFrame from "../../components/mainFrame";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUserWillSubmit } from "../../models/personalUser";
 import { useLoginState } from "../../modules/login/hooks";
@@ -49,7 +47,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
   }, [firebaseUser, isLoading, isInitialized]);
 
   return (
-    <MainFrame>
+    <>
       {!isInitialized ||
         (isLogined && (
           <Flex justifyContent="center" alignItems="center">
@@ -142,7 +140,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
             </Box>
           </>
         )}
-    </MainFrame>
+    </>
   );
 };
 
