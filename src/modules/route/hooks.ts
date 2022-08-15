@@ -13,13 +13,24 @@ export const useRouterToNewUser = () => {
   }, [isLoading, isNotRegistered, router]);
 };
 
-export const useRouterToDashboard = () => {
+export const useDashboardRedirectIfUserNotRegistered = () => {
   const router = useRouter();
-  const { isLoading, isAuthed, isLogined } = useLoginState();
+  const { isLoading, isNotRegistered } = useLoginState();
 
   useEffect(() => {
-    if (!isLoading && (!isAuthed || isLogined)) {
+    if (!isLoading && !isNotRegistered) {
       router.push("/");
     }
-  }, [isLoading, isAuthed, isLogined, router]);
+  }, [isLoading, isNotRegistered, router]);
 };
+
+export const useDashboardRedirectIfNotLogined = () => {
+    const router = useRouter();
+    const { isLoading, isLogined } = useLoginState();
+  
+    useEffect(() => {
+      if (!isLoading && !isLogined) {
+        router.push("/");
+      }
+    }, [isLoading, isLogined, router]);
+  };

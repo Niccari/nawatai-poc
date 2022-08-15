@@ -19,7 +19,7 @@ import { useSWRConfig } from "swr";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUserWillSubmit } from "../../models/personalUser";
 import { useLoginState } from "../../modules/login/hooks";
-import { useRouterToDashboard } from "../../modules/route/hooks";
+import { useDashboardRedirectIfUserNotRegistered } from "../../modules/route/hooks";
 
 type Props = {};
 
@@ -37,7 +37,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
   const isIdError = !/^[0-9a-zA-Z-_]*$/.exec(id);
   const isNameError = name === "";
 
-  useRouterToDashboard();
+  useDashboardRedirectIfUserNotRegistered();
   useEffect(() => {
     if (!isLoading && firebaseUser && !isInitialized) {
       setIsInitialized(true);

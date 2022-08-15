@@ -15,13 +15,18 @@ import {
 import { BellIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useUserNotification } from "../modules/notifications/hooks";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const AppBar = ({}: Props): JSX.Element => {
+  const router = useRouter();
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
   const { hasNotification } = useUserNotification();
+  const createNewTarget = () => {
+    router.push("/targets/new");
+  };
 
   return (
     <>
@@ -66,7 +71,7 @@ const AppBar = ({}: Props): JSX.Element => {
                   <MenuItem>ログアウト</MenuItem>
                 </MenuList>
               </Menu>
-              <Button colorScheme="orange" size="sm">
+              <Button colorScheme="orange" size="sm" onClick={createNewTarget}>
                 名付けを求める
               </Button>
             </>

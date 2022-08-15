@@ -1,10 +1,13 @@
-export type NamingTargetWithoutId = {
+export type NamingTargetWillSubmit = {
   authorId: string;
   title?: string;
   imageId?: string;
   comment: string;
-  createdAt: Date;
 };
+
+export interface NamingTargetWithoutId extends NamingTargetWillSubmit {
+  createdAt: Date;
+}
 
 export interface NamingTarget extends NamingTargetWithoutId {
   id: string;
@@ -17,3 +20,10 @@ export type NamingTargetForView = {
   comment: string;
   imageUrl?: string;
 };
+
+export const NamingTargetListGenre = {
+  HOT: "hot",
+  LATEST: "latest",
+} as const;
+export type NamingTargetListGenre =
+  typeof NamingTargetListGenre[keyof typeof NamingTargetListGenre];
