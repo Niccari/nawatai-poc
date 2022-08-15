@@ -4,35 +4,28 @@ import { NamingTargetListGenre } from "../../models/namingTarget";
 type Props = {
   page: number;
   genre: NamingTargetListGenre;
+  hasNext: boolean;
 };
 
-const findRange = (page: number) => {
-  const begin = Math.max(page - 5, 1);
-  const end = page + 5;
-  return Array(end - begin + 1)
-    .fill(0)
-    .map((e, i) => i + begin);
-};
-
-const Pager = ({ genre, page }: Props): JSX.Element => {
-  const range = findRange(page);
-
+const Pager = ({ genre, page, hasNext }: Props): JSX.Element => {
   return (
     <Flex justifyContent="center">
       <Flex display="inline-flex">
-        {range.map((r) => (
-          <Link key={r} href={`/targets?genre=${genre}&page=${r}`}>
-            <Text
-              pl={1}
-              pr={1}
-              css={
-                r === page ? "text-decoration: underline #FF0000;" : undefined
-              }
-            >
-              {r}
-            </Text>
-          </Link>
-        ))}
+        <Link
+          href={`/targets?genre=${genre}&page=${page - 1}`}
+          visibility={page > 1 ? "visible" : "hidden"}
+        >
+          <Text>{"<"}</Text>
+        </Link>
+        <Text pl={2} pr={2}>
+          {page}
+        </Text>
+        <Link
+          href={`/targets?genre=${genre}&page=${page + 1}`}
+          visibility={hasNext ? "visible" : "hidden"}
+        >
+          <Text>{">"}</Text>
+        </Link>
       </Flex>
     </Flex>
   );

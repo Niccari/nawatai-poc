@@ -36,7 +36,7 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
     return (
       <Box>
         <NoContent objectName={objectName} />
-        <Pager page={page} genre={genre} />
+        <Pager page={page} genre={genre} hasNext={false} />
       </Box>
     );
   }
@@ -49,7 +49,7 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
           </GridItem>
         ))}
       </SimpleGrid>
-      <Pager page={page} genre={genre} />
+      <Pager page={page} genre={genre} hasNext={targets.length === 12} />
     </Box>
   );
 };
