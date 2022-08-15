@@ -12,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     namingTarget = {
       ...params,
       createdAt: new Date(),
+      evalCounts: 0,
     };
   } catch (e) {
     res.status(400).json({});

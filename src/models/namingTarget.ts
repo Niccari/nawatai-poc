@@ -7,6 +7,7 @@ export type NamingTargetWillSubmit = {
 
 export interface NamingTargetWithoutId extends NamingTargetWillSubmit {
   createdAt: Date;
+  evalCounts: number;
 }
 
 export interface NamingTarget extends NamingTargetWithoutId {
@@ -19,6 +20,7 @@ export type NamingTargetForView = {
   title?: string;
   comment: string;
   imageUrl?: string;
+  evalCounts: number;
 };
 
 export const NamingTargetListGenre = {

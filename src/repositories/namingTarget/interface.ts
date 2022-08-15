@@ -9,7 +9,7 @@ export interface INamingTargetRepository {
   list(
     count: number,
     genre: NamingTargetListGenre,
-    cursorId?: string
+    page: number
   ): Promise<NamingTarget[]>;
   create(entity: NamingTargetWithoutId): Promise<NamingTarget>;
   update(entity: NamingTarget): Promise<void>;

@@ -25,12 +25,12 @@ export const useDashboardRedirectIfUserNotRegistered = () => {
 };
 
 export const useDashboardRedirectIfNotLogined = () => {
-    const router = useRouter();
-    const { isLoading, isLogined } = useLoginState();
-  
-    useEffect(() => {
-      if (!isLoading && !isLogined) {
-        router.push("/");
-      }
-    }, [isLoading, isLogined, router]);
-  };
+  const router = useRouter();
+  const { isLoading, isLogined } = useLoginState();
+
+  useEffect(() => {
+    if (!isLoading && !isLogined) {
+      router.push("/");
+    }
+  }, [isLoading, isLogined, router]);
+};

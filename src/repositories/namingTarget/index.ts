@@ -25,7 +25,8 @@ class NamingTargetRepository implements INamingTargetRepository {
       title: document["title"],
       imageId: document["imageId"],
       comment: document["comment"],
-      createdAt: parseISO(document["createdAt"]),
+      createdAt: document["createdAt"],
+      evalCounts: document["createdAt"],
     };
   }
 
@@ -36,9 +37,26 @@ class NamingTargetRepository implements INamingTargetRepository {
   public async list(
     count: number,
     genre: NamingTargetListGenre,
-    cursorId?: string | undefined
+    page: number
   ): Promise<NamingTarget[]> {
-    throw new Error("Method not implemented.");
+    const offset = count * Math.max(page - 1, 0);
+    const orderKey = (() => {
+      switch (genre) {
+        case NamingTargetListGenre.HOT:
+          return "evalCounts";
+        case NamingTargetListGenre.LATEST:
+          return "createdAt";
+        default:
+          return "evalCounts";
+      }
+    })();
+    const query = firestoreClient
+      .collection("NamingTargets")
+      .orderBy(orderKey, "desc")
+      .offset(offset)
+      .limit(count);
+    const querySnapshots = await query.get();
+    return querySnapshots.docs.map((s) => this.toModel(s));
   }
 
   public async create(entity: NamingTargetWithoutId): Promise<NamingTarget> {

@@ -77,13 +77,14 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
                 authorId: firebaseUser?.uid ?? "",
                 title,
                 comment,
-                imageId: (!imageId) ? undefined : imageId,
+                imageId: !imageId ? undefined : imageId,
               };
-              mutate(`/api/targets/`, async () => {
-                await fetch("/api/targets/new", {
-                  method: "POST",
-                  body: JSON.stringify(target),
-                });
+              fetch("/api/targets/new", {
+                method: "POST",
+                body: JSON.stringify(target),
+              }).then(() => {
+                mutate(`/api/targets?genre=hot&page=1`);
+                mutate(`/api/targets?genre=latest&page=1`);
                 router.push("/");
               });
             }}

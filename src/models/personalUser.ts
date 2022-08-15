@@ -12,3 +12,10 @@ export interface PersonalUser extends PersonalUserWillSubmit {
   evalCounts: number;
   signUpAt: Date;
 }
+
+export type PersonalUserForView = {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  profile?: string;
+};
