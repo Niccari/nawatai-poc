@@ -4,7 +4,7 @@ import namingTargetRepository from "../../../repositories/namingTarget";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
-    res.status(400).json({});
+    res.status(400).send(undefined);
   }
   let namingTarget: NamingTargetWithoutId;
   try {
@@ -15,14 +15,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       evalCounts: 0,
     };
   } catch (e) {
-    res.status(400).json({});
+    res.status(400).send(undefined);
     return;
   }
   try {
     await namingTargetRepository.create(namingTarget);
     res.status(200).json({});
   } catch (e) {
-    res.status(500).json({});
+    res.status(500).send(undefined);
   }
 };
 

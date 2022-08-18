@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       genre !== NamingTargetListGenre.LATEST) ||
     typeof page !== "string"
   ) {
-    res.status(400).json(undefined);
+    res.status(400).send(undefined);
     return;
   }
   try {
@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader("Cache-Control", "max-age=10, s-maxage=30");
     res.status(200).json(items);
   } catch (e) {
-    res.status(500).json(undefined);
+    res.status(500).send(undefined);
   }
 };
 
