@@ -38,7 +38,7 @@ const AppBar = ({}: Props): JSX.Element => {
         </Link>
 
         <HStack alignItems="center" spacing="2">
-          {!isLogined && (
+          {isLogined && (
             <>
               <IconButton
                 type="button"

@@ -17,3 +17,14 @@ export const useNamingTargets = (
 
   return { targets: data, targetsError: error };
 };
+
+export const useNamingTarget = (
+  targetId: string
+) => {
+  const { data, error } = useSWR<NamingTargetForView, Error>(
+    `/api/targets/${targetId}`,
+    fetcher
+  );
+
+  return { target: data, targetError: error };
+};

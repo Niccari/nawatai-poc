@@ -31,7 +31,10 @@ class NamingTargetRepository implements INamingTargetRepository {
   }
 
   public async get(id: string): Promise<NamingTarget> {
-    throw new Error("Method not implemented.");
+    const document = await firestoreClient
+      .collection("NamingTargets")
+      .doc(id).get();
+    return this.toModel(document);
   }
 
   public async list(
