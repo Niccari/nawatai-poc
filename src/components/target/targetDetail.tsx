@@ -17,24 +17,37 @@ type Props = {
 };
 
 const TargetDetail = ({ target }: Props): JSX.Element => {
-  const { authorId, title, comment, imageUrl } = target;
+  const { authorId, title, comment, imageUrl, evalCounts } = target;
+  const { precise, fun, question, missmatch } = evalCounts;
 
   const { user } = usePersonalUser(authorId);
   return (
     <Box>
-      <Flex>
-        <Image src={imageUrl} alt={comment} w="200px" h="200px" />
-        <Stack flexGrow={1} justifyContent="center">
-          <Flex>
-            <PrimaryText textStyle="h2">{title}</PrimaryText>
-            {/* <MenuButton /> */}
-          </Flex>
-          <PrimaryText>{comment}</PrimaryText>
-          <PrimaryText>👍 10 😂 4 ❓１ 😵2</PrimaryText>
-          <Flex alignItems="center">
-            <Avatar src={user?.imageUrl}></Avatar>
-            <PrimaryText ml={2}>{user?.name}</PrimaryText>
-          </Flex>
+      <Flex pb={2}>
+        <Image
+          background="#666"
+          src={imageUrl}
+          alt={comment}
+          w="200px"
+          h="200px"
+        />
+        <Stack flexGrow={1} ml={4} justifyContent="space-between">
+          <Stack>
+            <Flex>
+              <PrimaryText textStyle="h2">{title}</PrimaryText>
+              {/* <MenuButton /> */}
+            </Flex>
+            <PrimaryText>{comment}</PrimaryText>
+          </Stack>
+          <Stack>
+            <PrimaryText>
+              👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
+            </PrimaryText>
+            <Flex alignItems="center">
+              <Avatar src={user?.imageUrl}></Avatar>
+              <PrimaryText ml={2}>{user?.name}</PrimaryText>
+            </Flex>
+          </Stack>
         </Stack>
       </Flex>
       <Divider />
