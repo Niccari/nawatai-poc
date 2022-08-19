@@ -1,9 +1,11 @@
+import { EvalCounts } from "./namingEval";
+
 export type NamingWithoutId = {
   authorId: string;
   name: string;
   reason?: string;
   createdAt: Date;
-  evalCount: number;
+  evalCounts: EvalCounts;
 };
 
 export interface Naming extends NamingWithoutId {

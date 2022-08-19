@@ -3,10 +3,11 @@ import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
+import { evalCountsInit } from "../../models/namingEval";
 import {
   NamingTarget,
   NamingTargetListGenre,
-  NamingTargetWithoutId,
+  NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 import { firestoreClient } from "../../services/firebaseOnServer";
 import { INamingTargetRepository } from "./interface";
@@ -26,7 +27,8 @@ class NamingTargetRepository implements INamingTargetRepository {
       imageId: document["imageId"],
       comment: document["comment"],
       createdAt: document["createdAt"],
-      evalCounts: document["createdAt"],
+      evalCounts: document["evalCounts"],
+      totalEvalCounts: document["totalEvalCounts"],
     };
   }
 
@@ -63,11 +65,17 @@ class NamingTargetRepository implements INamingTargetRepository {
     return querySnapshots.docs.map((s) => this.toModel(s));
   }
 
-  public async create(entity: NamingTargetWithoutId): Promise<NamingTarget> {
+  public async create(entity: NamingTargetWillSubmit): Promise<NamingTarget> {
     const collectionRef = firestoreClient.collection("NamingTargets");
-    const docRef = await collectionRef.add(entity);
-    return {
+    const values = {
       ...entity,
+      evalCounts: evalCountsInit,
+      totalEvalCounts: 0,
+      createdAt: new Date(),
+    };
+    const docRef = await collectionRef.add(values);
+    return {
+      ...values,
       id: docRef.id,
     };
   }

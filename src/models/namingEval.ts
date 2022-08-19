@@ -15,3 +15,12 @@ export type NamingEvalWithoutId = {
 export interface NamingEval extends NamingEvalWithoutId {
   id: string;
 }
+
+export type EvalCounts = { [key in NamingEvalKind]: number };
+
+export const evalCountsInit: EvalCounts = {
+  fun: 0,
+  precise: 0,
+  question: 0,
+  missmatch: 0,
+};

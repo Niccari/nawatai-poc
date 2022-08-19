@@ -1,3 +1,5 @@
+import { EvalCounts } from "./namingEval";
+
 export type PersonalUserWillSubmit = {
   id: string;
   name: string;
@@ -9,7 +11,7 @@ export type PersonalUserWillSubmit = {
 };
 
 export interface PersonalUser extends PersonalUserWillSubmit {
-  evalCounts: number;
+  evalCounts: EvalCounts;
   signUpAt: Date;
 }
 

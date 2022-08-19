@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import LoadingContent from "../../components/loading";
 import { PrimaryText } from "../../element/text";
-import { NamingTargetWillSubmit } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
 import { useCreateNamingTarget } from "../../modules/namingTarget/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";

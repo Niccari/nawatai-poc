@@ -1,3 +1,5 @@
+import { EvalCounts } from "./namingEval";
+
 export type NamingTargetWillSubmit = {
   authorId: string;
   title?: string;
@@ -5,12 +7,10 @@ export type NamingTargetWillSubmit = {
   comment: string;
 };
 
-export interface NamingTargetWithoutId extends NamingTargetWillSubmit {
+export interface NamingTarget extends NamingTargetWillSubmit {
   createdAt: Date;
-  evalCounts: number;
-}
-
-export interface NamingTarget extends NamingTargetWithoutId {
+  evalCounts: EvalCounts;
+  totalEvalCounts: number;
   id: string;
 }
 
@@ -20,7 +20,7 @@ export type NamingTargetForView = {
   title?: string;
   comment: string;
   imageUrl?: string;
-  evalCounts: number;
+  evalCounts: EvalCounts;
 };
 
 export const NamingTargetListGenre = {

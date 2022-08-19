@@ -8,7 +8,8 @@ type Props = {
 };
 
 const TargetSquare = ({ target }: Props): JSX.Element => {
-  const { id, authorId, title, comment, imageUrl } = target;
+  const { id, authorId, title, comment, imageUrl, evalCounts } = target;
+  const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
   return (
@@ -24,7 +25,9 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
           {title}
         </Text>
         <Text textColor="white">{comment}</Text>
-        <Text textColor="white">👍 10 😂 4 ❓１ 😵2</Text>
+        <Text textColor="white">
+          👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
+        </Text>
       </VStack>
       <VStack w="100%" p={2}>
         <Flex alignItems="center" w="100%">

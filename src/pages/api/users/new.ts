@@ -6,20 +6,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
   }
-  let personalUser: PersonalUser;
+  let params: PersonalUser;
   try {
-    const params = JSON.parse(req.body);
-    personalUser = {
-      ...params,
-      evalCounts: 0,
-      signUpAt: new Date(),
-    };
+    params = JSON.parse(req.body);
   } catch (e) {
     res.status(400).send(undefined);
     return;
   }
   try {
-    await personalUserRepository.create(personalUser);
+    await personalUserRepository.create(params);
     res.status(200).json({});
   } catch (e) {
     res.status(500).send(undefined);
