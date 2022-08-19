@@ -49,11 +49,11 @@ class NamingTargetRepository implements INamingTargetRepository {
     const orderKey = (() => {
       switch (genre) {
         case NamingTargetListGenre.HOT:
-          return "evalCounts";
+          return "totalEvalCounts";
         case NamingTargetListGenre.LATEST:
           return "createdAt";
         default:
-          return "evalCounts";
+          return "totalEvalCounts";
       }
     })();
     const query = firestoreClient

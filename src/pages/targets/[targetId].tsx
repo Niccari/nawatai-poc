@@ -1,8 +1,11 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import TabbedNamingDetailList from "../../components/naming/tabbedNamingDetailList";
 import TargetDetail from "../../components/target/targetDetail";
+import { NamingTargetListGenre } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
+import { useNamings } from "../../modules/naming/hooks";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
 
 type Props = {};
@@ -10,16 +13,23 @@ type Props = {};
 const TargetPage: NextPage<Props> = ({}) => {
   const router = useRouter();
   const { isLogined } = useLoginState();
-  const { targetId } = router.query;
-  const { target, targetError } = useNamingTarget(targetId as string);
-
+  const { targetId: targetId0 } = router.query;
+  const { genre: genre0, page: page0 } = router.query;
+  const genre = (() =>
+    genre0 === NamingTargetListGenre.HOT ||
+    genre0 === NamingTargetListGenre.LATEST
+      ? genre0
+      : NamingTargetListGenre.LATEST)();
+  const targetId = (() =>
+    typeof targetId0 === "string" ? targetId0 : undefined)();
+  const page = (() => (typeof page0 === "string" ? parseInt(page0, 10) : 1))();
+  const { target, targetError } = useNamingTarget(targetId);
   const handleNaming = () => {
     if (!target) {
       return;
     }
     router.push(`/targets/${target.id}/naming/new`);
   };
-
   return (
     <>
       {target && (
@@ -35,6 +45,13 @@ const TargetPage: NextPage<Props> = ({}) => {
               名付けする！
             </Button>
           )}
+          <Box mt={4}>
+            <TabbedNamingDetailList
+              targetId={targetId}
+              genre={genre}
+              page={page}
+            />
+          </Box>
         </>
       )}
     </>

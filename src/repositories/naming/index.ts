@@ -15,7 +15,10 @@ class NamingRepository implements INamingRepository {
     if (!document) {
       throw Error("Document not found!");
     }
-    return document as Naming;
+    return {
+      id: snapshot.id,
+      ...document,
+    } as Naming;
   }
 
   public async get(id: string): Promise<Naming> {
@@ -29,7 +32,25 @@ class NamingRepository implements INamingRepository {
     genre: NamingTargetListGenre,
     page: number
   ): Promise<Naming[]> {
-    throw new Error("Method not implemented.");
+    const offset = count * Math.max(page - 1, 0);
+    const orderKey = (() => {
+      switch (genre) {
+        case NamingTargetListGenre.HOT:
+          return "totalEvalCounts";
+        case NamingTargetListGenre.LATEST:
+          return "createdAt";
+        default:
+          return "totalEvalCounts";
+      }
+    })();
+    const query = firestoreClient
+      .collection("Naming")
+      .where("targetId", "==", targetId)
+      .orderBy(orderKey, "desc")
+      .offset(offset)
+      .limit(count);
+    const querySnapshots = await query.get();
+    return querySnapshots.docs.map((s) => this.toModel(s));
   }
 
   public async create(entity: NamingWillSubmit): Promise<Naming> {
