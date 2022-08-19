@@ -8,6 +8,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
+import LoadingContent from "../../components/loading";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetWillSubmit } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
@@ -16,7 +17,7 @@ import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 type Props = {};
 
 const CreateNewTargetPage: NextPage<Props> = ({}) => {
-  const { firebaseUser } = useLoginState();
+  const { firebaseUser, isLogined } = useLoginState();
   useDashboardRedirectIfNotLogined();
   const router = useRouter();
 
@@ -28,6 +29,9 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
 
   const isTitleError = Boolean(!title);
 
+  if (!firebaseUser || !isLogined) {
+    return <LoadingContent />;
+  }
   return (
     <>
       <PrimaryText textStyle="h1" mt={4}>
@@ -71,10 +75,10 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
           </Stack>
           <Button
             mt={4}
-            disabled={isTitleError || !firebaseUser}
+            disabled={isTitleError}
             onClick={() => {
               const target: NamingTargetWillSubmit = {
-                authorId: firebaseUser?.uid ?? "",
+                authorId: firebaseUser.uid,
                 title,
                 comment,
                 imageId: !imageId ? undefined : imageId,
