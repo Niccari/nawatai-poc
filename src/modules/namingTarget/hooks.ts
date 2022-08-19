@@ -19,9 +19,9 @@ export const useNamingTargets = (
   return { targets: data, targetsError: error };
 };
 
-export const useNamingTarget = (targetId: string) => {
+export const useNamingTarget = (targetId: string | undefined) => {
   const { data, error } = useSWR<NamingTargetForView, Error>(
-    `/api/targets/${targetId}`,
+    targetId ? `/api/targets/${targetId}` : null,
     fetcher
   );
 
