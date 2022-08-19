@@ -1,16 +1,15 @@
 import {
   Image,
-  Text,
   Flex,
   Avatar,
   Box,
   Divider,
   Stack,
-  MenuButton,
 } from "@chakra-ui/react";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
+import TargetOwnerMenu from "./targetOwnerMenu";
 
 type Props = {
   target: NamingTargetForView;
@@ -21,6 +20,11 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
   const { precise, fun, question, missmatch } = evalCounts;
 
   const { user } = usePersonalUser(authorId);
+
+  const isOwner = user?.id === authorId;
+  const handleDelete = () => {
+    
+  };
   return (
     <Box>
       <Flex pb={2}>
@@ -30,12 +34,15 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
           alt={comment}
           w="200px"
           h="200px"
+          flexShrink={0}
         />
-        <Stack flexGrow={1} ml={4} justifyContent="space-between">
+        <Stack minW="200px" flexGrow={1} ml={4} justifyContent="space-between">
           <Stack>
             <Flex>
-              <PrimaryText textStyle="h2">{title}</PrimaryText>
-              {/* <MenuButton /> */}
+              <PrimaryText textStyle="h2" flex={1} whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">{title}</PrimaryText>
+              {isOwner && (
+                <TargetOwnerMenu handleDelete={isOwner ? handleDelete : undefined}/>
+              )}
             </Flex>
             <PrimaryText>{comment}</PrimaryText>
           </Stack>
