@@ -33,7 +33,8 @@ class NamingTargetRepository implements INamingTargetRepository {
   public async get(id: string): Promise<NamingTarget> {
     const document = await firestoreClient
       .collection("NamingTargets")
-      .doc(id).get();
+      .doc(id)
+      .get();
     return this.toModel(document);
   }
 

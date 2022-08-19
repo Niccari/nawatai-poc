@@ -19,8 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    await namingTargetRepository.create(namingTarget);
-    res.status(200).json({});
+    // TODO(Niccari): NamingTargetForViewに互換のある型に変換する
+    const response = await namingTargetRepository.create(namingTarget);
+    res.status(200).json(response);
   } catch (e) {
     res.status(500).send(undefined);
   }

@@ -13,6 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
+    // TODO(Niccari): NamingTargetForView[]に互換のある型に変換する
     const items = await namingTargetRepository.list(
       12,
       genre,

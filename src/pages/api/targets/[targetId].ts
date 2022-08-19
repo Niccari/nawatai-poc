@@ -8,6 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
+    // TODO(Niccari): NamingTargetForViewに互換のある型に変換する
     const target = await namingTargetRepository.get(targetId);
     res.setHeader("Cache-Control", "max-age=300, s-maxage=300");
     res.status(200).json(target);

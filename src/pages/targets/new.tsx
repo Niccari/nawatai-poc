@@ -7,11 +7,11 @@ import { Box, Button, FormErrorMessage, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
 import LoadingContent from "../../components/loading";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetWillSubmit } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
+import { useCreateNamingTarget } from "../../modules/namingTarget/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
 type Props = {};
@@ -23,9 +23,9 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
 
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-  const [imageId, setImageId] = useState("");
+  const [imageId, setImageId] = useState(undefined);
 
-  const { mutate } = useSWRConfig();
+  const { onPost } = useCreateNamingTarget();
 
   const isTitleError = Boolean(!title);
 
@@ -77,20 +77,13 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
             mt={4}
             disabled={isTitleError}
             onClick={() => {
-              const target: NamingTargetWillSubmit = {
+              onPost({
                 authorId: firebaseUser.uid,
                 title,
                 comment,
-                imageId: !imageId ? undefined : imageId,
-              };
-              fetch("/api/targets/new", {
-                method: "POST",
-                body: JSON.stringify(target),
-              }).then(() => {
-                mutate(`/api/targets?genre=hot&page=1`);
-                mutate(`/api/targets?genre=latest&page=1`);
-                router.push("/");
+                imageId,
               });
+              router.push("/");
             }}
           >
             これでOK!

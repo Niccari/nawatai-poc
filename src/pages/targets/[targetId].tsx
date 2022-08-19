@@ -9,11 +9,7 @@ const TargetPage: NextPage<Props> = ({}) => {
   const router = useRouter();
   const { targetId } = router.query;
   const { target, targetError } = useNamingTarget(targetId as string);
-  return (
-    <>
-      {target && <TargetDetail target={target} />}
-    </>
-  );
+  return <>{target && <TargetDetail target={target} />}</>;
 };
 
 export default TargetPage;

@@ -17,7 +17,7 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
       background={imageUrl ?? "#333"}
       h="300px"
       alignItems="center"
-      onClick={() => router.push(`/targets/${id}`) }
+      onClick={() => router.push(`/targets/${id}`)}
     >
       <VStack flexGrow={1} justifyContent="center">
         <Text textColor="white" textStyle="h3">
@@ -28,8 +28,12 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
       </VStack>
       <VStack w="100%" p={2}>
         <Flex alignItems="center" w="100%">
-          <Avatar src={user?.imageUrl} 
-              onClick={() => user ? router.push(`/users/${user?.id}`) : undefined }></Avatar>
+          <Avatar
+            src={user?.imageUrl}
+            onClick={() =>
+              user ? router.push(`/users/${user?.id}`) : undefined
+            }
+          ></Avatar>
           <Text ml={2} textColor="white">
             {user?.name}
           </Text>
