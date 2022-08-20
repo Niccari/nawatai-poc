@@ -16,17 +16,12 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import LoadingContent from "../../components/loading";
 import { PrimaryText } from "../../element/text";
+import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import { useCreateNamingTarget } from "../../modules/namingTarget/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
 type Props = {};
-
-type FileState = {
-  file?: File;
-  imageDataUrl?: string;
-  imageSetError?: Error;
-};
 
 const CreateNewTargetPage: NextPage<Props> = ({}) => {
   const { firebaseUser, isLogined } = useLoginState();
@@ -35,40 +30,20 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
 
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-  const [fileState, setFileState] = useState<FileState>({});
+  const { fileState, handleImageSet } = useImageLoader();
 
   const { onPost } = useCreateNamingTarget();
+  const { uploadImage } = useImageUploader();
 
   const isTitleError = Boolean(!title);
 
   if (!firebaseUser || !isLogined) {
     return <LoadingContent />;
   }
-  const handleSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-
-      const reader = new FileReader();
-      new Promise<string>((resolve, rejects) => {
-        reader.onload = () => {
-          const dataUrl = reader.result as string | null;
-          if (!dataUrl) {
-            rejects(new Error("failed to load image"));
-          } else {
-            resolve(dataUrl);
-          }
-        };
-        reader.onerror = (e) => {
-          rejects(e);
-        };
-        reader.readAsDataURL(file);
-      })
-        .then((imageDataUrl) => {
-          setFileState({ file, imageDataUrl });
-        })
-        .catch((err) => {
-          setFileState({ imageSetError: err });
-        });
+      handleImageSet(file);
     }
   };
 
@@ -130,7 +105,7 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
                     opacity="0"
                     aria-hidden="true"
                     accept="image/*"
-                    onChange={(e) => handleSetImage(e)}
+                    onChange={(e) => onSetImage(e)}
                   />
                 </Box>
               </InputGroup>
@@ -144,13 +119,16 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
           <Button
             mt={4}
             disabled={isTitleError}
-            onClick={() => {
-              // upload image
+            onClick={async () => {
+              if (!fileState.file) {
+                return;
+              }
+              const { imageId } = await uploadImage(fileState.file);
               onPost({
                 authorId: firebaseUser.uid,
                 title,
                 comment,
-                imageId: undefined,
+                imageId,
               });
               router.push("/");
             }}

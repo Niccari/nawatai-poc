@@ -31,7 +31,26 @@ export const useImageLoader = () => {
       .catch((err) => {
         setFileState({ imageSetError: err });
       });
-  }
+  };
 
   return { fileState, handleImageSet };
+};
+
+export const useImageUploader = () => {
+  const uploadImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("imageFile", file);
+    const response = await fetch("/api/images/new", {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`${response.status} - ${response.statusText}`);
+    }
+    const { id } = await response.json();
+    return {
+      imageId: id,
+    };
+  };
+  return { uploadImage };
 };
