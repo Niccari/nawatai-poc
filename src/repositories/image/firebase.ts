@@ -16,7 +16,7 @@ class ImageRepository implements IImageRepository {
   }> {
     const bucket = storageClient.bucket();
     const id = Math.random().toString(32).slice(2);
-    const uploadFile = bucket.file(id);
+    const uploadFile = bucket.file(`images/${id}`);
     const writable = uploadFile.createWriteStream({
       metadata: {
         cacheControl: "public,max-age=300,s-maxage=300",

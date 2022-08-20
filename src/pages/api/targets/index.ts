@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Constants from "../../../constants";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
+import {
+  NamingTargetForView,
+  NamingTargetListGenre,
+} from "../../../models/namingTarget";
+import imageRepository from "../../../repositories/image/firebase";
 import namingTargetRepository from "../../../repositories/namingTarget";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,14 +18,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    // TODO(Niccari): NamingTargetForView[]に互換のある型に変換する
     const items = await namingTargetRepository.list(
       Constants.namingsPageCount,
       genre,
       parseInt(page, 10)
     );
+    const targets: NamingTargetForView[] = await Promise.all(
+      items.map(async (item) => ({
+        ...item,
+        imageUrl: item.imageId
+          ? await imageRepository.resolveUrl(item.imageId)
+          : undefined,
+      }))
+    );
     res.setHeader("Cache-Control", "max-age=10, s-maxage=30");
-    res.status(200).json(items);
+    res.status(200).json(targets);
   } catch (e) {
     res.status(500).send(undefined);
   }
