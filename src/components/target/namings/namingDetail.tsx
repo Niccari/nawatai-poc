@@ -1,8 +1,8 @@
 import { Flex, Avatar, Box, Divider, Stack } from "@chakra-ui/react";
-import { PrimaryText } from "../../element/text";
-import { Naming } from "../../models/naming";
-import { usePersonalUser } from "../../modules/personalUser/hooks";
-import TargetOwnerMenu from "../target/targetOwnerMenu";
+import { PrimaryText } from "../../../element/text";
+import { Naming } from "../../../models/naming";
+import { usePersonalUser } from "../../../modules/personalUser/hooks";
+import TargetOwnerMenu from "../targetOwnerMenu";
 
 type Props = {
   naming: Naming;

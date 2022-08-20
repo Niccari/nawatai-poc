@@ -5,6 +5,11 @@ export interface INamingRepository {
   get(id: string): Promise<Naming>;
   list(
     count: number,
+    genre: NamingTargetListGenre,
+    page: number
+  ): Promise<Naming[]>;
+  listByTarget(
+    count: number,
     targetId: string,
     genre: NamingTargetListGenre,
     page: number

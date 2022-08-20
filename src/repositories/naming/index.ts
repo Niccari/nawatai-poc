@@ -26,23 +26,41 @@ class NamingRepository implements INamingRepository {
     return this.toModel(document);
   }
 
+  private genreToField = (genre: NamingTargetListGenre) => {
+    switch (genre) {
+      case NamingTargetListGenre.HOT:
+        return "totalEvalCounts";
+      case NamingTargetListGenre.LATEST:
+        return "createdAt";
+      default:
+        return "totalEvalCounts";
+    }
+  };
+
   public async list(
+    count: number,
+    genre: NamingTargetListGenre,
+    page: number
+  ): Promise<Naming[]> {
+    const offset = count * Math.max(page - 1, 0);
+    const orderKey = this.genreToField(genre);
+    const query = firestoreClient
+      .collection("Naming")
+      .orderBy(orderKey, "desc")
+      .offset(offset)
+      .limit(count);
+    const querySnapshots = await query.get();
+    return querySnapshots.docs.map((s) => this.toModel(s));
+  }
+
+  public async listByTarget(
     count: number,
     targetId: string,
     genre: NamingTargetListGenre,
     page: number
   ): Promise<Naming[]> {
     const offset = count * Math.max(page - 1, 0);
-    const orderKey = (() => {
-      switch (genre) {
-        case NamingTargetListGenre.HOT:
-          return "totalEvalCounts";
-        case NamingTargetListGenre.LATEST:
-          return "createdAt";
-        default:
-          return "totalEvalCounts";
-      }
-    })();
+    const orderKey = this.genreToField(genre);
     const query = firestoreClient
       .collection("Naming")
       .where("targetId", "==", targetId)

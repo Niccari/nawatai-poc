@@ -1,11 +1,11 @@
 import { Box, Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import TabbedNamingDetailList from "../../components/naming/tabbedNamingDetailList";
+import TabbedNamingDetailList from "../../components/target/namings/tabbedNamingDetailList";
 import TargetDetail from "../../components/target/targetDetail";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
-import { useNamings } from "../../modules/naming/hooks";
+import { useTargetNamings } from "../../modules/naming/hooks";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
 
 type Props = {};

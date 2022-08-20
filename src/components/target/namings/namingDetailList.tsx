@@ -1,10 +1,10 @@
 import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
-import { Naming } from "../../models/naming";
-import { NamingTargetListGenre } from "../../models/namingTarget";
-import LoadError from "../loadException/loadError";
-import NoContent from "../loadException/noContent";
-import LoadingContent from "../loading";
-import Pager from "../targets/pager";
+import { Naming } from "../../../models/naming";
+import { NamingTargetListGenre } from "../../../models/namingTarget";
+import LoadError from "../../loadException/loadError";
+import NoContent from "../../loadException/noContent";
+import LoadingContent from "../../loading";
+import Pager from "../../targets/pager";
 import NamingDetail from "./namingDetail";
 
 type Props = {

@@ -4,15 +4,13 @@ import { NamingTargetListGenre } from "../../models/namingTarget";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
-export const useNamings = (
+export const useTargetNamings = (
   targetId: string | undefined,
   genre: NamingTargetListGenre,
   page: number = 1
 ) => {
   const { data, error } = useSWR<Naming[], Error>(
-    targetId
-      ? `/api/naming?targetId=${targetId}&genre=${genre}&page=${page}`
-      : null,
+    targetId ? `/api/naming/${targetId}/?genre=${genre}&page=${page}` : null,
     fetcher
   );
 
@@ -21,12 +19,13 @@ export const useNamings = (
 
 export const useCreateNaming = () => {
   const onPost = async (naming: NamingWillSubmit) => {
+    const { targetId } = naming;
     const response = await fetch("/api/naming/new", {
       method: "POST",
       body: JSON.stringify(naming),
     });
     const newNaming: Naming = await response.json();
-    const cacheKey = `/api/naming/?targetId=${naming.targetId}&genre=${NamingTargetListGenre.LATEST}&page=1`;
+    const cacheKey = `/api/naming/${targetId}/?genre=${NamingTargetListGenre.LATEST}&page=1`;
     mutate(
       cacheKey,
       async () => {
