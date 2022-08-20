@@ -15,6 +15,7 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
 
   const isOwner = user?.id === authorId;
+  const handleEdit = () => {};
   const handleDelete = () => {};
   return (
     <Box>
@@ -41,6 +42,7 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
               </PrimaryText>
               {isOwner && (
                 <TargetOwnerMenu
+                  handleEdit={isOwner ? handleEdit : undefined}
                   handleDelete={isOwner ? handleDelete : undefined}
                 />
               )}
