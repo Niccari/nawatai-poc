@@ -1,4 +1,4 @@
-import { VStack, Text, Flex, Avatar } from "@chakra-ui/react";
+import { VStack, Text, Flex, Avatar, Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { Naming } from "../../models/naming";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
@@ -14,22 +14,28 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
   const { target } = useNamingTarget(targetId);
+  if (!target) {
+    return <Box background={"#333"} h="300px" alignItems="center" />;
+  }
   return (
     <Flex
       direction={{ base: "column" }}
-      background={target?.imageUrl ?? "#333"}
+      background={target.imageUrl ?? "#333"}
       h="300px"
       alignItems="center"
       onClick={() => router.push(`/targets/${targetId}`)}
     >
-      <VStack flexGrow={1} justifyContent="center">
-        <Text textColor="white" textStyle="h3">
-          {name}
-        </Text>
-        <Text textColor="white">{reason}</Text>
-        <Text textColor="white">
-          👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
-        </Text>
+      <VStack w="100%" h="100%" justifyContent="center">
+        <Box w="100%" textAlign="center" pl={2} pr={2}>
+          {target.title && <Text textColor="white">{target.title}</Text>}
+          <Text textColor="white" textStyle="h3" mt={target.title ? 4 : 0}>
+            {name}
+          </Text>
+          <Text textColor="white">{reason}</Text>
+          <Text textColor="white" mt={2}>
+            👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
+          </Text>
+        </Box>
       </VStack>
       <VStack w="100%" p={2}>
         <Flex alignItems="center" w="100%">
