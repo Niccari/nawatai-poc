@@ -1,6 +1,5 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { PrimaryText } from "../../element/text";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { useNamings } from "../../modules/naming/hooks";
 import NamingDetailList from "./namingDetailList";
@@ -18,7 +17,7 @@ const TabbedNamingDetailList = ({
 }: Props): JSX.Element => {
   const router = useRouter();
   const index = genre === NamingTargetListGenre.HOT ? 0 : 1;
-  const { namings, namingsError } = useNamings(targetId, genre, index);
+  const { namings, namingsError } = useNamings(targetId, genre, page);
   return (
     <Box>
       <Tabs
@@ -45,7 +44,8 @@ const TabbedNamingDetailList = ({
           <NamingDetailList
             namings={namings}
             namingsError={namingsError}
-            page={1}
+            targetId={targetId}
+            page={page}
             genre={genre}
           />
         </Box>

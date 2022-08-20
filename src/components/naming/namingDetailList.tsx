@@ -10,6 +10,7 @@ import NamingDetail from "./namingDetail";
 type Props = {
   namings: Naming[] | undefined;
   namingsError: Error | undefined;
+  targetId: string | undefined;
   page: number;
   genre: NamingTargetListGenre;
 };
@@ -17,6 +18,7 @@ type Props = {
 const NamingDetailList = ({
   namings,
   namingsError,
+  targetId,
   page,
   genre,
 }: Props): JSX.Element => {
@@ -38,7 +40,12 @@ const NamingDetailList = ({
     return (
       <Box>
         <NoContent objectName={objectName} />
-        <Pager page={page} genre={genre} hasNext={false} />
+        <Pager
+          endpoint={`/targets/${targetId}`}
+          page={page}
+          genre={genre}
+          hasNext={false}
+        />
       </Box>
     );
   }
@@ -49,7 +56,12 @@ const NamingDetailList = ({
           <NamingDetail key={n.id} naming={n} />
         ))}
       </SimpleGrid>
-      <Pager page={page} genre={genre} hasNext={namings.length === 12} />
+      <Pager
+        endpoint={`/targets/${targetId}`}
+        page={page}
+        genre={genre}
+        hasNext={namings.length === 12}
+      />
     </Box>
   );
 };
