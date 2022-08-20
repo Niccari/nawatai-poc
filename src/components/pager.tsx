@@ -1,5 +1,5 @@
 import { Flex, Link, Text } from "@chakra-ui/react";
-import { NamingTargetListGenre } from "../../models/namingTarget";
+import { NamingTargetListGenre } from "../models/namingTarget";
 
 type Props = {
   endpoint: string;
@@ -22,7 +22,7 @@ const Pager = ({ endpoint, genre, page, hasNext }: Props): JSX.Element => {
           {page}
         </Text>
         <Link
-          href={`/${endpoint}?genre=${genre}&page=${page + 1}`}
+          href={`${endpoint}?genre=${genre}&page=${page + 1}`}
           visibility={hasNext ? "visible" : "hidden"}
         >
           <Text>{">"}</Text>

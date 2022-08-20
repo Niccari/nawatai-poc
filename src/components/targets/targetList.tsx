@@ -1,9 +1,10 @@
 import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
+import Constants from "../../constants";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { useNamingTargets } from "../../modules/namingTarget/hooks";
 import LoadError from "../loadException/loadError";
 import NoContent from "../loadException/noContent";
-import Pager from "./pager";
+import Pager from "../pager";
 import TargetSquare from "./targetSquare";
 
 type Props = {
@@ -53,7 +54,7 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
         endpoint="/targets"
         page={page}
         genre={genre}
-        hasNext={targets.length === 12}
+        hasNext={targets.length === Constants.namingTargetsPageCount}
       />
     </Box>
   );

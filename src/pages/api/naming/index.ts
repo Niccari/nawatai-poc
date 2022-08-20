@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import Constants from "../../../constants";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import namingRepository from "../../../repositories/naming";
 
@@ -13,7 +14,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    const items = await namingRepository.list(12, genre, parseInt(page, 10));
+    const items = await namingRepository.list(
+      Constants.namingsPageCount,
+      genre,
+      parseInt(page, 10)
+    );
     res.setHeader("Cache-Control", "max-age=10, s-maxage=30");
     res.status(200).json(items);
   } catch (e) {

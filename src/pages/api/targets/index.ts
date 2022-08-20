@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import Constants from "../../../constants";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import namingTargetRepository from "../../../repositories/namingTarget";
 
@@ -15,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // TODO(Niccari): NamingTargetForView[]に互換のある型に変換する
     const items = await namingTargetRepository.list(
-      12,
+      Constants.namingsPageCount,
       genre,
       parseInt(page, 10)
     );

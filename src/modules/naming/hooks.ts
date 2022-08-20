@@ -4,6 +4,15 @@ import { NamingTargetListGenre } from "../../models/namingTarget";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
+export const useNaming = (genre: NamingTargetListGenre, page: number = 1) => {
+  const { data, error } = useSWR<Naming[], Error>(
+    `/api/naming/?genre=${genre}&page=${page}`,
+    fetcher
+  );
+
+  return { namings: data, namingsError: error };
+};
+
 export const useTargetNamings = (
   targetId: string | undefined,
   genre: NamingTargetListGenre,

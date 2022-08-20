@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import Constants from "../../../constants";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import namingRepository from "../../../repositories/naming";
 
@@ -15,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const items = await namingRepository.listByTarget(
-      12,
+      Constants.namingsPageCount,
       targetId,
       genre,
       parseInt(page, 10)
