@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { Naming, NamingWillSubmit } from "../../models/naming";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 
@@ -21,10 +21,25 @@ export const useNamings = (
 
 export const useCreateNaming = () => {
   const onPost = async (naming: NamingWillSubmit) => {
-    await fetch("/api/naming/new", {
+    const response = await fetch("/api/naming/new", {
       method: "POST",
       body: JSON.stringify(naming),
     });
+    const newNaming: Naming = await response.json();
+    const cacheKey = `/api/naming/?targetId=${naming.targetId}&genre=${NamingTargetListGenre.LATEST}&page=1`;
+    mutate(
+      cacheKey,
+      async () => {
+        const response = await fetch(cacheKey);
+        const result: Naming[] = await response.json();
+        const final = [
+          newNaming,
+          ...result.filter((result) => result.id !== newNaming.id),
+        ];
+        return final;
+      },
+      { revalidate: false }
+    );
   };
   return { onPost };
 };
