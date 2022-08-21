@@ -1,6 +1,6 @@
 import { Writable } from "stream";
 import { storageClient } from "../../services/firebaseOnServer";
-import { IImageRepository } from "./interface";
+import { IImageRepository, ImageMetadata } from "./interface";
 
 class ImageRepository implements IImageRepository {
   resolveUrl(id: string): Promise<string> {
@@ -17,15 +17,17 @@ class ImageRepository implements IImageRepository {
     const bucket = storageClient.bucket();
     const id = Math.random().toString(32).slice(2);
     const uploadFile = bucket.file(`images/${id}`);
-    const writable = uploadFile.createWriteStream({
-      metadata: {
-        cacheControl: "public,max-age=300,s-maxage=300",
-      },
-    });
+    const writable = uploadFile.createWriteStream();
     return {
       id,
       writable,
     };
+  }
+
+  async setMetaData(id: string, metadata: ImageMetadata): Promise<void> {
+    const bucket = storageClient.bucket();
+    const file = bucket.file(`images/${id}`);
+    file.setMetadata(metadata);
   }
 }
 

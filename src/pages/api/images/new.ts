@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { formidable } from "formidable";
+import { formidable, File as FormidableFile } from "formidable";
 import imageRepository from "../../../repositories/image/firebase";
 import { Writable } from "stream";
 
@@ -13,28 +13,48 @@ const uploadImageByStream = async (
   writable: Writable,
   req: NextApiRequest
 ): Promise<{
+  mimetype: string;
   err?: Error;
 }> => {
   const form = formidable({
     fileWriteStreamHandler: () => writable,
   });
   return new Promise((resolve, reject) => {
-    form.parse(req, (err) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("upload timeout"));
+    }, 60_000);
+    form.parse(req, (err, _, files) => {
+      clearTimeout(timeoutId);
       if (err) {
-        reject({ err });
+        reject(err);
       }
-      resolve({ err });
+      if (!Object.hasOwn(files, "imageFile")) {
+        reject(new Error("imageFile not specified."));
+      }
+      const { mimetype } = files.imageFile as FormidableFile;
+      resolve({
+        mimetype: mimetype ?? "application/octet-stream",
+        err,
+      });
     });
   });
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!req.headers["content-type"]?.includes("multipart/form-data")) {
+    res.status(400).send(undefined);
+    return;
+  }
   const { id, writable } = await imageRepository.getUploadWriteStream();
-  const { err } = await uploadImageByStream(writable, req);
+  const { err, mimetype } = await uploadImageByStream(writable, req);
   if (err) {
     res.status(500).send(undefined);
     return;
   }
+  await imageRepository.setMetaData(id, {
+    cacheControl: "public,max-age=3600,s-maxage=3600",
+    contentType: mimetype,
+  });
   res.status(200).json({ id });
 };
 
