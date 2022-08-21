@@ -1,5 +1,6 @@
 import { VStack, Text, Flex, Avatar, Box, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { Naming } from "../../models/naming";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
@@ -18,22 +19,30 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
     return <Box background={"#333"} h="300px" alignItems="center" />;
   }
   return (
-    <Flex
-      direction={{ base: "column" }}
+    <Box
+      position="relative"
       h="300px"
       backgroundColor="#333"
-      backgroundImage={target.imageUrl}
-      backgroundSize="cover"
-      backgroundPosition="center"
-      backgroundRepeat="no-repeat"
       alignItems="center"
       onClick={() => router.push(`/targets/${targetId}`)}
     >
+      <Box>
+        {target.imageUrl && (
+          <Image
+            src={target.imageUrl}
+            alt={target.title}
+            layout="fill"
+            objectFit="cover"
+            quality={80}
+          />
+        )}
+      </Box>
       <Stack
         w="100%"
         h="100%"
-        backdropFilter="auto"
-        backdropBlur="1px"
+        position="absolute"
+        top="0"
+        left="0"
         justifyContent="space-between"
       >
         <VStack w="100%" justifyContent="center" flexGrow={1}>
@@ -68,7 +77,7 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
           </Flex>
         </Box>
       </Stack>
-    </Flex>
+    </Box>
   );
 };
 

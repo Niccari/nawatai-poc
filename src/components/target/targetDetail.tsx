@@ -1,4 +1,5 @@
-import { Image, Flex, Avatar, Box, Divider, Stack } from "@chakra-ui/react";
+import { Flex, Avatar, Box, Divider, Stack, Link } from "@chakra-ui/react";
+import Image from "next/image";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
@@ -20,14 +21,19 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
   return (
     <Box>
       <Flex pb={2}>
-        <Image
-          background="#666"
-          src={imageUrl}
-          alt={comment}
-          w="200px"
-          h="200px"
-          flexShrink={0}
-        />
+        <Box flexShrink={0} background="#333" w="200px" h="200px">
+          <Link href={imageUrl}>
+            <Image
+              src={imageUrl ?? ""}
+              alt={comment}
+              width="200px"
+              height="200px"
+              layout="fixed"
+              objectFit="cover"
+              quality={80}
+            />
+          </Link>
+        </Box>
         <Stack minW="200px" flexGrow={1} ml={4} justifyContent="space-between">
           <Stack>
             <Flex>

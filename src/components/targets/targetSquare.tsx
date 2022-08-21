@@ -1,12 +1,5 @@
-import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  Flex,
-  Avatar,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, VStack, Text, Flex, Avatar, Stack } from "@chakra-ui/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
@@ -21,22 +14,30 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
   return (
-    <Flex
-      direction={{ base: "column" }}
-      backgroundColor="#333"
-      backgroundImage={imageUrl}
-      backgroundSize="cover"
-      backgroundPosition="center"
-      backgroundRepeat="no-repeat"
+    <Box
       h="300px"
+      position="relative"
+      backgroundColor="#333"
       alignItems="center"
       onClick={() => router.push(`/targets/${id}`)}
     >
+      <Box>
+        {target.imageUrl && (
+          <Image
+            src={target.imageUrl}
+            alt={target.title}
+            layout="fill"
+            objectFit="cover"
+            quality={80}
+          />
+        )}
+      </Box>
       <Stack
         w="100%"
         h="100%"
-        backdropFilter="auto"
-        backdropBlur="1px"
+        position="absolute"
+        top="0"
+        left="0"
         justifyContent="space-between"
       >
         <VStack w="100%" justifyContent="center" flexGrow={1}>
@@ -70,7 +71,7 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
           </Flex>
         </Box>
       </Stack>
-    </Flex>
+    </Box>
   );
 };
 
