@@ -51,7 +51,7 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
               />
               {!isNameError ? (
                 <FormHelperText>
-                  ※ 付けた名前は編集で変更できます
+                  ※ 付けた名前は編集で変更できません
                 </FormHelperText>
               ) : (
                 <FormErrorMessage>名前は必須です</FormErrorMessage>

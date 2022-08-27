@@ -1,12 +1,21 @@
-import useSWR, { mutate } from "swr";
-import { Naming, NamingWillSubmit } from "../../models/naming";
+import useSWR, { mutate, useSWRConfig } from "swr";
+import { Naming, NamingWillEdit, NamingWillSubmit } from "../../models/naming";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
-export const useNaming = (genre: NamingTargetListGenre, page: number = 1) => {
+export const useNaming = (namingId?: string) => {
+  const { data, error } = useSWR<Naming, Error>(
+    namingId ? `/api/namings/${namingId}` : undefined,
+    fetcher
+  );
+
+  return { naming: data, namingError: error };
+};
+
+export const useNamings = (genre: NamingTargetListGenre, page: number = 1) => {
   const { data, error } = useSWR<Naming[], Error>(
-    `/api/naming/?genre=${genre}&page=${page}`,
+    `/api/namings/?genre=${genre}&page=${page}`,
     fetcher
   );
 
@@ -19,7 +28,9 @@ export const useTargetNamings = (
   page: number = 1
 ) => {
   const { data, error } = useSWR<Naming[], Error>(
-    targetId ? `/api/naming/${targetId}/?genre=${genre}&page=${page}` : null,
+    targetId
+      ? `/api/targets/${targetId}/namings/?genre=${genre}&page=${page}`
+      : null,
     fetcher
   );
 
@@ -29,12 +40,12 @@ export const useTargetNamings = (
 export const useCreateNaming = () => {
   const onPost = async (naming: NamingWillSubmit) => {
     const { targetId } = naming;
-    const response = await fetch("/api/naming/new", {
+    const response = await fetch("/api/namings/new", {
       method: "POST",
       body: JSON.stringify(naming),
     });
     const newNaming: Naming = await response.json();
-    const cacheKey = `/api/naming/${targetId}/?genre=${NamingTargetListGenre.LATEST}&page=1`;
+    const cacheKey = `/api/namings/${targetId}/?genre=${NamingTargetListGenre.LATEST}&page=1`;
     mutate(
       cacheKey,
       async () => {
@@ -50,4 +61,24 @@ export const useCreateNaming = () => {
     );
   };
   return { onPost };
+};
+
+export const useEditNaming = () => {
+  const { mutate } = useSWRConfig();
+  const onEdit = async (naming: NamingWillEdit) => {
+    const response = await fetch(`/api/namings/${naming.id}/edit`, {
+      method: "POST",
+      body: JSON.stringify(naming),
+    });
+
+    mutate(
+      `/api/namings/${naming.id}`,
+      async () => {
+        const result: Naming = await response.json();
+        return result;
+      },
+      { revalidate: false }
+    );
+  };
+  return { onEdit };
 };

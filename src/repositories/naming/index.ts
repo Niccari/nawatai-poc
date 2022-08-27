@@ -3,13 +3,15 @@ import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
-import { Naming, NamingWillSubmit } from "../../models/naming";
+import { Naming, NamingWillEdit, NamingWillSubmit } from "../../models/naming";
 import { evalCountsInit } from "../../models/namingEval";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { firestoreClient } from "../../services/firebaseOnServer";
 import { INamingRepository } from "./interface";
 
 class NamingRepository implements INamingRepository {
+  private readonly collectionName = "Naming";
+
   private toModel(snapshot: DocumentSnapshot | QueryDocumentSnapshot): Naming {
     const document = snapshot.data();
     if (!document) {
@@ -22,7 +24,10 @@ class NamingRepository implements INamingRepository {
   }
 
   public async get(id: string): Promise<Naming> {
-    const document = await firestoreClient.collection("Naming").doc(id).get();
+    const document = await firestoreClient
+      .collection(this.collectionName)
+      .doc(id)
+      .get();
     return this.toModel(document);
   }
 
@@ -45,7 +50,7 @@ class NamingRepository implements INamingRepository {
     const offset = count * Math.max(page - 1, 0);
     const orderKey = this.genreToField(genre);
     const query = firestoreClient
-      .collection("Naming")
+      .collection(this.collectionName)
       .orderBy(orderKey, "desc")
       .offset(offset)
       .limit(count);
@@ -86,9 +91,20 @@ class NamingRepository implements INamingRepository {
     };
   }
 
-  public update(entity: Naming): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async update(entity: NamingWillEdit): Promise<Naming> {
+    const naming = await this.get(entity.id);
+    const updateItems = Object.fromEntries(
+      Object.entries(entity).filter(([k, v]) => v !== undefined)
+    );
+    const newNaming = {
+      ...naming,
+      ...updateItems,
+    };
+    const docRef = firestoreClient.doc(`${this.collectionName}/${entity.id}`);
+    docRef.set(newNaming, { merge: true });
+    return newNaming;
   }
+
   public delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

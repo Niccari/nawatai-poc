@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Constants from "../../../constants";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
-import namingRepository from "../../../repositories/naming";
+import Constants from "../../../../../constants";
+import { NamingTargetListGenre } from "../../../../../models/namingTarget";
+import namingRepository from "../../../../../repositories/naming";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { targetId, genre, page } = req.query;

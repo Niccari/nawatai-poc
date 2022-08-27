@@ -1,4 +1,5 @@
 import { Flex, Box, Divider, Stack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../../element/nextImageAvatar";
 import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
@@ -10,12 +11,16 @@ type Props = {
 };
 
 const NamingDetail = ({ naming }: Props): JSX.Element => {
-  const { name, reason, evalCounts, authorId } = naming;
+  const { id, name, reason, evalCounts, authorId } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
 
+  const router = useRouter();
   const { user } = usePersonalUser(authorId);
 
   const isOwner = user?.id === authorId;
+  const handleEdit = () => {
+    router.push(`/namings/${id}/edit`);
+  };
   const handleDelete = () => {};
   return (
     <Box>
@@ -33,6 +38,7 @@ const NamingDetail = ({ naming }: Props): JSX.Element => {
             </PrimaryText>
             {isOwner && (
               <TargetOwnerMenu
+                handleEdit={isOwner ? handleEdit : undefined}
                 handleDelete={isOwner ? handleDelete : undefined}
               />
             )}

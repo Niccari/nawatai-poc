@@ -2,7 +2,7 @@ import { Box, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import LoadError from "../loadException/loadError";
 import NoContent from "../loadException/noContent";
-import { useNaming } from "../../modules/naming/hooks";
+import { useNamings } from "../../modules/naming/hooks";
 import LoadingContent from "../loading";
 import NamingSquare from "./namingSquare";
 import Constants from "../../constants";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const NamingsList = ({ genre, page }: Props): JSX.Element => {
-  const { namings, namingsError } = useNaming(genre, page);
+  const { namings, namingsError } = useNamings(genre, page);
 
   if (namings === undefined) {
     return <LoadingContent />;

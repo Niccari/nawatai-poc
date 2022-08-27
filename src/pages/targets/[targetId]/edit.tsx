@@ -64,7 +64,6 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
           <Button
             mt={4}
             onClick={async () => {
-              console.log(comment);
               await onEdit({
                 id: target.id,
                 comment,

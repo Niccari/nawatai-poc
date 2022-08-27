@@ -13,3 +13,8 @@ export interface Naming extends NamingWillSubmit {
   evalCounts: EvalCounts;
   totalEvalCounts: number;
 }
+
+export type NamingWillEdit = {
+  id: string;
+  reason?: string;
+};

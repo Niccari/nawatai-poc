@@ -13,8 +13,8 @@ const TargetOwnerMenu = ({ handleEdit, handleDelete }: Props): JSX.Element => {
         <TriangleDownIcon />
       </MenuButton>
       <MenuList>
-        <MenuItem onClick={handleEdit}>🖊 手直しする</MenuItem>
-        <MenuItem onClick={handleDelete}>❌ 消す</MenuItem>
+        {handleEdit && <MenuItem onClick={handleEdit}>🖊 手直しする</MenuItem>}
+        {handleDelete && <MenuItem onClick={handleDelete}>❌ 消す</MenuItem>}
       </MenuList>
     </Menu>
   );
