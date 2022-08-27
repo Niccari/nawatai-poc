@@ -1,11 +1,11 @@
 import { Box, Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import LoadItemError from "../../../components/loadException/loadItemError";
 import TabbedNamingDetailList from "../../../components/target/namings/tabbedNamingDetailList";
 import TargetDetail from "../../../components/target/targetDetail";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import { useLoginState } from "../../../modules/login/hooks";
-import { useTargetNamings } from "../../../modules/naming/hooks";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
 
 type Props = {};
@@ -30,6 +30,9 @@ const TargetPage: NextPage<Props> = ({}) => {
     }
     router.push(`/targets/${target.id}/naming/new`);
   };
+  if (targetError) {
+    return <LoadItemError />;
+  }
   return (
     <>
       {target && (

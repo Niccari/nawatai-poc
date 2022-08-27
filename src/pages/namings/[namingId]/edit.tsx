@@ -3,10 +3,11 @@ import {
   FormHelperText,
   FormLabel,
 } from "@chakra-ui/form-control";
-import { Box, Button, FormErrorMessage, Input, Stack } from "@chakra-ui/react";
+import { Box, Button, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import LoadItemError from "../../../components/loadException/loadItemError";
 import LoadingContent from "../../../components/loading";
 import { PrimaryText } from "../../../element/text";
 import { useLoginState } from "../../../modules/login/hooks";
@@ -33,12 +34,8 @@ const EditNamingPage: NextPage<Props> = ({}) => {
     }
   }, [reason, setReason, naming]);
 
-  if (typeof namingId !== "string") {
-    return <>エラー: 不正なURLです</>;
-  }
-
-  if (namingError) {
-    return <>エラー: 名付け情報を取得できませんでした</>;
+  if (typeof namingId !== "string" || namingError) {
+    return <LoadItemError />;
   }
   if (!firebaseUser || !isLogined || !naming) {
     return <LoadingContent />;

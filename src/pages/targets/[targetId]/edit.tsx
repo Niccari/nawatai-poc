@@ -3,6 +3,7 @@ import { Box, Button, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import LoadItemError from "../../../components/loadException/loadItemError";
 import LoadingContent from "../../../components/loading";
 import { PrimaryText } from "../../../element/text";
 import { useLoginState } from "../../../modules/login/hooks";
@@ -23,7 +24,7 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
   const [comment, setComment] = useState<string | undefined>(undefined);
 
   const { onEdit } = useEditNamingTarget();
-  const { target } = useNamingTarget(targetId as string);
+  const { target, targetError } = useNamingTarget(targetId as string | undefined);
 
   useEffect(() => {
     if (comment === undefined && target) {
@@ -31,8 +32,8 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
     }
   }, [comment, setComment, target]);
 
-  if (typeof targetId !== "string") {
-    return <>Error!</>;
+  if (typeof targetId !== "string" || targetError) {
+    return <LoadItemError />;
   }
   if (!firebaseUser || !isLogined || !target) {
     return <LoadingContent />;
