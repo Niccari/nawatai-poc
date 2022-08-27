@@ -1,4 +1,5 @@
-import { Flex, Avatar, Box, Divider, Stack } from "@chakra-ui/react";
+import { Flex, Box, Divider, Stack } from "@chakra-ui/react";
+import { NextImageAvatar } from "../../../element/nextImageAvatar";
 import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
@@ -41,7 +42,11 @@ const NamingDetail = ({ naming }: Props): JSX.Element => {
             👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
           </PrimaryText>
           <Flex alignItems="center">
-            <Avatar src={user?.imageUrl}></Avatar>
+            <NextImageAvatar
+              width="40px"
+              height="40px"
+              src={user?.imageUrl}
+            ></NextImageAvatar>
             <PrimaryText ml={2}>{user?.name}</PrimaryText>
           </Flex>
         </Stack>

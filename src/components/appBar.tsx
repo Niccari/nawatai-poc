@@ -16,6 +16,8 @@ import { BellIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useUserNotification } from "../modules/notifications/hooks";
 import { useRouter } from "next/router";
+import { usePersonalUser } from "../modules/personalUser/hooks";
+import { NextImageAvatar } from "../element/nextImageAvatar";
 
 type Props = {};
 
@@ -23,6 +25,7 @@ const AppBar = ({}: Props): JSX.Element => {
   const router = useRouter();
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
+  const { user } = usePersonalUser(firebaseUser?.uid);
   const { hasNotification } = useUserNotification();
   const createNewTarget = () => {
     router.push("/targets/new");
@@ -59,12 +62,10 @@ const AppBar = ({}: Props): JSX.Element => {
                   type="button"
                   aria-label="UserIcon"
                 >
-                  <Avatar
-                    border="1px solid #EEE"
-                    background="#FFF"
-                    src={firebaseUser?.photoURL ?? ""}
-                    w="100%"
-                    h="100%"
+                  <NextImageAvatar
+                    src={user?.imageUrl ?? ""}
+                    width="40px"
+                    height="40px"
                   />
                 </MenuButton>
                 <MenuList onClick={logout}>

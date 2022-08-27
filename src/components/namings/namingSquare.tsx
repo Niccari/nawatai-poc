@@ -1,9 +1,10 @@
-import { VStack, Text, Flex, Avatar, Box, Stack } from "@chakra-ui/react";
+import { VStack, Text, Flex, Box, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Naming } from "../../models/naming";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
+import { NextImageAvatar } from "../../element/nextImageAvatar";
 
 type Props = {
   naming: Naming;
@@ -65,12 +66,14 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">
           <Flex alignItems="center" w="100%">
-            <Avatar
+            <NextImageAvatar
               src={user?.imageUrl}
+              width="40px"
+              height="40px"
               onClick={() =>
                 user ? router.push(`/users/${user?.id}`) : undefined
               }
-            ></Avatar>
+            ></NextImageAvatar>
             <Text ml={2} textColor="white">
               {user?.name}
             </Text>

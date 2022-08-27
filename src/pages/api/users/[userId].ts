@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { PersonalUserBasicView } from "../../../models/personalUser";
+import imageRepository from "../../../repositories/image/firebase";
 import personalUserRepository from "../../../repositories/personalUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,9 +10,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    const personalUser = await personalUserRepository.get(userId);
+    const { id, name, iconImageId } = await personalUserRepository.get(userId);
+    const imageUrl = iconImageId
+      ? await imageRepository.resolveUrl(iconImageId)
+      : undefined;
+    const personalUserBasicView: PersonalUserBasicView = {
+      id,
+      name,
+      userId,
+      imageUrl,
+    };
     res.setHeader("Cache-Control", "max-age=300, s-maxage=300");
-    res.status(200).json(personalUser);
+    res.status(200).json(personalUserBasicView);
   } catch (e) {
     res.status(500).send(undefined);
   }

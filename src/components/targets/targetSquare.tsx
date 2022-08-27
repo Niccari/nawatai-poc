@@ -1,6 +1,7 @@
-import { Box, VStack, Text, Flex, Avatar, Stack } from "@chakra-ui/react";
+import { Box, VStack, Text, Flex, Stack } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 
@@ -59,12 +60,14 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">
           <Flex alignItems="center" w="100%">
-            <Avatar
+            <NextImageAvatar
               src={user?.imageUrl}
+              width="40px"
+              height="40px"
               onClick={() =>
                 user ? router.push(`/users/${user?.id}`) : undefined
               }
-            ></Avatar>
+            ></NextImageAvatar>
             <Text ml={2} textColor="white">
               {user?.name}
             </Text>

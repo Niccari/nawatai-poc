@@ -15,9 +15,9 @@ export interface PersonalUser extends PersonalUserWillSubmit {
   signUpAt: Date;
 }
 
-export type PersonalUserForView = {
+export type PersonalUserBasicView = {
   id: string;
   name: string;
+  userId: string;
   imageUrl?: string;
-  profile?: string;
 };

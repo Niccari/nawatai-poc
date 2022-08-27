@@ -37,7 +37,7 @@ export const useImageLoader = () => {
 };
 
 export const useImageUploader = () => {
-  const uploadImage = async (file: File) => {
+  const uploadImage = async (file: File): Promise<{ imageId: string }> => {
     const formData = new FormData();
     formData.append("imageFile", file);
     const response = await fetch("/api/images/new", {

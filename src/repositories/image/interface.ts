@@ -2,7 +2,7 @@ import { Writable } from "stream";
 
 export type ImageUploading = {
   id: string;
-  writable: Writable
+  writable: Writable;
 };
 
 export type ImageMetadata = {
