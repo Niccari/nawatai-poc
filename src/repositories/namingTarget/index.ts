@@ -7,12 +7,15 @@ import { evalCountsInit } from "../../models/namingEval";
 import {
   NamingTarget,
   NamingTargetListGenre,
+  NamingTargetWillEdit,
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 import { firestoreClient } from "../../services/firebaseOnServer";
 import { INamingTargetRepository } from "./interface";
 
 class NamingTargetRepository implements INamingTargetRepository {
+  private readonly collectionName = "NamingTargets";
+
   private toModel(
     snapshot: DocumentSnapshot | QueryDocumentSnapshot
   ): NamingTarget {
@@ -34,7 +37,7 @@ class NamingTargetRepository implements INamingTargetRepository {
 
   public async get(id: string): Promise<NamingTarget> {
     const document = await firestoreClient
-      .collection("NamingTargets")
+      .collection(this.collectionName)
       .doc(id)
       .get();
     return this.toModel(document);
@@ -57,7 +60,7 @@ class NamingTargetRepository implements INamingTargetRepository {
       }
     })();
     const query = firestoreClient
-      .collection("NamingTargets")
+      .collection(this.collectionName)
       .orderBy(orderKey, "desc")
       .offset(offset)
       .limit(count);
@@ -66,7 +69,7 @@ class NamingTargetRepository implements INamingTargetRepository {
   }
 
   public async create(entity: NamingTargetWillSubmit): Promise<NamingTarget> {
-    const collectionRef = firestoreClient.collection("NamingTargets");
+    const collectionRef = firestoreClient.collection(this.collectionName);
     const values = {
       ...entity,
       evalCounts: evalCountsInit,
@@ -80,9 +83,20 @@ class NamingTargetRepository implements INamingTargetRepository {
     };
   }
 
-  public update(entity: NamingTarget): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async update(entity: NamingTargetWillEdit): Promise<NamingTarget> {
+    const namingTarget = await this.get(entity.id);
+    const updateItems = Object.fromEntries(
+      Object.entries(entity).filter(([k, v]) => v !== undefined)
+    );
+    const newTarget = {
+      ...namingTarget,
+      ...updateItems,
+    };
+    const docRef = firestoreClient.doc(`${this.collectionName}/${entity.id}`);
+    docRef.set(newTarget, { merge: true });
+    return newTarget;
   }
+
   public delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

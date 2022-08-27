@@ -2,6 +2,7 @@ import useSWR, { useSWRConfig } from "swr";
 import {
   NamingTargetForView,
   NamingTargetListGenre,
+  NamingTargetWillEdit,
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 
@@ -53,4 +54,24 @@ export const useCreateNamingTarget = () => {
     );
   };
   return { onPost };
+};
+
+export const useEditNamingTarget = () => {
+  const { mutate } = useSWRConfig();
+  const onEdit = async (target: NamingTargetWillEdit) => {
+    const response = await fetch(`/api/targets/${target.id}/edit`, {
+      method: "POST",
+      body: JSON.stringify(target),
+    });
+
+    mutate(
+      `/api/targets/${target.id}`,
+      async () => {
+        const result: NamingTargetForView = await response.json();
+        return result;
+      },
+      { revalidate: false }
+    );
+  };
+  return { onEdit };
 };

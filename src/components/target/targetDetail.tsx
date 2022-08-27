@@ -1,5 +1,6 @@
 import { Flex, Box, Divider, Stack, Link } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
@@ -14,10 +15,13 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
   const { authorId, title, comment, imageUrl, evalCounts } = target;
   const { precise, fun, question, missmatch } = evalCounts;
 
+  const router = useRouter();
   const { user } = usePersonalUser(authorId);
 
   const isOwner = user?.id === authorId;
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    router.push(`/targets/${target.id}/edit`);
+  };
   const handleDelete = () => {};
   return (
     <Box>

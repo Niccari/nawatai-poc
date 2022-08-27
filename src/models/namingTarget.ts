@@ -7,6 +7,13 @@ export type NamingTargetWillSubmit = {
   comment: string;
 };
 
+export type NamingTargetWillEdit = {
+  id: string;
+  comment?: string;
+  evalCounts?: EvalCounts;
+  totalEvalCounts?: number;
+};
+
 export interface NamingTarget extends NamingTargetWillSubmit {
   createdAt: Date;
   evalCounts: EvalCounts;

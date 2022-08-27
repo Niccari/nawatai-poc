@@ -1,6 +1,7 @@
 import {
   NamingTarget,
   NamingTargetListGenre,
+  NamingTargetWillEdit,
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 
@@ -12,6 +13,6 @@ export interface INamingTargetRepository {
     page: number
   ): Promise<NamingTarget[]>;
   create(entity: NamingTargetWillSubmit): Promise<NamingTarget>;
-  update(entity: NamingTarget): Promise<void>;
+  update(entity: NamingTargetWillEdit): Promise<NamingTarget>;
   delete(id: string): Promise<void>;
 }
