@@ -1,6 +1,5 @@
-import { Writable } from "stream";
 import { storageClient } from "../../services/firebaseOnServer";
-import { IImageRepository, ImageMetadata } from "./interface";
+import { IImageRepository, ImageMetadata, ImageUploading } from "./interface";
 
 class ImageRepository implements IImageRepository {
   resolveUrl(id: string): Promise<string> {
@@ -10,10 +9,7 @@ class ImageRepository implements IImageRepository {
     return Promise.resolve(url);
   }
 
-  public async getUploadWriteStream(): Promise<{
-    id: string;
-    writable: Writable;
-  }> {
+  public async getUploadWriteStream(): Promise<ImageUploading> {
     const bucket = storageClient.bucket();
     const id = Math.random().toString(32).slice(2);
     const uploadFile = bucket.file(`images/${id}`);
