@@ -31,7 +31,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           : undefined,
       }))
     );
-    res.setHeader("Cache-Control", "max-age=10, s-maxage=30");
     res.status(200).json(targets);
   } catch (e) {
     res.status(500).send(undefined);

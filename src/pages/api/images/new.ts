@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   await imageRepository.setMetaData(id, {
-    cacheControl: "public,max-age=3600,s-maxage=3600",
+    cacheControl: "public,max-age=60,s-maxage=300",
     contentType: mimetype,
   });
   res.status(200).json({ id });

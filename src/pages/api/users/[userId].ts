@@ -20,7 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       userId,
       imageUrl,
     };
-    res.setHeader("Cache-Control", "max-age=300, s-maxage=300");
     res.status(200).json(personalUserBasicView);
   } catch (e) {
     res.status(500).send(undefined);
