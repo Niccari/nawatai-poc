@@ -10,7 +10,7 @@ import { useState } from "react";
 import LoadingContent from "../../../../components/loading";
 import { PrimaryText } from "../../../../element/text";
 import { useLoginState } from "../../../../modules/login/hooks";
-import { useCreateNaming } from "../../../../modules/naming/hooks";
+import { useCRUDNaming } from "../../../../modules/naming/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../../../modules/route/hooks";
 
 type Props = {};
@@ -23,7 +23,7 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
   const [name, setTitle] = useState("");
   const [reason, setReason] = useState("");
 
-  const { onPost } = useCreateNaming();
+  const { runCreate } = useCRUDNaming();
   const { targetId } = router.query;
   const isNameError = Boolean(!name);
 
@@ -70,7 +70,7 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
             mt={4}
             disabled={isNameError}
             onClick={() => {
-              onPost({
+              runCreate({
                 authorId: firebaseUser.uid,
                 targetId,
                 name,

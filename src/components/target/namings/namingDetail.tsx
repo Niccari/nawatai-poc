@@ -14,7 +14,7 @@ import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
 import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
-import { useDeleteNaming } from "../../../modules/naming/hooks";
+import { useCRUDNaming } from "../../../modules/naming/hooks";
 import {
   useCreateNamingEval,
   useEditNamingEval,
@@ -36,7 +36,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   const { onCreate } = useCreateNamingEval();
   const { onEdit } = useEditNamingEval();
-  const { onDelete } = useDeleteNaming();
+  const { runDelete } = useCRUDNaming();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isOwner = user?.id === authorId;
@@ -48,7 +48,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   };
 
   const requestDelete = async () => {
-    await onDelete(targetId, id);
+    await runDelete(targetId, id);
   };
 
   const onEval = async (kind: NamingEvalKind) => {

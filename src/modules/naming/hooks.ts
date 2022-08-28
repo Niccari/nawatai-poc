@@ -37,8 +37,8 @@ export const useTargetNamings = (
   return { namings: data, namingsError: error };
 };
 
-export const useCreateNaming = () => {
-  const onPost = async (naming: NamingWillSubmit) => {
+export const useCRUDNaming = () => {
+  const runCreate = async (naming: NamingWillSubmit) => {
     const { targetId } = naming;
     const response = await fetch("/api/namings/new", {
       method: "POST",
@@ -60,12 +60,8 @@ export const useCreateNaming = () => {
       { revalidate: false }
     );
   };
-  return { onPost };
-};
 
-export const useEditNaming = () => {
-  const { mutate } = useSWRConfig();
-  const onEdit = async (naming: NamingWillEdit) => {
+  const runUpdate = async (naming: NamingWillEdit) => {
     const response = await fetch(`/api/namings/${naming.id}/edit`, {
       method: "POST",
       body: JSON.stringify(naming),
@@ -80,13 +76,9 @@ export const useEditNaming = () => {
       { revalidate: false }
     );
   };
-  return { onEdit };
-};
 
-export const useDeleteNaming = () => {
-  const { mutate } = useSWRConfig();
-  const onDelete = async (targetId: string, id: string) => {
-    const response = await fetch(`/api/namings/${id}/delete`, {
+  const runDelete = async (targetId: string, id: string) => {
+    await fetch(`/api/namings/${id}/delete`, {
       method: "POST",
     });
     mutate(
@@ -96,5 +88,5 @@ export const useDeleteNaming = () => {
       `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`
     );
   };
-  return { onDelete };
+  return { runCreate, runUpdate, runDelete };
 };

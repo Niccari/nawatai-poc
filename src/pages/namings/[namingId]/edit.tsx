@@ -11,7 +11,7 @@ import LoadItemError from "../../../components/loadException/loadItemError";
 import LoadingContent from "../../../components/loading";
 import { PrimaryText } from "../../../element/text";
 import { useLoginState } from "../../../modules/login/hooks";
-import { useEditNaming, useNaming } from "../../../modules/naming/hooks";
+import { useCRUDNaming, useNaming } from "../../../modules/naming/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../../modules/route/hooks";
 
 type Props = {};
@@ -26,7 +26,7 @@ const EditNamingPage: NextPage<Props> = ({}) => {
 
   const [reason, setReason] = useState<string | undefined>(undefined);
 
-  const { onEdit } = useEditNaming();
+  const { runUpdate } = useCRUDNaming();
 
   useEffect(() => {
     if (reason === undefined && naming?.reason) {
@@ -67,7 +67,7 @@ const EditNamingPage: NextPage<Props> = ({}) => {
           <Button
             mt={4}
             onClick={() => {
-              onEdit({
+              runUpdate({
                 id: naming.id,
                 reason,
               });
