@@ -2,9 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   PersonalUserBasicView,
   PersonalUserDetailView,
-} from "../../../models/personalUser";
-import imageRepository from "../../../repositories/image/firebase";
-import personalUserRepository from "../../../repositories/personalUser";
+} from "../../../../models/personalUser";
+import imageRepository from "../../../../repositories/image/firebase";
+import personalUserRepository from "../../../../repositories/personalUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, detailed } = req.query;

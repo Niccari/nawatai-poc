@@ -41,9 +41,12 @@ class PersonalUserRepository implements IPersonalUserRepository {
     docRef.create(values);
   }
 
-  update(entity: PersonalUser): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async update(entity: PersonalUser): Promise<void> {
+    const { id, evalCounts, signUpAt, ...params } = entity;
+    const docRef = firestoreClient.doc(`PersonalUser/${id}`);
+    docRef.set(params, { merge: true });
   }
+
   anonymize(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

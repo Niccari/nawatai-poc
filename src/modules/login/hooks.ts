@@ -7,7 +7,10 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { PersonalUser } from "../../models/personalUser";
+import {
+  PersonalUser,
+  PersonalUserDetailView,
+} from "../../models/personalUser";
 import { authClient } from "../../services/firebaseOnClient";
 
 const fetcher = async (url: string): Promise<PersonalUser> => {
@@ -22,8 +25,8 @@ export const useLoginState = () => {
   const [firebaseUser, setFirebaseUser] = useState<User | null | undefined>(
     undefined
   );
-  const { data, isValidating } = useSWR<PersonalUser, Error>(
-    firebaseUser ? `/api/users/${firebaseUser.uid}` : null,
+  const { data, isValidating } = useSWR<PersonalUserDetailView, Error>(
+    firebaseUser ? `/api/users/${firebaseUser.uid}?detailed=true` : null,
     fetcher
   );
   const login = async () => {

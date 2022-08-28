@@ -1,5 +1,8 @@
 import useSWR from "swr";
-import { PersonalUserBasicView, PersonalUserDetailView } from "../../models/personalUser";
+import {
+  PersonalUserBasicView,
+  PersonalUserDetailView,
+} from "../../models/personalUser";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 

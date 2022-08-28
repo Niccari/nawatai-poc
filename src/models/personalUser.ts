@@ -21,3 +21,13 @@ export type PersonalUserBasicView = {
   userId: string;
   imageUrl?: string;
 };
+
+export type PersonalUserDetailView = {
+  id: string;
+  name: string;
+  userId: string;
+  imageUrl?: string;
+  profile?: string;
+  url?: string;
+  twitterUserId?: string;
+};
