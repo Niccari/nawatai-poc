@@ -12,6 +12,7 @@ export interface Naming extends NamingWillSubmit {
   createdAt: Date;
   evalCounts: EvalCounts;
   totalEvalCounts: number;
+  isDeleted: boolean;
 }
 
 export type NamingWillEdit = {

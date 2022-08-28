@@ -12,6 +12,7 @@ export type ImageMetadata = {
 
 export interface IImageRepository {
   resolveUrl(id: string): Promise<string>;
+  delete(id: string): Promise<void>;
   getUploadWriteStream(): Promise<ImageUploading>;
   setMetaData(id: string, metadata: ImageMetadata): Promise<void>;
 }

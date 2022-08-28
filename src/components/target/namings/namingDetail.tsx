@@ -1,4 +1,11 @@
-import { Flex, Box, Divider, Stack } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Divider,
+  Stack,
+  useDisclosure,
+  Center,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
 import EvalButton from "../../../element/evalButton";
@@ -7,12 +14,14 @@ import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
 import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
+import { useDeleteNaming } from "../../../modules/naming/hooks";
 import {
   useCreateNamingEval,
   useEditNamingEval,
 } from "../../../modules/namingEval/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
+import NamingDeletionModal from "./namingDeletionModal";
 
 type Props = {
   naming: Naming;
@@ -27,12 +36,20 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   const { onCreate } = useCreateNamingEval();
   const { onEdit } = useEditNamingEval();
+  const { onDelete } = useDeleteNaming();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isOwner = user?.id === authorId;
   const handleEdit = () => {
     router.push(`/namings/${id}/edit`);
   };
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    onOpen();
+  };
+
+  const requestDelete = async () => {
+    await onDelete(targetId, id);
+  };
 
   const onEval = async (kind: NamingEvalKind) => {
     const namingEval = namingEvals.find((e) => e.kind === kind);
@@ -61,8 +78,25 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
     );
   };
 
+  if (naming.isDeleted) {
+    return (
+      <Box>
+        <Center h="136px">
+          <PrimaryText>この名付けは削除されました</PrimaryText>
+        </Center>
+        <Divider />
+      </Box>
+    );
+  }
   return (
     <Box>
+      <NamingDeletionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        requestDelete={() => {
+          requestDelete();
+        }}
+      />
       <Flex pb={2}>
         <Stack minW="200px" flexGrow={1} justifyContent="space-between">
           <Flex>

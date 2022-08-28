@@ -51,6 +51,7 @@ class NamingRepository implements INamingRepository {
     const orderKey = this.genreToField(genre);
     const query = firestoreClient
       .collection(this.collectionName)
+      .where("isDeleted", "==", false)
       .orderBy(orderKey, "desc")
       .offset(offset)
       .limit(count);
@@ -83,6 +84,7 @@ class NamingRepository implements INamingRepository {
       evalCounts: evalCountsInit,
       totalEvalCounts: 0,
       createdAt: new Date(),
+      isDeleted: false,
     };
     const docRef = await collectionRef.add(values);
     return {
@@ -105,8 +107,16 @@ class NamingRepository implements INamingRepository {
     return newNaming;
   }
 
-  public delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async delete(id: string): Promise<void> {
+    const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
+    docRef.set(
+      {
+        name: "",
+        reason: "",
+        isDeleted: true,
+      },
+      { merge: true }
+    );
   }
 }
 

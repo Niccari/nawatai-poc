@@ -45,7 +45,7 @@ export const useCreateNaming = () => {
       body: JSON.stringify(naming),
     });
     const newNaming: Naming = await response.json();
-    const cacheKey = `/api/namings/${targetId}/?genre=${NamingTargetListGenre.LATEST}&page=1`;
+    const cacheKey = `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`;
     mutate(
       cacheKey,
       async () => {
@@ -81,4 +81,20 @@ export const useEditNaming = () => {
     );
   };
   return { onEdit };
+};
+
+export const useDeleteNaming = () => {
+  const { mutate } = useSWRConfig();
+  const onDelete = async (targetId: string, id: string) => {
+    const response = await fetch(`/api/namings/${id}/delete`, {
+      method: "POST",
+    });
+    mutate(
+      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.HOT}&page=1`
+    );
+    mutate(
+      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`
+    );
+  };
+  return { onDelete };
 };

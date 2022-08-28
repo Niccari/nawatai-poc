@@ -19,6 +19,7 @@ export interface NamingTarget extends NamingTargetWillSubmit {
   evalCounts: EvalCounts;
   totalEvalCounts: number;
   id: string;
+  isDeleted: boolean;
 }
 
 export type NamingTargetForView = {

@@ -9,6 +9,12 @@ class ImageRepository implements IImageRepository {
     return Promise.resolve(url);
   }
 
+  public async delete(id: string): Promise<void> {
+    const bucket = storageClient.bucket();
+    const file = bucket.file(`images/${id}`);
+    await file.delete();
+  }
+
   public async getUploadWriteStream(): Promise<ImageUploading> {
     const bucket = storageClient.bucket();
     const id = Math.random().toString(32).slice(2);
