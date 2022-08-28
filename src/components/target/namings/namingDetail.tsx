@@ -22,6 +22,7 @@ import {
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
 import DeletionModal from "../deletionModal";
+import BasicUser from "../../basicUser";
 
 type Props = {
   naming: Naming;
@@ -135,14 +136,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
               onEval={onEval}
             />
           </PrimaryText>
-          <Flex alignItems="center">
-            <NextImageAvatar
-              width="40px"
-              height="40px"
-              src={user?.imageUrl}
-            ></NextImageAvatar>
-            <PrimaryText ml={2}>{user?.name}</PrimaryText>
-          </Flex>
+          <BasicUser user={user} />
         </Stack>
       </Flex>
       <Divider />

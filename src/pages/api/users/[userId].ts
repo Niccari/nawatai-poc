@@ -1,26 +1,39 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PersonalUserBasicView } from "../../../models/personalUser";
+import {
+  PersonalUserBasicView,
+  PersonalUserDetailView,
+} from "../../../models/personalUser";
 import imageRepository from "../../../repositories/image/firebase";
 import personalUserRepository from "../../../repositories/personalUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { userId } = req.query;
+  const { userId, detailed } = req.query;
   if (typeof userId !== "string") {
     res.status(400).send(undefined);
     return;
   }
   try {
-    const { id, name, iconImageId } = await personalUserRepository.get(userId);
-    const imageUrl = iconImageId
-      ? await imageRepository.resolveUrl(iconImageId)
+    const isDetailed = detailed === "true";
+    const personalUser = await personalUserRepository.get(userId);
+    const imageUrl = personalUser.iconImageId
+      ? await imageRepository.resolveUrl(personalUser.iconImageId)
       : undefined;
-    const personalUserBasicView: PersonalUserBasicView = {
-      id,
-      name,
-      userId,
-      imageUrl,
-    };
-    res.status(200).json(personalUserBasicView);
+    if (isDetailed) {
+      const { evalCounts, signUpAt, ...params } = personalUser;
+      res.status(200).json({
+        ...params,
+        imageUrl,
+      });
+      return;
+    } else {
+      const { id, name, userId } = personalUser;
+      res.status(200).json({
+        id,
+        name,
+        userId,
+        imageUrl,
+      });
+    }
   } catch (e) {
     res.status(500).send(undefined);
   }

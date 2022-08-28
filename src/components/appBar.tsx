@@ -31,6 +31,13 @@ const AppBar = ({}: Props): JSX.Element => {
     router.push("/targets/new");
   };
 
+  const handleEditUser = () => {
+    if (!user?.id) {
+      return;
+    }
+    router.push(`/users/${user.id}`);
+  };
+
   return (
     <>
       <HStack p="2" justifyContent="space-between">
@@ -68,8 +75,11 @@ const AppBar = ({}: Props): JSX.Element => {
                     height="40px"
                   />
                 </MenuButton>
-                <MenuList onClick={logout}>
-                  <MenuItem>ログアウト</MenuItem>
+                <MenuList>
+                  <MenuItem onClick={handleEditUser}>
+                    プロフィールを編集する
+                  </MenuItem>
+                  <MenuItem onClick={logout}>ログアウト</MenuItem>
                 </MenuList>
               </Menu>
               <Button colorScheme="orange" size="sm" onClick={createNewTarget}>

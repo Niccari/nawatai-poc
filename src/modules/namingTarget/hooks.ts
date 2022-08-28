@@ -88,7 +88,7 @@ export const useDeleteNamingTarget = () => {
     mutate(
       cacheKey,
       async () => {
-        const response = await fetch(cacheKey); 
+        const response = await fetch(cacheKey);
         const result: NamingTargetForView = await response.json();
         return result;
       },

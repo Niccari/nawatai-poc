@@ -14,6 +14,7 @@ import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { useDeleteNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
+import BasicUser from "../basicUser";
 import DeletionModal from "./deletionModal";
 import TargetOwnerMenu from "./targetOwnerMenu";
 
@@ -96,14 +97,7 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
             <PrimaryText>
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </PrimaryText>
-            <Flex alignItems="center">
-              <NextImageAvatar
-                width="40px"
-                height="40px"
-                src={user?.imageUrl}
-              ></NextImageAvatar>
-              <PrimaryText ml={2}>{user?.name}</PrimaryText>
-            </Flex>
+            <BasicUser user={user} />
           </Stack>
         </Stack>
       </Flex>

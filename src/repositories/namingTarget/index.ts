@@ -107,7 +107,7 @@ class NamingTargetRepository implements INamingTargetRepository {
         title: "",
         comment: "",
         imageId: null,
-        isDeleted: true
+        isDeleted: true,
       },
       { merge: true }
     );

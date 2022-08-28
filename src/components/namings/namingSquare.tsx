@@ -5,6 +5,7 @@ import { Naming } from "../../models/naming";
 import { useNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
+import BasicUser from "../basicUser";
 
 type Props = {
   naming: Naming;
@@ -65,19 +66,7 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
           </Box>
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">
-          <Flex alignItems="center" w="100%">
-            <NextImageAvatar
-              src={user?.imageUrl}
-              width="40px"
-              height="40px"
-              onClick={() =>
-                user ? router.push(`/users/${user?.id}`) : undefined
-              }
-            ></NextImageAvatar>
-            <Text ml={2} textColor="white">
-              {user?.name}
-            </Text>
-          </Flex>
+          <BasicUser user={user} noLink/>
         </Box>
       </Stack>
     </Box>
