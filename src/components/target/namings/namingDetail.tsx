@@ -23,6 +23,7 @@ import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
 import DeletionModal from "../deletionModal";
 import BasicUser from "../../basicUser";
+import { useLoginState } from "../../../modules/login/hooks";
 
 type Props = {
   naming: Naming;
@@ -34,13 +35,14 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { precise, fun, question, missmatch } = evalCounts;
 
   const router = useRouter();
+  const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
   const { onCreate } = useCreateNamingEval();
   const { onEdit } = useEditNamingEval();
   const { runDelete } = useCRUDNaming();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isOwner = user?.id === authorId;
+  const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
     router.push(`/namings/${id}/edit`);
   };

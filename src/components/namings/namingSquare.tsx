@@ -66,7 +66,7 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
           </Box>
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">
-          <BasicUser user={user} noLink/>
+          <BasicUser user={user} noLink />
         </Box>
       </Stack>
     </Box>

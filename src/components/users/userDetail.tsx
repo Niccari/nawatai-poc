@@ -1,12 +1,5 @@
 import { LinkIcon } from "@chakra-ui/icons";
-import {
-  Flex,
-  Box,
-  Divider,
-  Stack,
-  Link,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, Box, Divider, Stack, Link, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
@@ -31,7 +24,7 @@ const UserDetail = ({ user }: Props): JSX.Element => {
     <Box>
       <Flex pb={2}>
         <Box width="80px" height="80px">
-          <NextImageAvatar src={imageUrl ?? ""} width="80px" height="80px"/>
+          <NextImageAvatar src={imageUrl ?? ""} width="80px" height="80px" />
         </Box>
         <Stack minW="200px" flexGrow={1} ml={4} justifyContent="space-between">
           <Stack>

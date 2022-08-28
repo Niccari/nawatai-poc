@@ -9,7 +9,7 @@ type Props = {
   noLink?: boolean;
 };
 
-const BasicUser = ({user, noLink}: Props): JSX.Element => {
+const BasicUser = ({ user, noLink }: Props): JSX.Element => {
   const router = useRouter();
   const handleEditProfile = () => {
     if (noLink === true || !user?.id) {
@@ -17,15 +17,21 @@ const BasicUser = ({user, noLink}: Props): JSX.Element => {
     }
     router.push(`/users/${user.id}`);
   };
-  return <Flex alignItems="center" onClick={handleEditProfile}>
-    <NextImageAvatar
-      width="40px"
-      height="40px"
-      src={user?.imageUrl}
-    ></NextImageAvatar>
-    {!noLink && <PrimaryText ml={2}>{user?.name}</PrimaryText>}
-    {noLink && <Text color="white" ml={2}>{user?.name}</Text>}
-  </Flex>
-}
+  return (
+    <Flex alignItems="center" onClick={handleEditProfile}>
+      <NextImageAvatar
+        width="40px"
+        height="40px"
+        src={user?.imageUrl}
+      ></NextImageAvatar>
+      {!noLink && <PrimaryText ml={2}>{user?.name}</PrimaryText>}
+      {noLink && (
+        <Text color="white" ml={2}>
+          {user?.name}
+        </Text>
+      )}
+    </Flex>
+  );
+};
 
 export default BasicUser;

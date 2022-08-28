@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
+import { useLoginState } from "../../modules/login/hooks";
 import { useDeleteNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
@@ -28,11 +29,12 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
   const { precise, fun, question, missmatch } = evalCounts;
 
   const router = useRouter();
+  const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
   const { onDelete } = useDeleteNamingTarget();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isOwner = user?.id === authorId;
+  const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
     router.push(`/targets/${target.id}/edit`);
   };

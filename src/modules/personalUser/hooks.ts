@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { PersonalUserBasicView } from "../../models/personalUser";
+import { PersonalUserBasicView, PersonalUserDetailView } from "../../models/personalUser";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
@@ -12,7 +12,7 @@ export const usePersonalUser = (userId?: string) => {
 };
 
 export const useDetailedPersonalUser = (userId?: string) => {
-  const { data, error } = useSWR<PersonalUserBasicView, Error>(
+  const { data, error } = useSWR<PersonalUserDetailView, Error>(
     userId ? `/api/users/${userId}?detailed=true` : undefined,
     fetcher
   );
