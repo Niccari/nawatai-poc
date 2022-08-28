@@ -29,6 +29,7 @@ export type NamingTargetForView = {
   comment: string;
   imageUrl?: string;
   evalCounts: EvalCounts;
+  isDeleted: boolean;
 };
 
 export const NamingTargetListGenre = {

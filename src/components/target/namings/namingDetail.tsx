@@ -21,7 +21,7 @@ import {
 } from "../../../modules/namingEval/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
-import NamingDeletionModal from "./namingDeletionModal";
+import DeletionModal from "../deletionModal";
 
 type Props = {
   naming: Naming;
@@ -90,7 +90,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   }
   return (
     <Box>
-      <NamingDeletionModal
+      <DeletionModal
         isOpen={isOpen}
         onClose={onClose}
         requestDelete={() => {

@@ -1,10 +1,20 @@
-import { Flex, Box, Divider, Stack, Link } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Divider,
+  Stack,
+  Link,
+  useDisclosure,
+  Center,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
+import { useDeleteNamingTarget } from "../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
+import DeletionModal from "./deletionModal";
 import TargetOwnerMenu from "./targetOwnerMenu";
 
 type Props = {
@@ -12,19 +22,41 @@ type Props = {
 };
 
 const TargetDetail = ({ target }: Props): JSX.Element => {
-  const { authorId, title, comment, imageUrl, evalCounts } = target;
+  const { id, authorId, title, comment, imageUrl, evalCounts, isDeleted } =
+    target;
   const { precise, fun, question, missmatch } = evalCounts;
 
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
+  const { onDelete } = useDeleteNamingTarget();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isOwner = user?.id === authorId;
   const handleEdit = () => {
     router.push(`/targets/${target.id}/edit`);
   };
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    onOpen();
+  };
+  if (isDeleted) {
+    return (
+      <Box>
+        <Center h="136px">
+          <PrimaryText>この名付け対象は削除されました</PrimaryText>
+        </Center>
+        <Divider />
+      </Box>
+    );
+  }
   return (
     <Box>
+      <DeletionModal
+        isOpen={isOpen}
+        onClose={onClose}
+        requestDelete={() => {
+          onDelete(id);
+        }}
+      />
       <Flex pb={2}>
         <Box flexShrink={0} background="#333" w="200px" h="200px">
           <Link href={imageUrl}>

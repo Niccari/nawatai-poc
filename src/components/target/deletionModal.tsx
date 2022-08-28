@@ -7,9 +7,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { PrimaryText } from "../../../element/text";
+import { PrimaryText } from "../../element/text";
 
 type Props = {
   isOpen: boolean;
@@ -17,7 +16,7 @@ type Props = {
   requestDelete: () => void;
 };
 
-const NamingDeletionModal = ({
+const DeletionModal = ({
   isOpen,
   onClose,
   requestDelete,
@@ -51,4 +50,4 @@ const NamingDeletionModal = ({
     </>
   );
 };
-export default NamingDeletionModal;
+export default DeletionModal;

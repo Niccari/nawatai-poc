@@ -75,3 +75,25 @@ export const useEditNamingTarget = () => {
   };
   return { onEdit };
 };
+
+export const useDeleteNamingTarget = () => {
+  const { mutate } = useSWRConfig();
+
+  const onDelete = async (id: string) => {
+    await fetch(`/api/targets/${id}/delete`, {
+      method: "POST",
+    });
+    const cacheKey = `/api/targets/${id}`;
+
+    mutate(
+      cacheKey,
+      async () => {
+        const response = await fetch(cacheKey); 
+        const result: NamingTargetForView = await response.json();
+        return result;
+      },
+      { revalidate: false }
+    );
+  };
+  return { onDelete };
+};

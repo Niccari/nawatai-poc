@@ -32,6 +32,7 @@ class NamingTargetRepository implements INamingTargetRepository {
       createdAt: document["createdAt"],
       evalCounts: document["evalCounts"],
       totalEvalCounts: document["totalEvalCounts"],
+      isDeleted: document["isDeleted"],
     };
   }
 
@@ -61,6 +62,7 @@ class NamingTargetRepository implements INamingTargetRepository {
     })();
     const query = firestoreClient
       .collection(this.collectionName)
+      .where("isDeleted", "==", false)
       .orderBy(orderKey, "desc")
       .offset(offset)
       .limit(count);
@@ -75,6 +77,7 @@ class NamingTargetRepository implements INamingTargetRepository {
       evalCounts: evalCountsInit,
       totalEvalCounts: 0,
       createdAt: new Date(),
+      isDeleted: false,
     };
     const docRef = await collectionRef.add(values);
     return {
@@ -97,8 +100,17 @@ class NamingTargetRepository implements INamingTargetRepository {
     return newTarget;
   }
 
-  public delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async delete(id: string): Promise<void> {
+    const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
+    docRef.set(
+      {
+        title: "",
+        comment: "",
+        imageId: null,
+        isDeleted: true
+      },
+      { merge: true }
+    );
   }
 }
 
