@@ -6,14 +6,23 @@ export const NamingEvalKind = {
 } as const;
 export type NamingEvalKind = typeof NamingEvalKind[keyof typeof NamingEvalKind];
 
-export type NamingEvalWithoutId = {
+export type NamingEvalWillSubmit = {
+  targetId: string;
   namingId: string;
   authorId: string;
   kind: NamingEvalKind;
 };
 
-export interface NamingEval extends NamingEvalWithoutId {
+export interface NamingEval extends NamingEvalWillSubmit {
   id: string;
+  isCancelled: boolean;
+}
+
+export interface NamingEvalWillEdit {
+  id: string;
+  targetId: string;
+  namingId: string;
+  kind: NamingEvalKind;
 }
 
 export type EvalCounts = { [key in NamingEvalKind]: number };

@@ -6,18 +6,23 @@ import NamingDetailList from "./namingDetailList";
 
 type Props = {
   targetId: string | undefined;
+  authorId: string;
   page: number;
   genre: NamingTargetListGenre;
 };
 
 const TabbedNamingDetailList = ({
   targetId,
+  authorId,
   page,
   genre,
 }: Props): JSX.Element => {
   const router = useRouter();
   const index = genre === NamingTargetListGenre.HOT ? 0 : 1;
   const { namings, namingsError } = useTargetNamings(targetId, genre, page);
+  if (!targetId) {
+    return <></>;
+  }
   return (
     <Box>
       <Tabs
@@ -45,6 +50,7 @@ const TabbedNamingDetailList = ({
             namings={namings}
             namingsError={namingsError}
             targetId={targetId}
+            authorId={authorId}
             page={page}
             genre={genre}
           />

@@ -24,7 +24,9 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
   const [comment, setComment] = useState<string | undefined>(undefined);
 
   const { onEdit } = useEditNamingTarget();
-  const { target, targetError } = useNamingTarget(targetId as string | undefined);
+  const { target, targetError } = useNamingTarget(
+    targetId as string | undefined
+  );
 
   useEffect(() => {
     if (comment === undefined && target) {

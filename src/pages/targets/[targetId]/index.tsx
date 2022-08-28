@@ -51,6 +51,7 @@ const TargetPage: NextPage<Props> = ({}) => {
           <Box mt={4}>
             <TabbedNamingDetailList
               targetId={targetId}
+              authorId={target.authorId}
               genre={genre}
               page={page}
             />

@@ -2,6 +2,7 @@ import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import Constants from "../../../constants";
 import { Naming } from "../../../models/naming";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
+import { useNamingEvalsByUserOfTarget } from "../../../modules/namingEval/hooks";
 import LoadError from "../../loadException/loadError";
 import NoContent from "../../loadException/noContent";
 import LoadingContent from "../../loading";
@@ -11,7 +12,8 @@ import NamingDetail from "./namingDetail";
 type Props = {
   namings: Naming[] | undefined;
   namingsError: Error | undefined;
-  targetId: string | undefined;
+  targetId: string;
+  authorId: string;
   page: number;
   genre: NamingTargetListGenre;
 };
@@ -20,9 +22,14 @@ const NamingDetailList = ({
   namings,
   namingsError,
   targetId,
+  authorId,
   page,
   genre,
 }: Props): JSX.Element => {
+  const { namingEvals, namingEvalsError } = useNamingEvalsByUserOfTarget({
+    targetId,
+    authorId,
+  });
   if (namings === undefined) {
     return <LoadingContent />;
   } else if (namingsError) {
@@ -54,7 +61,11 @@ const NamingDetailList = ({
     <Box>
       <SimpleGrid columns={[1, null, 1, 2]} gap={4}>
         {namings.map((n) => (
-          <NamingDetail key={n.id} naming={n} />
+          <NamingDetail
+            key={n.id}
+            naming={n}
+            namingEvals={namingEvals?.filter((e) => e.namingId === n.id) ?? []}
+          />
         ))}
       </SimpleGrid>
       <Pager

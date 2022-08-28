@@ -1,27 +1,66 @@
 import { Flex, Box, Divider, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { mutate } from "swr";
+import EvalButton from "../../../element/evalButton";
 import { NextImageAvatar } from "../../../element/nextImageAvatar";
 import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
+import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
+import { NamingTargetListGenre } from "../../../models/namingTarget";
+import {
+  useCreateNamingEval,
+  useEditNamingEval,
+} from "../../../modules/namingEval/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
 
 type Props = {
   naming: Naming;
+  namingEvals: NamingEval[];
 };
 
-const NamingDetail = ({ naming }: Props): JSX.Element => {
-  const { id, name, reason, evalCounts, authorId } = naming;
+const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
+  const { id, name, reason, evalCounts, targetId, authorId } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
 
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
+  const { onCreate } = useCreateNamingEval();
+  const { onEdit } = useEditNamingEval();
 
   const isOwner = user?.id === authorId;
   const handleEdit = () => {
     router.push(`/namings/${id}/edit`);
   };
   const handleDelete = () => {};
+
+  const onEval = async (kind: NamingEvalKind) => {
+    const namingEval = namingEvals.find((e) => e.kind === kind);
+    if (!namingEval) {
+      await onCreate({
+        namingId: id,
+        targetId,
+        authorId,
+        kind,
+      });
+    } else {
+      await onEdit({
+        id: namingEval.id,
+        namingId: id,
+        targetId,
+        kind,
+      });
+    }
+    mutate(`/api/targets/${targetId}`);
+    mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`);
+    mutate(
+      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.HOT}&page=1`
+    );
+    mutate(
+      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`
+    );
+  };
+
   return (
     <Box>
       <Flex pb={2}>
@@ -45,7 +84,22 @@ const NamingDetail = ({ naming }: Props): JSX.Element => {
           </Flex>
           <PrimaryText>{reason}</PrimaryText>
           <PrimaryText>
-            👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
+            <EvalButton
+              kind={NamingEvalKind.PRECISE}
+              count={precise}
+              onEval={onEval}
+            />
+            <EvalButton kind={NamingEvalKind.FUN} count={fun} onEval={onEval} />
+            <EvalButton
+              kind={NamingEvalKind.QUESTION}
+              count={question}
+              onEval={onEval}
+            />
+            <EvalButton
+              kind={NamingEvalKind.MISSMATCH}
+              count={missmatch}
+              onEval={onEval}
+            />
           </PrimaryText>
           <Flex alignItems="center">
             <NextImageAvatar
