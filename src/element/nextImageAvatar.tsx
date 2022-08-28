@@ -45,6 +45,7 @@ export const NextImageAvatar = (props: AvatarProps) => {
             width="100%"
             height="100%"
             borderRadius="50%"
+            background={src ? "white" : "transparent"}
           />
         </Box>
       )}
