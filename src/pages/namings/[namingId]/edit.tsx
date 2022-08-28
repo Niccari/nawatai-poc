@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormHelperText,
   FormLabel,
 } from "@chakra-ui/form-control";
 import { Box, Button, Input, Stack } from "@chakra-ui/react";
@@ -59,9 +58,6 @@ const EditNamingPage: NextPage<Props> = ({}) => {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
-              <FormHelperText>
-                ※ 付けた名前は編集で変更できません
-              </FormHelperText>
             </FormControl>
           </Stack>
           <Button
