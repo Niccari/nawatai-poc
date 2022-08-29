@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NamingWillSubmit } from "../../../models/naming";
+import { NotificationKind } from "../../../models/notification";
 import namingRepository from "../../../repositories/naming";
+import notificationRepository from "../../../repositories/notification";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -15,6 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const response = await namingRepository.create(params);
+    // TODO(Niccari): use authenticated author id as toAuthorId.
+    const notification = await notificationRepository.create({
+      reactedModelId: response.id,
+      reactionKind: NotificationKind.RECEIVED_NAME,
+      fromAuthorId: params.authorId,
+      toAuthorId: params.authorId,
+    });
     res.status(200).json(response);
   } catch (e) {
     res.status(500).send(undefined);

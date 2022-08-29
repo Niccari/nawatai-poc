@@ -5,11 +5,14 @@ export const NotificationKind = {
 export type NotificationKind =
   typeof NotificationKind[keyof typeof NotificationKind];
 
-export type NotificationWithoutId = {
+export type NotificationWillSubmit = {
   reactionKind: NotificationKind;
   reactedModelId: string;
   fromAuthorId: string;
   toAuthorId: string;
+};
+
+export interface NotificationWithoutId extends NotificationWillSubmit {
   createdAt: Date;
 };
 
