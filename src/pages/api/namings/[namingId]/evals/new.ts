@@ -4,9 +4,11 @@ import {
   NamingEvalWillEdit,
   NamingEvalWillSubmit,
 } from "../../../../../models/namingEval";
+import { NotificationKind } from "../../../../../models/notification";
 import namingRepository from "../../../../../repositories/naming";
 import namingEvalRepository from "../../../../../repositories/namingEval";
 import namingTargetRepository from "../../../../../repositories/namingTarget";
+import notificationRepository from "../../../../../repositories/notification";
 import { getAuthedUserId } from "../../../authHelper";
 
 // TODO(Niccari): make evalCounts updates in background. Should use transaction
@@ -48,6 +50,18 @@ export const updateEvalCounts = async (
   });
 };
 
+const createNotification = async (ownerId: string, namingId: string) => {
+  const naming = await namingRepository.get(namingId);
+  if (ownerId !== naming.authorId) {
+    const notification = await notificationRepository.create({
+      reactedModelId: namingId,
+      reactionKind: NotificationKind.RECEIVED_EVAL,
+      fromAuthorId: ownerId,
+      toAuthorId: naming.authorId,
+    });
+  }
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
@@ -66,6 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await namingEvalRepository.create(params);
     updateEvalCounts(params, false);
+    createNotification(ownerId, params.namingId);
 
     res.status(200).json({});
   } catch (e) {

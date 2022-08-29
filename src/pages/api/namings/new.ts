@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { NamingWillSubmit } from "../../../models/naming";
 import { NotificationKind } from "../../../models/notification";
 import namingRepository from "../../../repositories/naming";
+import namingTargetRepository from "../../../repositories/namingTarget";
 import notificationRepository from "../../../repositories/notification";
 import { getAuthedUserId } from "../authHelper";
 
@@ -21,15 +22,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    const response = await namingRepository.create(params);
-    // TODO(Niccari): use authenticated author id as toAuthorId.
-    const notification = await notificationRepository.create({
-      reactedModelId: response.id,
-      reactionKind: NotificationKind.RECEIVED_NAME,
-      fromAuthorId: params.authorId,
-      toAuthorId: params.authorId,
-    });
-    res.status(200).json(response);
+    const namings = await namingRepository.create(params);
+    const target = await namingTargetRepository.get(params.targetId);
+    if (ownerId !== target.authorId) {
+      const notification = await notificationRepository.create({
+        reactedModelId: namings.id,
+        reactionKind: NotificationKind.RECEIVED_NAME,
+        fromAuthorId: ownerId,
+        toAuthorId: target.authorId,
+      });
+    }
+    res.status(200).json(namings);
   } catch (e) {
     res.status(500).send(undefined);
   }
