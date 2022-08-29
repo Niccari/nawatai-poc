@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import imageRepository from "../../../../repositories/image/firebase";
 import namingTargetRepository from "../../../../repositories/namingTarget";
+import { getAuthedUserId } from "../../authHelper";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { targetId } = req.query;
@@ -8,8 +9,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
+  const ownerId = await getAuthedUserId(req, res);
+  if (!ownerId) {
+    return;
+  }
+  const { authorId, imageId } = await namingTargetRepository.get(targetId);
+  if (ownerId !== authorId) {
+    res.status(403).send(undefined);
+    return;
+  }
   try {
-    const { imageId } = await namingTargetRepository.get(targetId);
     await namingTargetRepository.delete(targetId);
     if (imageId) {
       await imageRepository.delete(imageId);

@@ -7,6 +7,7 @@ import {
 import namingRepository from "../../../../../repositories/naming";
 import namingEvalRepository from "../../../../../repositories/namingEval";
 import namingTargetRepository from "../../../../../repositories/namingTarget";
+import { getAuthedUserId } from "../../../authHelper";
 
 // TODO(Niccari): make evalCounts updates in background. Should use transaction
 export const updateEvalCounts = async (
@@ -56,6 +57,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     params = JSON.parse(req.body);
   } catch (e) {
     res.status(400).send(undefined);
+    return;
+  }
+  const ownerId = await getAuthedUserId(req, res);
+  if (!ownerId) {
     return;
   }
   try {

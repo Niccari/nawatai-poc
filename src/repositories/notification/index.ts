@@ -2,7 +2,11 @@ import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
-import { Notification, NotificationWillSubmit, NotificationWithoutId } from "../../models/notification";
+import {
+  Notification,
+  NotificationWillSubmit,
+  NotificationWithoutId,
+} from "../../models/notification";
 import { firestoreClient } from "../../services/firebaseOnServer";
 import { INotificationRepository } from "./interface";
 

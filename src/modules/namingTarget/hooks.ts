@@ -5,6 +5,7 @@ import {
   NamingTargetWillEdit,
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
+import { authedPost } from "../api";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
@@ -32,10 +33,7 @@ export const useNamingTarget = (targetId: string | undefined) => {
 export const useCreateNamingTarget = () => {
   const { mutate } = useSWRConfig();
   const onPost = async (target: NamingTargetWillSubmit) => {
-    const response = await fetch("/api/targets/new", {
-      method: "POST",
-      body: JSON.stringify(target),
-    });
+    const response = await authedPost("/api/targets/new", target);
     const newTarget: NamingTargetForView = await response.json();
     const cacheKey = `/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`;
 
@@ -59,11 +57,7 @@ export const useCreateNamingTarget = () => {
 export const useEditNamingTarget = () => {
   const { mutate } = useSWRConfig();
   const onEdit = async (target: NamingTargetWillEdit) => {
-    const response = await fetch(`/api/targets/${target.id}/edit`, {
-      method: "POST",
-      body: JSON.stringify(target),
-    });
-
+    const response = await authedPost(`/api/targets/${target.id}/edit`, target);
     mutate(
       `/api/targets/${target.id}`,
       async () => {
@@ -80,9 +74,7 @@ export const useDeleteNamingTarget = () => {
   const { mutate } = useSWRConfig();
 
   const onDelete = async (id: string) => {
-    await fetch(`/api/targets/${id}/delete`, {
-      method: "POST",
-    });
+    await authedPost(`/api/targets/${id}/delete`);
     const cacheKey = `/api/targets/${id}`;
 
     mutate(

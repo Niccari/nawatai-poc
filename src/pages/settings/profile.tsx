@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUserDetailView } from "../../models/personalUser";
+import { authedPost } from "../../modules/api";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import {
@@ -76,19 +77,10 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
       const { imageId } = await uploadImage(fileState.file);
       return imageId;
     })();
-    console.log(
-      JSON.stringify({
+    mutate(`/api/users/${uid}`, async () => {
+      await authedPost(`/api/users/${uid}/edit`, {
         ...personalUser,
         iconImageId,
-      })
-    );
-    mutate(`/api/users/${uid}`, async () => {
-      await fetch(`/api/users/${uid}/edit`, {
-        method: "POST",
-        body: JSON.stringify({
-          ...personalUser,
-          iconImageId,
-        }),
       });
       router.push(`/users/${uid}`);
     });

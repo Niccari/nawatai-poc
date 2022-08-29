@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUserWillSubmit } from "../../models/personalUser";
+import { authedPost } from "../../modules/api";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import { useDashboardRedirectIfUserNotRegistered } from "../../modules/route/hooks";
@@ -91,10 +92,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
       profile,
     };
     mutate(`/api/users/${uid}`, async () => {
-      await fetch("/api/users/new", {
-        method: "POST",
-        body: JSON.stringify(personalUser),
-      });
+      await authedPost("/api/users/new", personalUser);
     });
   };
 

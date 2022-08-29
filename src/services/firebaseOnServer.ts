@@ -1,6 +1,7 @@
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
+import { getAuth } from "firebase-admin/auth";
 
 const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
@@ -17,6 +18,7 @@ if (!getApps()?.length) {
   });
 }
 
+const firebaseAuthClient = getAuth();
 const firestoreClient = getFirestore();
 const storageClient = getStorage();
-export { firestoreClient, storageClient };
+export { firebaseAuthClient, firestoreClient, storageClient };

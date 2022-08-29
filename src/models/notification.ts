@@ -14,7 +14,7 @@ export type NotificationWillSubmit = {
 
 export interface NotificationWithoutId extends NotificationWillSubmit {
   createdAt: Date;
-};
+}
 
 export interface Notification extends NotificationWithoutId {
   id: string;

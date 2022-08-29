@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { formidable, File as FormidableFile } from "formidable";
 import imageRepository from "../../../repositories/image/firebase";
 import { Writable } from "stream";
+import { getAuthedUserId } from "../authHelper";
 
 export const config = {
   api: {
@@ -43,6 +44,9 @@ const uploadImageByStream = async (
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.headers["content-type"]?.includes("multipart/form-data")) {
     res.status(400).send(undefined);
+    return;
+  }
+  if (!(await getAuthedUserId(req, res))) {
     return;
   }
   const { id, writable } = await imageRepository.getUploadWriteStream();

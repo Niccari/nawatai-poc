@@ -5,6 +5,7 @@ import {
 } from "../../../../models/namingTarget";
 import imageRepository from "../../../../repositories/image/firebase";
 import namingTargetRepository from "../../../../repositories/namingTarget";
+import { getAuthedUserId } from "../../authHelper";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -17,6 +18,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
+  const ownerId = await getAuthedUserId(req, res);
+  if (!ownerId) {
+    return;
+  }
+  const { authorId } = await namingTargetRepository.get(params.id);
+  if (ownerId !== authorId) {
+    res.status(403).send(undefined);
+    return;
+  }
   try {
     const target = await namingTargetRepository.update(params);
     const targetForView: NamingTargetForView = {
@@ -27,6 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
     res.status(200).json(targetForView);
   } catch (e) {
+    console.log(e);
     res.status(500).send(undefined);
   }
 };

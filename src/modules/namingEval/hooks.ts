@@ -4,6 +4,7 @@ import {
   NamingEvalWillEdit,
   NamingEvalWillSubmit,
 } from "../../models/namingEval";
+import { authedPost } from "../api";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
@@ -24,10 +25,7 @@ export const useCreateNamingEval = () => {
   const { mutate } = useSWRConfig();
   const onCreate = async (namingEval: NamingEvalWillSubmit) => {
     const { namingId } = namingEval;
-    await fetch(`/api/namings/${namingId}/evals/new`, {
-      method: "POST",
-      body: JSON.stringify(namingEval),
-    });
+    await authedPost(`/api/namings/${namingId}/evals/new`, namingEval);
     mutate(`/api/namings/${namingId}`, { revalidate: true });
   };
   return { onCreate };
@@ -37,9 +35,8 @@ export const useEditNamingEval = () => {
   const { mutate } = useSWRConfig();
   const onEdit = async (namingEval: NamingEvalWillEdit) => {
     const { namingId, id } = namingEval;
-    await fetch(`/api/namings/${namingId}/evals/${id}/edit`, {
-      method: "POST",
-      body: JSON.stringify(namingEval),
+    await authedPost(`/api/namings/${namingId}/evals/${id}/edit`, {
+      ...namingEval,
     });
     mutate(`/api/namings/${namingId}`, { revalidate: true });
   };

@@ -1,6 +1,7 @@
 import useSWR, { mutate, useSWRConfig } from "swr";
 import { Naming, NamingWillEdit, NamingWillSubmit } from "../../models/naming";
 import { NamingTargetListGenre } from "../../models/namingTarget";
+import { authedPost } from "../api";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
@@ -40,10 +41,7 @@ export const useTargetNamings = (
 export const useCRUDNaming = () => {
   const runCreate = async (naming: NamingWillSubmit) => {
     const { targetId } = naming;
-    const response = await fetch("/api/namings/new", {
-      method: "POST",
-      body: JSON.stringify(naming),
-    });
+    const response = await authedPost("/api/namings/new", naming);
     const newNaming: Naming = await response.json();
     const cacheKey = `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`;
     mutate(
@@ -62,11 +60,7 @@ export const useCRUDNaming = () => {
   };
 
   const runUpdate = async (naming: NamingWillEdit) => {
-    const response = await fetch(`/api/namings/${naming.id}/edit`, {
-      method: "POST",
-      body: JSON.stringify(naming),
-    });
-
+    const response = await authedPost(`/api/namings/${naming.id}/edit`, naming);
     mutate(
       `/api/namings/${naming.id}`,
       async () => {
@@ -78,9 +72,7 @@ export const useCRUDNaming = () => {
   };
 
   const runDelete = async (targetId: string, id: string) => {
-    await fetch(`/api/namings/${id}/delete`, {
-      method: "POST",
-    });
+    await authedPost(`/api/namings/${id}/delete`);
     mutate(
       `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.HOT}&page=1`
     );

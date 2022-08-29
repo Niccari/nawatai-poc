@@ -1,4 +1,7 @@
-import { Notification, NotificationWillSubmit } from "../../models/notification";
+import {
+  Notification,
+  NotificationWillSubmit,
+} from "../../models/notification";
 
 export interface INotificationRepository {
   list(authorId: string): Promise<Notification[]>;

@@ -1,10 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NamingTargetWillSubmit } from "../../../models/namingTarget";
 import namingTargetRepository from "../../../repositories/namingTarget";
+import { getAuthedUserId } from "../authHelper";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
+  }
+  if (!(await getAuthedUserId(req, res))) {
+    return;
   }
   let params: NamingTargetWillSubmit;
   try {

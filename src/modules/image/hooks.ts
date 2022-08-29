@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { authedFormPost, authedPost } from "../api";
 
 export type FileState = {
   file?: File;
@@ -40,10 +41,7 @@ export const useImageUploader = () => {
   const uploadImage = async (file: File): Promise<{ imageId: string }> => {
     const formData = new FormData();
     formData.append("imageFile", file);
-    const response = await fetch("/api/images/new", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await authedFormPost("/api/images/new", formData);
     if (!response.ok) {
       throw new Error(`${response.status} - ${response.statusText}`);
     }
