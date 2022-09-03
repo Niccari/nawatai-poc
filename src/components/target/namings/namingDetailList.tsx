@@ -2,6 +2,7 @@ import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import Constants from "../../../constants";
 import { Naming } from "../../../models/naming";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
+import { useLoginState } from "../../../modules/login/hooks";
 import { useNamingEvalsByUserOfTarget } from "../../../modules/namingEval/hooks";
 import LoadError from "../../loadException/loadError";
 import NoContent from "../../loadException/noContent";
@@ -26,9 +27,10 @@ const NamingDetailList = ({
   page,
   genre,
 }: Props): JSX.Element => {
+  const { personalUser } = useLoginState();
   const { namingEvals, namingEvalsError } = useNamingEvalsByUserOfTarget({
     targetId,
-    authorId,
+    authorId: personalUser?.id,
   });
   if (namings === undefined) {
     return <LoadingContent />;

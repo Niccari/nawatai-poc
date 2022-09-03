@@ -9,12 +9,12 @@ import { authedPost } from "../api";
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
 export const useNamingEvalsByUserOfTarget = (params: {
-  authorId: string;
+  authorId: string | undefined;
   targetId: string;
 }) => {
   const { authorId, targetId } = params;
   const { data, error } = useSWR<NamingEval[], Error>(
-    `/api/targets/${targetId}/evals?authorId=${authorId}`,
+    authorId ? `/api/targets/${targetId}/evals?authorId=${authorId}` : null,
     fetcher
   );
 

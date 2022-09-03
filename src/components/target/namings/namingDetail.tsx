@@ -55,12 +55,16 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   };
 
   const onEval = async (kind: NamingEvalKind) => {
+    const loginUserId = loginUser?.id;
+    if (!loginUserId) {
+      return;
+    }
     const namingEval = namingEvals.find((e) => e.kind === kind);
     if (!namingEval) {
       await onCreate({
         namingId: id,
         targetId,
-        authorId,
+        authorId: loginUserId,
         kind,
       });
     } else {
