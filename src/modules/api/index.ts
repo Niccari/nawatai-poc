@@ -4,6 +4,16 @@ export const getBearer = async (): Promise<string | undefined> => {
   return authClient.currentUser?.getIdToken();
 };
 
+export const authedGet = async (endpoint: string) => {
+  const bearer = await authClient.currentUser?.getIdToken();
+  return fetch(endpoint, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${bearer}`,
+    },
+  });
+};
+
 export const authedPost = async (
   endpoint: string,
   body: Record<string, unknown> | undefined = undefined

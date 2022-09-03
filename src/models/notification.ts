@@ -7,7 +7,8 @@ export type NotificationKind =
 
 export type NotificationWillSubmit = {
   reactionKind: NotificationKind;
-  reactedModelId: string;
+  targetId: string;
+  namingId?: string;
   fromAuthorId: string;
   toAuthorId: string;
 };
@@ -18,4 +19,15 @@ export interface NotificationWithoutId extends NotificationWillSubmit {
 
 export interface Notification extends NotificationWithoutId {
   id: string;
+}
+
+export interface NotificationForView {
+  id: string;
+  createdAt: Date;
+  reactionKind: NotificationKind;
+  targetId: string;
+  namingId?: string;
+  fromAuthorId: string;
+  message: string;
+  authorIconUrl?: string;
 }

@@ -1,23 +1,19 @@
 import { useLoginState } from "../modules/login/hooks";
 import ServiceLogo from "../assets/serviceLogo.svg";
 import {
-  Avatar,
-  AvatarBadge,
   Button,
   Divider,
   HStack,
-  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { BellIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import { useUserNotification } from "../modules/notifications/hooks";
 import { useRouter } from "next/router";
 import { usePersonalUser } from "../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
+import NotificationsList from "./notificationsList";
 
 type Props = {};
 
@@ -26,7 +22,6 @@ const AppBar = ({}: Props): JSX.Element => {
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
   const { user } = usePersonalUser(firebaseUser?.uid);
-  const { hasNotification } = useUserNotification();
   const createNewTarget = () => {
     router.push("/targets/new");
   };
@@ -50,18 +45,7 @@ const AppBar = ({}: Props): JSX.Element => {
         <HStack alignItems="center" spacing="2">
           {isLogined && (
             <>
-              <IconButton
-                type="button"
-                variant="unstyled"
-                aria-label="Notification"
-                onClick={() => {}}
-              >
-                <Avatar h="100%" w="100%" icon={<BellIcon />}>
-                  {hasNotification && (
-                    <AvatarBadge boxSize="1.25em" bg="red.500"></AvatarBadge>
-                  )}
-                </Avatar>
-              </IconButton>
+              <NotificationsList />
               <Menu>
                 <MenuButton
                   w="40px"

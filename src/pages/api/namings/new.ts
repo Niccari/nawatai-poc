@@ -26,7 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const target = await namingTargetRepository.get(params.targetId);
     if (ownerId !== target.authorId) {
       const notification = await notificationRepository.create({
-        reactedModelId: namings.id,
+        targetId: namings.targetId,
+        namingId: namings.id,
         reactionKind: NotificationKind.RECEIVED_NAME,
         fromAuthorId: ownerId,
         toAuthorId: target.authorId,

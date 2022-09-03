@@ -1,6 +1,7 @@
 import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
+  Timestamp,
 } from "firebase-admin/firestore";
 import {
   Notification,
@@ -23,13 +24,14 @@ class NotificationRepository implements INotificationRepository {
     return {
       id: snapshot.id,
       ...document,
+      createdAt: (document["createdAt"] as Timestamp).toDate(),
     } as Notification;
   }
 
   public async list(authorId: string): Promise<Notification[]> {
     const query = firestoreClient
       .collection(this.collectionName)
-      .where("fromAuthorId", "==", authorId)
+      .where("toAuthorId", "==", authorId)
       .orderBy("createdAt", "desc")
       .limit(5);
     const querySnapshots = await query.get();

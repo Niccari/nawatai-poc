@@ -54,7 +54,8 @@ const createNotification = async (ownerId: string, namingId: string) => {
   const naming = await namingRepository.get(namingId);
   if (ownerId !== naming.authorId) {
     const notification = await notificationRepository.create({
-      reactedModelId: namingId,
+      targetId: naming.targetId,
+      namingId,
       reactionKind: NotificationKind.RECEIVED_EVAL,
       fromAuthorId: ownerId,
       toAuthorId: naming.authorId,
