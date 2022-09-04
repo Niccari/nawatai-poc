@@ -33,6 +33,10 @@ const AppBar = ({}: Props): JSX.Element => {
     router.push(`/users/${user.id}`);
   };
 
+  const handleEditAccount = () => {
+    router.push(`/settings/account`);
+  };
+
   return (
     <>
       <HStack p="2" justifyContent="space-between">
@@ -62,6 +66,9 @@ const AppBar = ({}: Props): JSX.Element => {
                 <MenuList>
                   <MenuItem onClick={handleEditUser}>
                     プロフィールを編集する
+                  </MenuItem>
+                  <MenuItem onClick={handleEditAccount}>
+                    アカウントを管理する
                   </MenuItem>
                   <MenuItem onClick={logout}>ログアウト</MenuItem>
                 </MenuList>
