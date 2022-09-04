@@ -11,10 +11,10 @@ const Sitemap = ({}: Props): JSX.Element => {
         <Link href="/info/story">
           <PrimaryText>nawataiについて</PrimaryText>
         </Link>
-        <Link href="/info/tos">
+        <Link href="https://gist.github.com/Niccari/7cd481038e76e0c7530e8ec9e99cbb85">
           <PrimaryText>利用規約</PrimaryText>
         </Link>
-        <Link href="/info/privacy">
+        <Link href="https://gist.github.com/Niccari/8daadcd07b7f0051351241fe638d8acc">
           <PrimaryText>プライバシーポリシー</PrimaryText>
         </Link>
       </Stack>
