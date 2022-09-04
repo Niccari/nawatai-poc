@@ -1,5 +1,6 @@
 import useSWR, { useSWRConfig } from "swr";
 import {
+  PersonalUser,
   PersonalUserBasicView,
   PersonalUserDetailView,
 } from "../../models/personalUser";
@@ -21,6 +22,23 @@ export const useDetailedPersonalUser = (userId?: string) => {
     fetcher
   );
   return { user: data, userError: error };
+};
+
+export const useUpsertPersonalUser = () => {
+  const { mutate } = useSWRConfig();
+  const onCreate = async (personalUser: PersonalUser) => {
+    const { id } = personalUser;
+    mutate(`/api/users/${id}`, async () => {
+      await authedPost("/api/users/new", { ...personalUser });
+    });
+  };
+
+  const onEdit = async (personalUser: PersonalUser) => {
+    const { id } = personalUser;
+    await authedPost(`/api/users/${id}/edit`, { ...personalUser });
+    mutate(`/api/users/${id}`);
+  };
+  return { onCreate, onEdit };
 };
 
 export const useAnonymisePersonalUser = () => {

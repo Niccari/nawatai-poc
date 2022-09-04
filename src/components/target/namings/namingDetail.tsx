@@ -7,18 +7,13 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { mutate } from "swr";
 import EvalButton from "../../../element/evalButton";
-import { NextImageAvatar } from "../../../element/nextImageAvatar";
 import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
 import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import { useCRUDNaming } from "../../../modules/naming/hooks";
-import {
-  useCreateNamingEval,
-  useEditNamingEval,
-} from "../../../modules/namingEval/hooks";
+import { useUpsertNamingEval } from "../../../modules/namingEval/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
 import DeletionModal from "../deletionModal";
@@ -37,8 +32,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
-  const { onCreate } = useCreateNamingEval();
-  const { onEdit } = useEditNamingEval();
+  const { onCreate, onEdit } = useUpsertNamingEval();
   const { runDelete } = useCRUDNaming();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -72,17 +66,10 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
         id: namingEval.id,
         namingId: id,
         targetId,
+        authorId: loginUserId,
         kind,
       });
     }
-    mutate(`/api/targets/${targetId}`);
-    mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`);
-    mutate(
-      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.HOT}&page=1`
-    );
-    mutate(
-      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`
-    );
   };
 
   if (naming.isDeleted) {

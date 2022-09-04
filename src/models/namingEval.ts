@@ -18,11 +18,8 @@ export interface NamingEval extends NamingEvalWillSubmit {
   isCancelled: boolean;
 }
 
-export interface NamingEvalWillEdit {
+export interface NamingEvalWillEdit extends NamingEvalWillSubmit {
   id: string;
-  targetId: string;
-  namingId: string;
-  kind: NamingEvalKind;
 }
 
 export type EvalCounts = { [key in NamingEvalKind]: number };

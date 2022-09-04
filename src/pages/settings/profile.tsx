@@ -13,20 +13,15 @@ import {
   Spinner,
   Stack,
 } from "@chakra-ui/react";
-import { isThisWeek } from "date-fns";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSWRConfig } from "swr";
-import { PrimaryText, SecondaryText } from "../../element/text";
+import { PrimaryText } from "../../element/text";
 import { PersonalUserDetailView } from "../../models/personalUser";
-import { authedPost } from "../../modules/api";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
-import {
-  useDashboardRedirectIfNotLogined,
-  useDashboardRedirectIfUserNotRegistered,
-} from "../../modules/route/hooks";
+import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
+import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
 type Props = {};
 
@@ -41,7 +36,7 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
   const { fileState, handleImageSet } = useImageLoader();
   const { uploadImage } = useImageUploader();
 
-  const { mutate } = useSWRConfig();
+  const { onEdit } = useUpsertPersonalUser();
 
   const isUserIdError = personalUser?.id?.length === 0;
   const isNameError = !personalUser?.name;
@@ -77,13 +72,8 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
       const { imageId } = await uploadImage(fileState.file);
       return imageId;
     })();
-    mutate(`/api/users/${uid}`, async () => {
-      await authedPost(`/api/users/${uid}/edit`, {
-        ...personalUser,
-        iconImageId,
-      });
-      router.push(`/users/${uid}`);
-    });
+    await onEdit({ ...personalUser, iconImageId });
+    router.push(`/users/${uid}`);
   };
 
   const updatePersonalData = (

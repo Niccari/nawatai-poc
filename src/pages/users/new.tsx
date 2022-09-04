@@ -15,12 +15,12 @@ import {
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { useSWRConfig } from "swr";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUser } from "../../models/personalUser";
 import { authedPost } from "../../modules/api";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
+import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
 import { useDashboardRedirectIfUserNotRegistered } from "../../modules/route/hooks";
 
 type Props = {};
@@ -36,8 +36,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
 
   const { fileState, handleImageSet } = useImageLoader();
   const { uploadImage } = useImageUploader();
-
-  const { mutate } = useSWRConfig();
+  const { onCreate } = useUpsertPersonalUser();
 
   const isIdError = !/^[0-9a-zA-Z-_]*$/.exec(id);
   const isNameError = name === "";
@@ -91,9 +90,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
       iconImageId,
       profile,
     };
-    mutate(`/api/users/${uid}`, async () => {
-      await authedPost("/api/users/new", { ...personalUser });
-    });
+    onCreate(personalUser);
   };
 
   return (
