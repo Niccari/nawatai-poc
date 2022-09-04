@@ -2,11 +2,7 @@ import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
-import { evalCountsInit } from "../../models/namingEval";
-import {
-  PersonalUser,
-  PersonalUserWillSubmit,
-} from "../../models/personalUser";
+import { PersonalUser } from "../../models/personalUser";
 import { firestoreClient } from "../../services/firebaseOnServer";
 import { IPersonalUserRepository } from "./interface";
 
@@ -29,20 +25,18 @@ class PersonalUserRepository implements IPersonalUserRepository {
     return this.toModel(await docRef.get());
   }
 
-  public async create(entity: PersonalUserWillSubmit): Promise<void> {
+  public async create(entity: PersonalUser): Promise<void> {
     const { id, ...params } = entity;
     const values: PersonalUser = {
       id,
       ...params,
-      evalCounts: evalCountsInit,
-      signUpAt: new Date(),
     };
     const docRef = firestoreClient.doc(`PersonalUser/${id}`);
     docRef.create(values);
   }
 
   public async update(entity: PersonalUser): Promise<void> {
-    const { id, evalCounts, signUpAt, ...params } = entity;
+    const { id, ...params } = entity;
     const docRef = firestoreClient.doc(`PersonalUser/${id}`);
     docRef.set(params, { merge: true });
   }

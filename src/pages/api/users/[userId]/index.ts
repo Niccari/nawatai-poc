@@ -19,9 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ? await imageRepository.resolveUrl(personalUser.iconImageId)
       : undefined;
     if (isDetailed) {
-      const { evalCounts, signUpAt, ...params } = personalUser;
       res.status(200).json({
-        ...params,
+        ...personalUser,
         imageUrl,
       });
       return;

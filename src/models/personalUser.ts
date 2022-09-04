@@ -1,18 +1,14 @@
-import { EvalCounts } from "./namingEval";
+export interface PersonalUserProfile {
+  profile?: string;
+  url?: string;
+  twitterUserId?: string;
+}
 
-export type PersonalUserWillSubmit = {
+export interface PersonalUser extends PersonalUserProfile {
   id: string;
   name: string;
   userId: string;
   iconImageId?: string;
-  profile?: string;
-  url?: string;
-  twitterUserId?: string;
-};
-
-export interface PersonalUser extends PersonalUserWillSubmit {
-  evalCounts: EvalCounts;
-  signUpAt: Date;
 }
 
 export type PersonalUserBasicView = {
@@ -22,12 +18,6 @@ export type PersonalUserBasicView = {
   imageUrl?: string;
 };
 
-export type PersonalUserDetailView = {
-  id: string;
-  name: string;
-  userId: string;
-  imageUrl?: string;
-  profile?: string;
-  url?: string;
-  twitterUserId?: string;
-};
+export interface PersonalUserDetailView
+  extends PersonalUserBasicView,
+    PersonalUserProfile {}

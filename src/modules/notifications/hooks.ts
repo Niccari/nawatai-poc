@@ -10,10 +10,5 @@ export const useUserNotification = (userId: string | undefined) => {
     fetcher
   );
 
-  // add
-  return {
-    notifications: data,
-    hasNotification: false,
-    notificationsError: error,
-  };
+  return { notifications: data, notificationsError: error };
 };

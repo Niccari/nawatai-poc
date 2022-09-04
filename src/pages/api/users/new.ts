@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PersonalUser } from "../../../models/personalUser";
 import personalUserRepository from "../../../repositories/personalUser";
+import personalUserActivityRepository from "../../../repositories/personalUserActivity";
 import { getAuthedUserId } from "../authHelper";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -20,6 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     await personalUserRepository.create(params);
+    await personalUserActivityRepository.create(params.id);
     res.status(200).json({});
   } catch (e) {
     res.status(500).send(undefined);

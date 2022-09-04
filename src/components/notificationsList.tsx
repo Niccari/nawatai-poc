@@ -16,23 +16,42 @@ import { useRouter } from "next/router";
 import { NotificationForView, NotificationKind } from "../models/notification";
 import { PrimaryText, SecondaryText } from "../element/text";
 import { NextImageAvatar } from "../element/nextImageAvatar";
+import {
+  usePersonalUserActivity,
+  useUpdateNotificationRead,
+} from "../modules/personalUserActivity/hooks";
 
 type Props = {};
 
 const NotificationsList = ({}: Props): JSX.Element => {
   const router = useRouter();
   const { personalUser } = useLoginState();
-  const { notifications, hasNotification } = useUserNotification(
+  const { notifications } = useUserNotification(personalUser?.id);
+  const { userActivity, userActivityError } = usePersonalUserActivity(
     personalUser?.id
+  );
+  const { onEdit } = useUpdateNotificationRead();
+  console.log(userActivity);
+  console.log(notifications);
+  const hasNotification = Boolean(
+    notifications?.find(
+      (n) => userActivity && n.createdAt > userActivity.lastReadNotificationAt
+    )
   );
 
   const handleShowContent = (notification: NotificationForView) => {
     const { reactionKind, namingId, targetId } = notification;
+    const ownerId = personalUser?.id;
+    if (!ownerId) {
+      return;
+    }
     switch (reactionKind) {
       case NotificationKind.RECEIVED_NAME:
+        onEdit(ownerId);
         router.push(`/targets/${targetId}`);
         break;
       case NotificationKind.RECEIVED_EVAL:
+        onEdit(ownerId);
         router.push(`/targets/${targetId}?naming=${namingId}`);
         break;
     }
@@ -58,7 +77,16 @@ const NotificationsList = ({}: Props): JSX.Element => {
         {(notifications &&
           notifications.length > 0 &&
           notifications.map((n) => (
-            <MenuItem key={n.id} onClick={() => handleShowContent(n)}>
+            <MenuItem
+              key={n.id}
+              onClick={() => handleShowContent(n)}
+              bg={
+                userActivity &&
+                n.createdAt > userActivity.lastReadNotificationAt
+                  ? "orange.100"
+                  : "transparent"
+              }
+            >
               <div>
                 <Flex>
                   <NextImageAvatar
