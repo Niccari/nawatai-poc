@@ -6,4 +6,5 @@ import {
 export interface INotificationRepository {
   list(authorId: string): Promise<Notification[]>;
   create(entity: NotificationWillSubmit): Promise<Notification>;
+  anonymize(id: string): Promise<void>;
 }

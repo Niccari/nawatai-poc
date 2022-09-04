@@ -31,8 +31,6 @@ const NotificationsList = ({}: Props): JSX.Element => {
     personalUser?.id
   );
   const { onEdit } = useUpdateNotificationRead();
-  console.log(userActivity);
-  console.log(notifications);
   const hasNotification = Boolean(
     notifications?.find(
       (n) => userActivity && n.createdAt > userActivity.lastReadNotificationAt

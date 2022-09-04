@@ -1,42 +1,20 @@
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-} from "@chakra-ui/form-control";
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  FormErrorMessage,
-  Input,
-  Spinner,
-  Stack,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { isThisWeek } from "date-fns";
+import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useSWRConfig } from "swr";
 import LoadingContent from "../../components/loading";
 import DeletionModal from "../../components/target/deletionModal";
-import { PrimaryText, SecondaryText } from "../../element/text";
-import { PersonalUserDetailView } from "../../models/personalUser";
-import { authedPost } from "../../modules/api";
-import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
+import { PrimaryText } from "../../element/text";
 import { useLoginState } from "../../modules/login/hooks";
-import {
-  useDashboardRedirectIfNotLogined,
-  useDashboardRedirectIfUserNotRegistered,
-} from "../../modules/route/hooks";
+import { useAnonymisePersonalUser } from "../../modules/personalUser/hooks";
+import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
 type Props = {};
 
 const EditAccountPage: NextPage<Props> = ({}) => {
-  const router = useRouter();
-  const { personalUser: owner } = useLoginState();
+  const route = useRouter();
+  const { personalUser: owner, logout } = useLoginState();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onDelete } = useAnonymisePersonalUser();
 
   useDashboardRedirectIfNotLogined();
 
@@ -44,7 +22,9 @@ const EditAccountPage: NextPage<Props> = ({}) => {
     if (!owner) {
       return;
     }
-    alert("アカウントを削除します");
+    await onDelete(owner.id);
+    await logout();
+    route.push("/");
   };
 
   if (!owner) {

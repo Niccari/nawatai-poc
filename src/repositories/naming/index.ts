@@ -118,6 +118,19 @@ class NamingRepository implements INamingRepository {
       { merge: true }
     );
   }
+
+  public async anonymize(id: string): Promise<void> {
+    const query = firestoreClient
+      .collection(this.collectionName)
+      .where("authorId", "==", id);
+    const querySnapshots = await query.get();
+    const ids = querySnapshots.docs.map((s) => s.id);
+    Promise.all(
+      ids.map(async (id) => {
+        this.delete(id);
+      })
+    );
+  }
 }
 
 const namingRepository: INamingRepository = new NamingRepository();

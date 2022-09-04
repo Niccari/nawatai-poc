@@ -46,6 +46,17 @@ class PersonalUserRepository implements IPersonalUserActivityRepository {
     const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
     docRef.set(params, { merge: true });
   }
+
+  public async anonymize(authorId: string): Promise<void> {
+    const docRef = firestoreClient.doc(`${this.collectionName}/${authorId}`);
+    docRef.set(
+      {
+        lastReadNotificationAt: new Date(0),
+        signUpAt: new Date(0),
+      },
+      { merge: true }
+    );
+  }
 }
 
 const personalUserRepository: IPersonalUserActivityRepository =

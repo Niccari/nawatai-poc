@@ -1,8 +1,9 @@
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import {
   PersonalUserBasicView,
   PersonalUserDetailView,
 } from "../../models/personalUser";
+import { authedPost } from "../api";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 
@@ -20,4 +21,11 @@ export const useDetailedPersonalUser = (userId?: string) => {
     fetcher
   );
   return { user: data, userError: error };
+};
+
+export const useAnonymisePersonalUser = () => {
+  const onDelete = async (userId: string) => {
+    await authedPost(`/api/users/${userId}/delete`);
+  };
+  return { onDelete };
 };

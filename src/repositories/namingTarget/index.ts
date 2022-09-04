@@ -11,6 +11,7 @@ import {
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 import { firestoreClient } from "../../services/firebaseOnServer";
+import imageRepository from "../image/firebase";
 import { INamingTargetRepository } from "./interface";
 
 class NamingTargetRepository implements INamingTargetRepository {
@@ -101,6 +102,15 @@ class NamingTargetRepository implements INamingTargetRepository {
   }
 
   public async delete(id: string): Promise<void> {
+    const target = await this.get(id);
+    // TODO(Niccari): split imageRepository procedure
+    if (target.imageId) {
+      try {
+        await this.delete(target.imageId);
+      } catch (e) {
+        console.error(e);
+      }
+    }
     const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
     docRef.set(
       {
@@ -111,6 +121,14 @@ class NamingTargetRepository implements INamingTargetRepository {
       },
       { merge: true }
     );
+  }
+
+  public async anonymize(id: string): Promise<void> {
+    const query = firestoreClient
+      .collection(this.collectionName)
+      .where("authorId", "==", id);
+    const querySnapshots = await query.get();
+    Promise.all(querySnapshots.docs.map((doc) => this.delete(doc.id)));
   }
 }
 

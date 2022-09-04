@@ -9,6 +9,7 @@ export interface PersonalUser extends PersonalUserProfile {
   name: string;
   userId: string;
   iconImageId?: string;
+  isDeleted?: boolean;
 }
 
 export type PersonalUserBasicView = {

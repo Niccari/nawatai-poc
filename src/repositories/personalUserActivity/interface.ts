@@ -7,4 +7,5 @@ export interface IPersonalUserActivityRepository {
   get(id: string): Promise<PersonalUserActivity>;
   create(id: string): Promise<void>;
   update(entity: PersonalUserActivityWillEdit): Promise<void>;
+  anonymize(id: string): Promise<void>;
 }

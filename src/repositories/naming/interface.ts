@@ -17,4 +17,5 @@ export interface INamingRepository {
   create(entity: NamingWillSubmit): Promise<Naming>;
   update(entity: NamingWillEdit): Promise<Naming>;
   delete(id: string): Promise<void>;
+  anonymize(id: string): Promise<void>;
 }

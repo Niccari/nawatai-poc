@@ -50,6 +50,18 @@ class NotificationRepository implements INotificationRepository {
       ...values,
     };
   }
+
+  public async anonymize(id: string): Promise<void> {
+    const query = firestoreClient
+      .collection(this.collectionName)
+      .where("toAuthorId", "==", id);
+    const querySnapshots = await query.get();
+    Promise.all(
+      querySnapshots.docs.map(async (snapshot) => {
+        snapshot.ref.delete();
+      })
+    );
+  }
 }
 
 const notificationRepository: INotificationRepository =

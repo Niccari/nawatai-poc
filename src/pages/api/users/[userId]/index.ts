@@ -1,8 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  PersonalUserBasicView,
-  PersonalUserDetailView,
-} from "../../../../models/personalUser";
 import imageRepository from "../../../../repositories/image/firebase";
 import personalUserRepository from "../../../../repositories/personalUser";
 
@@ -15,6 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const isDetailed = detailed === "true";
     const personalUser = await personalUserRepository.get(userId);
+    if (!personalUser || personalUser.isDeleted) {
+      res.status(200).json(undefined);
+      return;
+    }
     const imageUrl = personalUser.iconImageId
       ? await imageRepository.resolveUrl(personalUser.iconImageId)
       : undefined;
