@@ -1,16 +1,22 @@
 import { Box, Button } from "@chakra-ui/react";
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import LoadItemError from "../../../components/loadException/loadItemError";
+import MetaHeader from "../../../components/metaHeader";
 import TabbedNamingDetailList from "../../../components/target/namings/tabbedNamingDetailList";
 import TargetDetail from "../../../components/target/targetDetail";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
+import {
+  NamingTarget,
+  NamingTargetForView,
+  NamingTargetListGenre,
+} from "../../../models/namingTarget";
 import { useLoginState } from "../../../modules/login/hooks";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
 
-type Props = {};
+type Props = {
+  ogpTarget: NamingTargetForView;
+};
 
-const TargetPage: NextPage<Props> = ({}) => {
+const TargetPage: NextPage<Props> = ({ ogpTarget }) => {
   const router = useRouter();
   const { isLogined } = useLoginState();
   const { targetId: targetId0 } = router.query;
@@ -30,11 +36,12 @@ const TargetPage: NextPage<Props> = ({}) => {
     }
     router.push(`/targets/${target.id}/naming/new`);
   };
-  if (targetError) {
-    return <LoadItemError />;
-  }
   return (
     <>
+      <MetaHeader
+        title={`名付け対象: ${ogpTarget.title ?? ""}`}
+        description={`コメント: ${ogpTarget.comment}`}
+      />
       {target && (
         <>
           <TargetDetail target={target} />
@@ -60,6 +67,44 @@ const TargetPage: NextPage<Props> = ({}) => {
       )}
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const targetId = params?.targetId;
+  if (!targetId || typeof targetId !== "string") {
+    return {
+      notFound: true,
+    };
+  }
+  try {
+    const target: NamingTargetForView = await (
+      await fetch(`${process.env.ABSOLUTE_URL}/api/targets/${targetId}`)
+    ).json();
+    return {
+      props: {
+        ogpTarget: target,
+      },
+      revalidate: 60,
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const targets: NamingTarget[] = await (
+    await fetch(
+      `${process.env.ABSOLUTE_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`
+    )
+  ).json();
+
+  return {
+    paths: targets.map((t) => `/targets/${t.id}`),
+    fallback: true,
+  };
 };
 
 export default TargetPage;
