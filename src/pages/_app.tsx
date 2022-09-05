@@ -6,6 +6,7 @@ import {
   theme as defaultTheme,
 } from "@chakra-ui/react";
 import MainFrame from "../components/mainFrame";
+import MetaHeader from "../components/metaHeader";
 
 const theme = extendTheme({
   textStyles: {
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <MainFrame>
+        <MetaHeader />
         <Component {...pageProps} />
       </MainFrame>
     </ChakraProvider>

@@ -30,4 +30,10 @@ const StoryPage: NextPage<Props> = ({}) => {
   );
 };
 
+export const getStaticProps = async (): Promise<{ props: Props }> => {
+  return {
+    props: {},
+  };
+};
+
 export default StoryPage;

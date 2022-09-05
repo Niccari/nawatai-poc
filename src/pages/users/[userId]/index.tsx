@@ -1,35 +1,63 @@
 import { Box } from "@chakra-ui/react";
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import LoadingContent from "../../../components/loading";
+import MetaHeader from "../../../components/metaHeader";
 import UserDetail from "../../../components/users/userDetail";
-import {
-  useDetailedPersonalUser,
-  usePersonalUser,
-} from "../../../modules/personalUser/hooks";
+import { PersonalUserDetailView } from "../../../models/personalUser";
 
-const checkQueryId = (
-  id: string | string[] | undefined
-): string | undefined => {
-  if (typeof id === "string" || id === undefined) {
-    return id;
-  }
-  return undefined;
+type Props = {
+  user: PersonalUserDetailView;
 };
 
-const PersonalUserPage: NextPage = ({}) => {
+const PersonalUserPage: NextPage<Props> = ({ user }) => {
   const router = useRouter();
-  const { userId: rawUserId } = router.query;
-  const userId = checkQueryId(rawUserId);
-  const { user, userError } = useDetailedPersonalUser(userId);
 
-  if (typeof userId !== "string" || !user) {
-    return <></>;
+  if (router.isFallback) {
+    return <LoadingContent />;
   }
   return (
     <Box>
+      <MetaHeader
+        title={`${user.name}さんの名付け活動記録`}
+        description={`紹介文: ${user.profile ?? ""}`}
+      />
       <UserDetail user={user} />
     </Box>
   );
+};
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const userId = params?.userId;
+  if (!userId || typeof userId !== "string") {
+    return {
+      notFound: true,
+    };
+  }
+  try {
+    const user: PersonalUserDetailView = await (
+      await fetch(
+        `${process.env.ABSOLUTE_URL}/api/users/${userId}?detailed=true`
+      )
+    ).json();
+    return {
+      props: {
+        user,
+      },
+      revalidate: 30,
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: true,
+  };
 };
 
 export default PersonalUserPage;
