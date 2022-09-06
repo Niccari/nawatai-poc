@@ -19,8 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  const { id } = await personalUserRepository.get(params.id);
-  if (ownerId !== id) {
+  const personalUser = await personalUserRepository.get(params.id);
+  if (ownerId !== personalUser?.id) {
     res.status(403).send(undefined);
     return;
   }

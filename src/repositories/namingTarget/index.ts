@@ -1,4 +1,3 @@
-import { parseISO } from "date-fns";
 import {
   DocumentSnapshot,
   QueryDocumentSnapshot,
@@ -11,7 +10,6 @@ import {
   NamingTargetWillSubmit,
 } from "../../models/namingTarget";
 import { firestoreClient } from "../../services/firebaseOnServer";
-import imageRepository from "../image/firebase";
 import { INamingTargetRepository } from "./interface";
 
 class NamingTargetRepository implements INamingTargetRepository {

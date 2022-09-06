@@ -16,42 +16,49 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const notifications = await notificationRepository.list(ownerId);
-    const notificationMessages: NotificationForView[] = await Promise.all(
-      notifications.map(async (n) => {
-        const {
-          createdAt,
-          targetId,
-          namingId,
-          fromAuthorId,
-          id,
-          reactionKind,
-        } = n;
-        const fromUser = await personalUserRepository.get(fromAuthorId);
-        const message = await (async () => {
-          const target = await namingTargetRepository.get(targetId);
-          switch (reactionKind) {
-            case NotificationKind.RECEIVED_EVAL:
-              return `${fromUser.name}さんが${target.title}に評価をつけました`;
-            case NotificationKind.RECEIVED_NAME:
-              return `${fromUser.name}さんが${target.title}に名付けしました`;
+    const notificationMessages: (NotificationForView | undefined)[] =
+      await Promise.all(
+        notifications.map(async (n) => {
+          const {
+            createdAt,
+            targetId,
+            namingId,
+            fromAuthorId,
+            id,
+            reactionKind,
+          } = n;
+          const fromUser = await personalUserRepository.get(fromAuthorId);
+          if (!fromUser) {
+            return undefined;
           }
-        })();
-        const authorIconUrl = fromUser.iconImageId
-          ? await imageRepository.resolveUrl(fromUser.iconImageId)
-          : undefined;
-        return {
-          id,
-          targetId,
-          namingId,
-          createdAt,
-          fromAuthorId,
-          reactionKind,
-          message,
-          authorIconUrl,
-        };
-      })
-    );
-    res.status(200).json(notificationMessages);
+          const message = await (async () => {
+            const target = await namingTargetRepository.get(targetId);
+            switch (reactionKind) {
+              case NotificationKind.RECEIVED_EVAL:
+                return `${fromUser.name}さんが${target.title}に評価をつけました`;
+              case NotificationKind.RECEIVED_NAME:
+                return `${fromUser.name}さんが${target.title}に名付けしました`;
+            }
+          })();
+          const authorIconUrl = fromUser.iconImageId
+            ? await imageRepository.resolveUrl(fromUser.iconImageId)
+            : undefined;
+          return {
+            id,
+            targetId,
+            namingId,
+            createdAt,
+            fromAuthorId,
+            reactionKind,
+            message,
+            authorIconUrl,
+          };
+        })
+      );
+    const filteredNotificationMessages = notificationMessages.filter(
+      (n) => n !== undefined
+    ) as NotificationForView[];
+    res.status(200).json(filteredNotificationMessages);
   } catch (e) {
     res.status(500).send(undefined);
   }

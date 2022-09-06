@@ -1,4 +1,4 @@
-import useSWR, { mutate, useSWRConfig } from "swr";
+import useSWR, { mutate } from "swr";
 import { Naming, NamingWillEdit, NamingWillSubmit } from "../../models/naming";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { authedPost } from "../api";

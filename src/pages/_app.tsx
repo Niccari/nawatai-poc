@@ -1,10 +1,6 @@
 import "./globals.css";
 import type { AppProps } from "next/app";
-import {
-  ChakraProvider,
-  extendTheme,
-  theme as defaultTheme,
-} from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import MainFrame from "../components/mainFrame";
 import MetaHeader from "../components/metaHeader";
 

@@ -5,7 +5,6 @@ import TargetList from "../../components/targets/targetList";
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NamingTargetListGenre } from "../../models/namingTarget";
-import { useState } from "react";
 
 const TargetsPage: NextPage = ({}) => {
   const router = useRouter();

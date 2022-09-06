@@ -1,4 +1,3 @@
-import id from "date-fns/locale/id";
 import type { NextApiRequest, NextApiResponse } from "next";
 import namingRepository from "../../../../repositories/naming";
 import namingTargetRepository from "../../../../repositories/namingTarget";

@@ -17,7 +17,6 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { PrimaryText, SecondaryText } from "../../element/text";
 import { PersonalUser } from "../../models/personalUser";
-import { authedPost } from "../../modules/api";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
