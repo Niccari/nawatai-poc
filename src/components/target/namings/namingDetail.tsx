@@ -11,7 +11,6 @@ import EvalButton from "../../../element/evalButton";
 import { PrimaryText } from "../../../element/text";
 import { Naming } from "../../../models/naming";
 import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
 import { useCRUDNaming } from "../../../modules/naming/hooks";
 import { useUpsertNamingEval } from "../../../modules/namingEval/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
@@ -30,7 +29,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { precise, fun, question, missmatch } = evalCounts;
 
   const router = useRouter();
-  const { personalUser: loginUser } = useLoginState();
+  const { personalUser: loginUser, isLogined } = useLoginState();
   const { user } = usePersonalUser(authorId);
   const { onCreate, onEdit } = useUpsertNamingEval();
   const { runDelete } = useCRUDNaming();
@@ -116,17 +115,25 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
               kind={NamingEvalKind.PRECISE}
               count={precise}
               onEval={onEval}
+              disabled={!isLogined}
             />
-            <EvalButton kind={NamingEvalKind.FUN} count={fun} onEval={onEval} />
+            <EvalButton
+              kind={NamingEvalKind.FUN}
+              count={fun}
+              onEval={onEval}
+              disabled={!isLogined}
+            />
             <EvalButton
               kind={NamingEvalKind.QUESTION}
               count={question}
               onEval={onEval}
+              disabled={!isLogined}
             />
             <EvalButton
               kind={NamingEvalKind.MISSMATCH}
               count={missmatch}
               onEval={onEval}
+              disabled={!isLogined}
             />
           </PrimaryText>
           <BasicUser user={user} />

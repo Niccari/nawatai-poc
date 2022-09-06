@@ -6,10 +6,11 @@ type Props = {
   kind: NamingEvalKind;
   count: number;
   onEval: (kind: NamingEvalKind) => void;
+  disabled?: boolean;
 };
 
 const EvalButton = (props: Props): JSX.Element => {
-  const { kind, count, onEval } = props;
+  const { kind, count, onEval, disabled } = props;
   const icon = (() => {
     switch (kind) {
       case NamingEvalKind.PRECISE:
@@ -24,6 +25,7 @@ const EvalButton = (props: Props): JSX.Element => {
   })();
   return (
     <Button
+      disabled={disabled}
       onClick={() => {
         onEval(kind);
       }}
