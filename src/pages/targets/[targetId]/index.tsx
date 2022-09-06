@@ -1,6 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import LoadError from "../../../components/loadException/loadError";
+import LoadingContent from "../../../components/loading";
 import MetaHeader from "../../../components/metaHeader";
 import TabbedNamingDetailList from "../../../components/target/namings/tabbedNamingDetailList";
 import TargetDetail from "../../../components/target/targetDetail";
@@ -36,6 +38,12 @@ const TargetPage: NextPage<Props> = ({ ogpTarget }) => {
     }
     router.push(`/targets/${target.id}/naming/new`);
   };
+  if (router.isFallback) {
+    return <LoadingContent />;
+  }
+  if (targetError) {
+    return <LoadError />;
+  }
   return (
     <>
       <MetaHeader
@@ -96,16 +104,22 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const targets: NamingTarget[] = await (
-    await fetch(
-      `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`
-    )
-  ).json();
-
-  return {
-    paths: targets.map((t) => `/targets/${t.id}`),
-    fallback: true,
-  };
+  try {
+    const targets: NamingTarget[] = await (
+      await fetch(
+        `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`
+      )
+    ).json();
+    return {
+      paths: targets.map((t) => `/targets/${t.id}`),
+      fallback: true,
+    };
+  } catch (e) {
+    return {
+      paths: [],
+      fallback: true,
+    };
+  }
 };
 
 export default TargetPage;
