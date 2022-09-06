@@ -78,7 +78,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
   try {
     const target: NamingTargetForView = await (
-      await fetch(`https://${process.env.VERCEL_URL}/api/targets/${targetId}`)
+      await fetch(
+        `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets/${targetId}`
+      )
     ).json();
     return {
       props: {
@@ -87,7 +89,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       revalidate: 60,
     };
   } catch (e) {
-    console.error(e);
     return {
       notFound: true,
     };
@@ -97,7 +98,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const targets: NamingTarget[] = await (
     await fetch(
-      `https://${process.env.VERCEL_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`
+      `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`
     )
   ).json();
 
