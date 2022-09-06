@@ -1,11 +1,11 @@
 import { authClient } from "../../services/firebaseOnClient";
 
-export const getBearer = async (): Promise<string | undefined> => {
+const getBearer = async (): Promise<string | undefined> => {
   return authClient.currentUser?.getIdToken();
 };
 
 export const authedGet = async (endpoint: string) => {
-  const bearer = await authClient.currentUser?.getIdToken();
+  const bearer = await getBearer();
   return fetch(endpoint, {
     method: "GET",
     headers: {
@@ -18,7 +18,7 @@ export const authedPost = async (
   endpoint: string,
   body: Record<string, unknown> | undefined = undefined
 ) => {
-  const bearer = await authClient.currentUser?.getIdToken();
+  const bearer = await getBearer();
   return fetch(endpoint, {
     method: "POST",
     body: body ? JSON.stringify(body) : undefined,
@@ -29,7 +29,7 @@ export const authedPost = async (
 };
 
 export const authedFormPost = async (endpoint: string, body: FormData) => {
-  const bearer = await authClient.currentUser?.getIdToken();
+  const bearer = await getBearer();
   return fetch(endpoint, {
     method: "POST",
     body,

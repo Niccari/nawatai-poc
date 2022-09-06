@@ -59,6 +59,3 @@ const TargetsPage: NextPage = ({}) => {
 };
 
 export default TargetsPage;
-function setState(): [any, any] {
-  throw new Error("Function not implemented.");
-}
