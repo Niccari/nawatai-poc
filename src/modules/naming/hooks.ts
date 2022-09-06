@@ -16,7 +16,7 @@ export const useNaming = (namingId?: string) => {
 
 export const useNamings = (genre: NamingTargetListGenre, page: number = 1) => {
   const { data, error } = useSWR<Naming[], Error>(
-    `/api/namings/?genre=${genre}&page=${page}`,
+    `/api/namings?genre=${genre}&page=${page}`,
     fetcher
   );
 
@@ -30,7 +30,7 @@ export const useTargetNamings = (
 ) => {
   const { data, error } = useSWR<Naming[], Error>(
     targetId
-      ? `/api/targets/${targetId}/namings/?genre=${genre}&page=${page}`
+      ? `/api/targets/${targetId}/namings?genre=${genre}&page=${page}`
       : null,
     fetcher
   );
@@ -43,7 +43,7 @@ export const useCRUDNaming = () => {
     const { targetId } = naming;
     const response = await authedPost("/api/namings/new", naming);
     const newNaming: Naming = await response.json();
-    const cacheKey = `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`;
+    const cacheKey = `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`;
     mutate(
       cacheKey,
       async () => {
@@ -74,10 +74,10 @@ export const useCRUDNaming = () => {
   const runDelete = async (targetId: string, id: string) => {
     await authedPost(`/api/namings/${id}/delete`);
     mutate(
-      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.HOT}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`
     );
     mutate(
-      `/api/targets/${targetId}/namings/?genre=${NamingTargetListGenre.LATEST}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`
     );
   };
   return { runCreate, runUpdate, runDelete };

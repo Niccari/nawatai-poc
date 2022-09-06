@@ -27,19 +27,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    const target = await namingTargetRepository.update(params);
-    const targetForView: NamingTargetForView = {
-      ...target,
-      imageUrl: target.imageId
-        ? await imageRepository.resolveUrl(target.imageId)
-        : undefined,
-    };
-    res.status(200).json(targetForView);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send(undefined);
-  }
+  const target = await namingTargetRepository.update(params);
+  const targetForView: NamingTargetForView = {
+    ...target,
+    imageUrl: target.imageId
+      ? await imageRepository.resolveUrl(target.imageId)
+      : undefined,
+  };
+  res.status(200).json(targetForView);
 };
 
 export default handler;

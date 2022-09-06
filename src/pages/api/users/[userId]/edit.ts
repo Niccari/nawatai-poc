@@ -24,18 +24,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    await personalUserRepository.update(params);
-    const imageUrl = params.iconImageId
-      ? await imageRepository.resolveUrl(params.iconImageId)
-      : undefined;
-    res.status(200).json({
-      ...params,
-      imageUrl,
-    });
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  await personalUserRepository.update(params);
+  const imageUrl = params.iconImageId
+    ? await imageRepository.resolveUrl(params.iconImageId)
+    : undefined;
+  res.status(200).json({
+    ...params,
+    imageUrl,
+  });
 };
 
 export default handler;

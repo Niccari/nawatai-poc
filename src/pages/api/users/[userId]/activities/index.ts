@@ -16,12 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    const response = await personalUserActivityRepository.get(userId);
-    res.status(200).json(response);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const response = await personalUserActivityRepository.get(userId);
+  res.status(200).json(response);
 };
 
 export default handler;

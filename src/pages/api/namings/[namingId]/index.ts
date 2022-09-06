@@ -7,12 +7,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const naming = await namingRepository.get(namingId);
-    res.status(200).json(naming);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const naming = await namingRepository.get(namingId);
+  res.status(200).json(naming);
 };
 
 export default handler;

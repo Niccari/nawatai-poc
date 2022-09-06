@@ -17,24 +17,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const items = await namingTargetRepository.list(
-      Constants.namingsPageCount,
-      genre,
-      parseInt(page, 10)
-    );
-    const targets: NamingTargetForView[] = await Promise.all(
-      items.map(async (item) => ({
-        ...item,
-        imageUrl: item.imageId
-          ? await imageRepository.resolveUrl(item.imageId)
-          : undefined,
-      }))
-    );
-    res.status(200).json(targets);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const items = await namingTargetRepository.list(
+    Constants.namingsPageCount,
+    genre,
+    parseInt(page, 10)
+  );
+  const targets: NamingTargetForView[] = await Promise.all(
+    items.map(async (item) => ({
+      ...item,
+      imageUrl: item.imageId
+        ? await imageRepository.resolveUrl(item.imageId)
+        : undefined,
+    }))
+  );
+  res.status(200).json(targets);
 };
 
 export default handler;

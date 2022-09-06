@@ -19,13 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ownerId) {
     return;
   }
-  try {
-    await personalUserRepository.create(params);
-    await personalUserActivityRepository.create(params.id);
-    res.status(200).json({});
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  await personalUserRepository.create(params);
+  await personalUserActivityRepository.create(params.id);
+  res.status(200).json({});
 };
 
 export default handler;

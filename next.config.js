@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'storage.googleapis.com'],
   },
   webpack(config) {
     config.module.rules.push({

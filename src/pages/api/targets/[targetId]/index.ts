@@ -9,18 +9,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const target = await namingTargetRepository.get(targetId);
-    const targetForView: NamingTargetForView = {
-      ...target,
-      imageUrl: target.imageId
-        ? await imageRepository.resolveUrl(target.imageId)
-        : undefined,
-    };
-    res.status(200).json(targetForView);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const target = await namingTargetRepository.get(targetId);
+  const targetForView: NamingTargetForView = {
+    ...target,
+    imageUrl: target.imageId
+      ? await imageRepository.resolveUrl(target.imageId)
+      : undefined,
+  };
+  res.status(200).json(targetForView);
 };
 
 export default handler;

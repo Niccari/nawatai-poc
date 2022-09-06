@@ -8,33 +8,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const isDetailed = detailed === "true";
-    const personalUser = await personalUserRepository.get(userId);
-    if (!personalUser || personalUser.isDeleted) {
-      res.status(200).json(undefined);
-      return;
-    }
-    const imageUrl = personalUser.iconImageId
-      ? await imageRepository.resolveUrl(personalUser.iconImageId)
-      : undefined;
-    if (isDetailed) {
-      res.status(200).json({
-        ...personalUser,
-        imageUrl,
-      });
-      return;
-    } else {
-      const { id, name, userId } = personalUser;
-      res.status(200).json({
-        id,
-        name,
-        userId,
-        imageUrl,
-      });
-    }
-  } catch (e) {
-    res.status(500).send(undefined);
+  const isDetailed = detailed === "true";
+  const personalUser = await personalUserRepository.get(userId);
+  if (!personalUser || personalUser.isDeleted) {
+    res.status(200).json(undefined);
+    return;
+  }
+  const imageUrl = personalUser.iconImageId
+    ? await imageRepository.resolveUrl(personalUser.iconImageId)
+    : undefined;
+  if (isDetailed) {
+    res.status(200).json({
+      ...personalUser,
+      imageUrl,
+    });
+    return;
+  } else {
+    const { id, name, userId } = personalUser;
+    res.status(200).json({
+      id,
+      name,
+      userId,
+      imageUrl,
+    });
   }
 };
 

@@ -19,16 +19,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    await personalUserRepository.anonymize(ownerId);
-    await personalUserActivityRepository.anonymize(ownerId);
-    await notificationRepository.anonymize(ownerId);
-    await namingTargetRepository.anonymize(ownerId);
-    await namingRepository.anonymize(ownerId);
-    res.status(200).json({});
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  await personalUserRepository.anonymize(ownerId);
+  await personalUserActivityRepository.anonymize(ownerId);
+  await notificationRepository.anonymize(ownerId);
+  await namingTargetRepository.anonymize(ownerId);
+  await namingRepository.anonymize(ownerId);
+  res.status(200).json({});
 };
 
 export default handler;

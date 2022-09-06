@@ -17,12 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    await namingRepository.delete(namingId);
-    res.status(200).json({});
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  await namingRepository.delete(namingId);
+  res.status(200).json({});
 };
 
 export default handler;

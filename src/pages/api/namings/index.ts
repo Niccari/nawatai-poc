@@ -13,16 +13,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const items = await namingRepository.list(
-      Constants.namingsPageCount,
-      genre,
-      parseInt(page, 10)
-    );
-    res.status(200).json(items);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const items = await namingRepository.list(
+    Constants.namingsPageCount,
+    genre,
+    parseInt(page, 10)
+  );
+  res.status(200).json(items);
 };
 
 export default handler;

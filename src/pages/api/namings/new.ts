@@ -21,22 +21,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ownerId) {
     return;
   }
-  try {
-    const namings = await namingRepository.create(params);
-    const target = await namingTargetRepository.get(params.targetId);
-    if (ownerId !== target.authorId) {
-      const notification = await notificationRepository.create({
-        targetId: namings.targetId,
-        namingId: namings.id,
-        reactionKind: NotificationKind.RECEIVED_NAME,
-        fromAuthorId: ownerId,
-        toAuthorId: target.authorId,
-      });
-    }
-    res.status(200).json(namings);
-  } catch (e) {
-    res.status(500).send(undefined);
+  const namings = await namingRepository.create(params);
+  const target = await namingTargetRepository.get(params.targetId);
+  if (ownerId !== target.authorId) {
+    const notification = await notificationRepository.create({
+      targetId: namings.targetId,
+      namingId: namings.id,
+      reactionKind: NotificationKind.RECEIVED_NAME,
+      fromAuthorId: ownerId,
+      toAuthorId: target.authorId,
+    });
   }
+  res.status(200).json(namings);
 };
 
 export default handler;

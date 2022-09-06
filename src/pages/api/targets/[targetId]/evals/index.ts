@@ -11,15 +11,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).send(undefined);
     return;
   }
-  try {
-    const items = await namingEvalRepository.listByUserOfTarget(
-      targetId,
-      authorId
-    );
-    res.status(200).json(items);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  const items = await namingEvalRepository.listByUserOfTarget(
+    targetId,
+    authorId
+  );
+  res.status(200).json(items);
 };
 
 export default handler;

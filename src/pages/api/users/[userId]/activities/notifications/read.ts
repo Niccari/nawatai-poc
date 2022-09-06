@@ -16,15 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(403).send(undefined);
     return;
   }
-  try {
-    await personalUserActivityRepository.update({
-      id: userId,
-      lastReadNotificationAt: new Date(),
-    });
-    res.status(200).json({});
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+  await personalUserActivityRepository.update({
+    id: userId,
+    lastReadNotificationAt: new Date(),
+  });
+  res.status(200).json({});
 };
 
 export default handler;

@@ -14,54 +14,50 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ownerId) {
     return;
   }
-  try {
-    const notifications = await notificationRepository.list(ownerId);
-    const notificationMessages: (NotificationForView | undefined)[] =
-      await Promise.all(
-        notifications.map(async (n) => {
-          const {
-            createdAt,
-            targetId,
-            namingId,
-            fromAuthorId,
-            id,
-            reactionKind,
-          } = n;
-          const fromUser = await personalUserRepository.get(fromAuthorId);
-          if (!fromUser) {
-            return undefined;
+  const notifications = await notificationRepository.list(ownerId);
+  const notificationMessages: (NotificationForView | undefined)[] =
+    await Promise.all(
+      notifications.map(async (n) => {
+        const {
+          createdAt,
+          targetId,
+          namingId,
+          fromAuthorId,
+          id,
+          reactionKind,
+        } = n;
+        const fromUser = await personalUserRepository.get(fromAuthorId);
+        if (!fromUser) {
+          return undefined;
+        }
+        const message = await (async () => {
+          const target = await namingTargetRepository.get(targetId);
+          switch (reactionKind) {
+            case NotificationKind.RECEIVED_EVAL:
+              return `${fromUser.name}さんが${target.title}に評価をつけました`;
+            case NotificationKind.RECEIVED_NAME:
+              return `${fromUser.name}さんが${target.title}に名付けしました`;
           }
-          const message = await (async () => {
-            const target = await namingTargetRepository.get(targetId);
-            switch (reactionKind) {
-              case NotificationKind.RECEIVED_EVAL:
-                return `${fromUser.name}さんが${target.title}に評価をつけました`;
-              case NotificationKind.RECEIVED_NAME:
-                return `${fromUser.name}さんが${target.title}に名付けしました`;
-            }
-          })();
-          const authorIconUrl = fromUser.iconImageId
-            ? await imageRepository.resolveUrl(fromUser.iconImageId)
-            : undefined;
-          return {
-            id,
-            targetId,
-            namingId,
-            createdAt,
-            fromAuthorId,
-            reactionKind,
-            message,
-            authorIconUrl,
-          };
-        })
-      );
-    const filteredNotificationMessages = notificationMessages.filter(
-      (n) => n !== undefined
-    ) as NotificationForView[];
-    res.status(200).json(filteredNotificationMessages);
-  } catch (e) {
-    res.status(500).send(undefined);
-  }
+        })();
+        const authorIconUrl = fromUser.iconImageId
+          ? await imageRepository.resolveUrl(fromUser.iconImageId)
+          : undefined;
+        return {
+          id,
+          targetId,
+          namingId,
+          createdAt,
+          fromAuthorId,
+          reactionKind,
+          message,
+          authorIconUrl,
+        };
+      })
+    );
+  const filteredNotificationMessages = notificationMessages.filter(
+    (n) => n !== undefined
+  ) as NotificationForView[];
+  res.status(200).json(filteredNotificationMessages);
 };
 
 export default handler;
