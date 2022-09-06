@@ -57,19 +57,12 @@ const NotificationsList = ({}: Props): JSX.Element => {
 
   return (
     <Menu>
-      <MenuButton w="40px" h="40px" type="button" aria-label="UserIcon">
-        <IconButton
-          type="button"
-          variant="unstyled"
-          aria-label="Notification"
-          onClick={() => {}}
-        >
-          <Avatar h="100%" w="100%" icon={<BellIcon />}>
-            {hasNotification && (
-              <AvatarBadge boxSize="1.25em" bg="red.500"></AvatarBadge>
-            )}
-          </Avatar>
-        </IconButton>
+      <MenuButton type="button" w="40px" h="40px" aria-label="Notification">
+        <Avatar h="40px" w="40px" icon={<BellIcon />}>
+          {hasNotification && (
+            <AvatarBadge boxSize="1.25em" bg="red.500"></AvatarBadge>
+          )}
+        </Avatar>
       </MenuButton>
       <MenuList>
         {(notifications &&

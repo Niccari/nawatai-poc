@@ -3,16 +3,7 @@ import Image from "next/image";
 
 const ChakraNextImage = chakra(Image, {
   shouldForwardProp: (prop) =>
-    [
-      "width",
-      "height",
-      "left",
-      "top",
-      "position",
-      "borderRadius",
-      "src",
-      "alt",
-    ].includes(prop),
+    ["width", "height", "left", "top", "position", "src", "alt"].includes(prop),
 });
 export const NextImageAvatar = (props: AvatarProps) => {
   const { src, name, width, padding, height } = props;
