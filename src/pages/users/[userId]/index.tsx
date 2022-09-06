@@ -36,7 +36,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
   try {
     const user: PersonalUserDetailView = await (
-      await fetch(`${process.env.VERCEL_URL}/api/users/${userId}?detailed=true`)
+      await fetch(`https://${process.env.VERCEL_URL}/api/users/${userId}?detailed=true`)
     ).json();
     return {
       props: {

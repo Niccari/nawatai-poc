@@ -9,7 +9,7 @@ type Props = {
 const MetaHeader = ({
   title = "nawatai: 個人向け名付けブレストサービス",
   description = "nawataiはあらゆるものに名付けするサービスです。",
-  imageUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp.png`,
+  imageUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp.png`,
 }: Props): JSX.Element => (
   <Head>
     <title>{title}</title>
