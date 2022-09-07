@@ -30,6 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : undefined,
     }))
   );
+  res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate");
   res.status(200).json(targets);
 };
 

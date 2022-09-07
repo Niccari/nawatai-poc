@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ? await imageRepository.resolveUrl(personalUser.iconImageId)
     : undefined;
   if (isDetailed) {
+    res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate");
     res.status(200).json({
       ...personalUser,
       imageUrl,
@@ -25,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   } else {
     const { id, name, userId } = personalUser;
+    res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate");
     res.status(200).json({
       id,
       name,

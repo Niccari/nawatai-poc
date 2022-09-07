@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ? await imageRepository.resolveUrl(target.imageId)
       : undefined,
   };
+  res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate");
   res.status(200).json(targetForView);
 };
 

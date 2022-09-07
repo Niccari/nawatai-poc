@@ -8,6 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   const naming = await namingRepository.get(namingId);
+  res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate");
   res.status(200).json(naming);
 };
 
