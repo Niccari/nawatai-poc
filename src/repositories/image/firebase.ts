@@ -29,7 +29,7 @@ class ImageRepository implements IImageRepository {
   async setMetaData(id: string, metadata: ImageMetadata): Promise<void> {
     const bucket = storageClient.bucket();
     const file = bucket.file(`images/${id}`);
-    file.setMetadata(metadata);
+    await file.setMetadata(metadata);
   }
 
   async makePublic(id: string): Promise<void> {
