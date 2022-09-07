@@ -35,7 +35,7 @@ class ImageRepository implements IImageRepository {
   async makePublic(id: string): Promise<void> {
     const bucket = storageClient.bucket();
     const file = bucket.file(`images/${id}`);
-    file.makePublic();
+    await file.makePublic();
   }
 }
 
