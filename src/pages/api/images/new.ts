@@ -59,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     cacheControl: "public,max-age=60,s-maxage=300",
     contentType: mimetype,
   });
+  await imageRepository.makePublic(id);
   res.status(200).json({ id });
 };
 

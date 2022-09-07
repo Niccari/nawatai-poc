@@ -31,6 +31,12 @@ class ImageRepository implements IImageRepository {
     const file = bucket.file(`images/${id}`);
     file.setMetadata(metadata);
   }
+
+  async makePublic(id: string): Promise<void> {
+    const bucket = storageClient.bucket();
+    const file = bucket.file(`images/${id}`);
+    file.makePublic();
+  }
 }
 
 const imageRepository: IImageRepository = new ImageRepository();

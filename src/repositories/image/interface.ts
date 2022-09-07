@@ -15,4 +15,5 @@ export interface IImageRepository {
   delete(id: string): Promise<void>;
   getUploadWriteStream(): Promise<ImageUploading>;
   setMetaData(id: string, metadata: ImageMetadata): Promise<void>;
+  makePublic(id: string): Promise<void>;
 }
