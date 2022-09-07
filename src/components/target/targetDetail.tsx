@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
 import { NamingTargetForView } from "../../models/namingTarget";
 import { useLoginState } from "../../modules/login/hooks";
@@ -24,10 +23,8 @@ type Props = {
 };
 
 const TargetDetail = ({ target }: Props): JSX.Element => {
-  const { id, authorId, title, comment, imageUrl, evalCounts, isDeleted } =
+  const { id, authorId, title, comment, imageUrl, isDeleted } =
     target;
-  const { precise, fun, question, missmatch } = evalCounts;
-
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
@@ -96,9 +93,6 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
             <PrimaryText>{comment}</PrimaryText>
           </Stack>
           <Stack>
-            <PrimaryText>
-              👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
-            </PrimaryText>
             <BasicUser user={user} />
           </Stack>
         </Stack>
