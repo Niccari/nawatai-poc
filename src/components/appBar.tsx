@@ -1,6 +1,6 @@
 import { useLoginState } from "../modules/login/hooks";
 import ServiceLogo from "../assets/serviceLogo.svg";
-import ServiceLogoDarken from "../assets/ServiceLogoDarken.svg";
+import ServiceLogoDarken from "../assets/serviceLogoDarken.svg";
 import {
   Box,
   Button,
