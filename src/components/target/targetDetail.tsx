@@ -23,8 +23,7 @@ type Props = {
 };
 
 const TargetDetail = ({ target }: Props): JSX.Element => {
-  const { id, authorId, title, comment, imageUrl, isDeleted } =
-    target;
+  const { id, authorId, title, comment, imageUrl, isDeleted } = target;
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);

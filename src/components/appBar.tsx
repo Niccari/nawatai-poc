@@ -1,19 +1,23 @@
 import { useLoginState } from "../modules/login/hooks";
 import ServiceLogo from "../assets/serviceLogo.svg";
+import ServiceLogoDarken from "../assets/ServiceLogoDarken.svg";
 import {
   Button,
   Divider,
   HStack,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  useColorMode,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { usePersonalUser } from "../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import NotificationsList from "./notificationsList";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 type Props = {};
 
@@ -22,6 +26,8 @@ const AppBar = ({}: Props): JSX.Element => {
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
   const { user } = usePersonalUser(firebaseUser?.uid);
+  const { colorMode, toggleColorMode } = useColorMode();
+
   const createNewTarget = () => {
     router.push("/targets/new");
   };
@@ -42,11 +48,24 @@ const AppBar = ({}: Props): JSX.Element => {
       <HStack p="2" justifyContent="space-between">
         <Link href="/">
           <a>
-            <ServiceLogo />
+            {(colorMode == "light" && <ServiceLogo />) || <ServiceLogoDarken />}
           </a>
         </Link>
 
         <HStack alignItems="center" spacing="2">
+          {(colorMode == "light" && (
+            <IconButton
+              aria-label="darken"
+              icon={<MoonIcon />}
+              onClick={toggleColorMode}
+            />
+          )) || (
+            <IconButton
+              aria-label="lighten"
+              icon={<SunIcon />}
+              onClick={toggleColorMode}
+            />
+          )}
           {isLogined && (
             <>
               <NotificationsList />
