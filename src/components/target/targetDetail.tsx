@@ -6,6 +6,7 @@ import {
   Link,
   useDisclosure,
   Center,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -56,21 +57,32 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
           onDelete(id);
         }}
       />
-      <Flex pb={2}>
-        <Box flexShrink={0} background="#333" w="200px" h="200px">
+      <Flex pb={2} flexWrap="wrap" gap={4}>
+        <Box
+          background="#333"
+          minW="300px"
+          minH="300px"
+          w={{ xl: "300px", md: "300px", sm: "100vw" }}
+          h={{ xl: "300px", md: "300px", sm: "40vw" }}
+          overflow="hidden"
+          alignContent="center"
+          verticalAlign="center"
+        >
           <Link href={imageUrl}>
-            <Image
-              src={imageUrl ?? ""}
-              alt={comment}
-              width="200px"
-              height="200px"
-              layout="fixed"
-              objectFit="cover"
-              quality={80}
-            />
+            <Box position="relative" top={{ md: "0", sm: "-20vw" }}>
+              <Image
+                src={imageUrl ?? ""}
+                alt={comment}
+                width="300px"
+                height="300px"
+                layout="responsive"
+                objectFit="cover"
+                quality={80}
+              />
+            </Box>
           </Link>
         </Box>
-        <Stack minW="200px" flexGrow={1} ml={4} justifyContent="space-between">
+        <Stack flexGrow={1} justifyContent="space-between">
           <Stack>
             <Flex>
               <PrimaryText

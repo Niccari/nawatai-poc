@@ -2,8 +2,10 @@ import { useLoginState } from "../modules/login/hooks";
 import ServiceLogo from "../assets/serviceLogo.svg";
 import ServiceLogoDarken from "../assets/ServiceLogoDarken.svg";
 import {
+  Box,
   Button,
   Divider,
+  Flex,
   HStack,
   IconButton,
   Menu,
@@ -45,14 +47,18 @@ const AppBar = ({}: Props): JSX.Element => {
 
   return (
     <>
-      <HStack p="2" justifyContent="space-between">
-        <Link href="/">
-          <a>
-            {(colorMode == "light" && <ServiceLogo />) || <ServiceLogoDarken />}
-          </a>
-        </Link>
+      <Flex justifyContent="space-between" flexWrap="wrap" p={2} gap={4}>
+        <Box>
+          <Link href="/">
+            <a>
+              {(colorMode == "light" && <ServiceLogo />) || (
+                <ServiceLogoDarken />
+              )}
+            </a>
+          </Link>
+        </Box>
 
-        <HStack alignItems="center" spacing="2">
+        <HStack alignItems="center">
           {(colorMode == "light" && (
             <IconButton
               aria-label="darken"
@@ -103,7 +109,7 @@ const AppBar = ({}: Props): JSX.Element => {
             </Button>
           )}
         </HStack>
-      </HStack>
+      </Flex>
       <Divider orientation="horizontal" />
     </>
   );
