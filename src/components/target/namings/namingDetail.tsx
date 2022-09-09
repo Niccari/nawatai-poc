@@ -32,7 +32,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const router = useRouter();
   const { personalUser: loginUser, isLogined } = useLoginState();
   const { user } = usePersonalUser(authorId);
-  const { onCreate, onEdit } = useUpsertNamingEval();
+  const { isUpdating, onCreate, onEdit } = useUpsertNamingEval();
   const { runDelete } = useCRUDNaming();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -116,25 +116,25 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
               kind={NamingEvalKind.PRECISE}
               count={precise}
               onEval={onEval}
-              disabled={!isLogined}
+              disabled={!isLogined || isUpdating}
             />
             <EvalButton
               kind={NamingEvalKind.FUN}
               count={fun}
               onEval={onEval}
-              disabled={!isLogined}
+              disabled={!isLogined || isUpdating}
             />
             <EvalButton
               kind={NamingEvalKind.QUESTION}
               count={question}
               onEval={onEval}
-              disabled={!isLogined}
+              disabled={!isLogined || isUpdating}
             />
             <EvalButton
               kind={NamingEvalKind.MISSMATCH}
               count={missmatch}
               onEval={onEval}
-              disabled={!isLogined}
+              disabled={!isLogined || isUpdating}
             />
           </HStack>
           <BasicUser user={user} />

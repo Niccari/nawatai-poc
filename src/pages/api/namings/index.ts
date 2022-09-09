@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     genre,
     parseInt(page, 10)
   );
-  res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate");
+  res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
   res.status(200).json(items);
 };
 

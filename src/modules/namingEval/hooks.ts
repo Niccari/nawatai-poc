@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { ScopedMutator } from "swr/dist/types";
 import {
@@ -41,21 +42,27 @@ const updateCache = async (
 
 export const useUpsertNamingEval = () => {
   const { mutate } = useSWRConfig();
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const onCreate = async (namingEval: NamingEvalWillSubmit) => {
+    setIsUpdating(true);
     const { namingId } = namingEval;
     await authedPost(`/api/namings/${namingId}/evals/new`, namingEval);
 
     await updateCache(mutate, namingEval);
+    setIsUpdating(false);
   };
 
   const onEdit = async (namingEval: NamingEvalWillEdit) => {
+    setIsUpdating(true);
     const { namingId, id } = namingEval;
     await authedPost(`/api/namings/${namingId}/evals/${id}/edit`, {
       ...namingEval,
     });
 
     await updateCache(mutate, namingEval);
+    setIsUpdating(false);
   };
 
-  return { onCreate, onEdit };
+  return { isUpdating, onCreate, onEdit };
 };
