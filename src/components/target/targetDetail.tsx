@@ -60,10 +60,8 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
       <Flex pb={2} flexWrap="wrap" gap={4}>
         <Box
           background="#333"
-          minW="300px"
-          minH="300px"
-          w={{ xl: "300px", md: "300px", sm: "100vw" }}
-          h={{ xl: "300px", md: "300px", sm: "40vw" }}
+          w={{ base: "100vw", xl: "300px", lg: "300px", md: "300px" }}
+          h={{ base: "40vw", xl: "300px", lg: "300px", md: "300px" }}
           overflow="hidden"
           alignContent="center"
           verticalAlign="center"
