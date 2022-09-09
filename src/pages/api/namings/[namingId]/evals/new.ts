@@ -80,8 +80,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     await namingEvalRepository.create(params);
-    updateEvalCounts(params, false);
-    createNotification(ownerId, params.namingId);
+    await updateEvalCounts(params, false);
+    await createNotification(ownerId, params.namingId);
 
     res.status(200).json({});
   } catch (e) {

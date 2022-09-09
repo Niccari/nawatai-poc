@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const isCancelled = await namingEvalRepository.update(params);
-    updateEvalCounts(params, isCancelled);
+    await updateEvalCounts(params, isCancelled);
 
     res.status(200).json({});
   } catch (e) {

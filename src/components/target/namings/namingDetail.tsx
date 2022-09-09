@@ -5,6 +5,7 @@ import {
   Stack,
   useDisclosure,
   Center,
+  HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import EvalButton from "../../../element/evalButton";
@@ -110,7 +111,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
             )}
           </Flex>
           <PrimaryText>{reason}</PrimaryText>
-          <PrimaryText>
+          <HStack>
             <EvalButton
               kind={NamingEvalKind.PRECISE}
               count={precise}
@@ -135,7 +136,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
               onEval={onEval}
               disabled={!isLogined}
             />
-          </PrimaryText>
+          </HStack>
           <BasicUser user={user} />
         </Stack>
       </Flex>

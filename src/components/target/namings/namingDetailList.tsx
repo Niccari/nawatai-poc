@@ -23,7 +23,6 @@ const NamingDetailList = ({
   namings,
   namingsError,
   targetId,
-  authorId,
   page,
   genre,
 }: Props): JSX.Element => {
@@ -34,7 +33,7 @@ const NamingDetailList = ({
   });
   if (namings === undefined) {
     return <LoadingContent />;
-  } else if (namingsError) {
+  } else if (namingsError || namingEvalsError) {
     return <LoadError />;
   } else if (namings.length === 0) {
     const objectName = (() => {

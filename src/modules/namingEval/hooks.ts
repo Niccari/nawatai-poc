@@ -23,19 +23,20 @@ export const useNamingEvalsByUserOfTarget = (params: {
   return { namingEvals: data, namingEvalsError: error };
 };
 
-const updateCache = (
+const updateCache = async (
   mutate: ScopedMutator,
   namingEval: NamingEvalWillSubmit
 ) => {
   const { targetId, authorId } = namingEval;
-  mutate(`/api/targets/${targetId}`);
-  mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`);
-  mutate(
-    `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`
-  );
-  mutate(
-    `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`
-  );
+  return Promise.all([
+    mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`),
+    mutate(
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`
+    ),
+    mutate(
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`
+    ),
+  ]);
 };
 
 export const useUpsertNamingEval = () => {
@@ -44,7 +45,7 @@ export const useUpsertNamingEval = () => {
     const { namingId } = namingEval;
     await authedPost(`/api/namings/${namingId}/evals/new`, namingEval);
 
-    updateCache(mutate, namingEval);
+    await updateCache(mutate, namingEval);
   };
 
   const onEdit = async (namingEval: NamingEvalWillEdit) => {
@@ -53,7 +54,7 @@ export const useUpsertNamingEval = () => {
       ...namingEval,
     });
 
-    updateCache(mutate, namingEval);
+    await updateCache(mutate, namingEval);
   };
 
   return { onCreate, onEdit };
