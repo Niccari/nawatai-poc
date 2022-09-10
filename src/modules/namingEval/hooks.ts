@@ -27,50 +27,34 @@ export const useNamingEvalsByUserOfTarget = (params: {
 
 const updateCache = async (mutate: ScopedMutator, namingEval: NamingEval) => {
   const { targetId, authorId, isCancelled } = namingEval;
+  const updateNamings = async (namings: Naming[] | undefined) => {
+    if (!namings) {
+      return namings;
+    }
+    return namings.map((n) =>
+      n.id === namingEval.namingId
+        ? {
+            ...n,
+            evalCounts: {
+              ...n.evalCounts,
+              [namingEval.kind]: isCancelled
+                ? n.evalCounts[namingEval.kind] - 1
+                : n.evalCounts[namingEval.kind] + 1,
+            },
+          }
+        : n
+    );
+  };
   return Promise.all([
     mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`),
     mutate(
       `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`,
-      async (namings: Naming[] | undefined) => {
-        if (!namings) {
-          return namings;
-        }
-        return namings.map((n) =>
-          n.id === namingEval.namingId
-            ? {
-                ...n,
-                evalCounts: {
-                  ...n.evalCounts,
-                  [namingEval.kind]: isCancelled
-                    ? n.evalCounts[namingEval.kind] - 1
-                    : n.evalCounts[namingEval.kind] + 1,
-                },
-              }
-            : n
-        );
-      },
+      updateNamings,
       { revalidate: false }
     ),
     mutate(
       `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`,
-      async (namings: Naming[] | undefined) => {
-        if (!namings) {
-          return namings;
-        }
-        return namings.map((n) =>
-          n.id === namingEval.namingId
-            ? {
-                ...n,
-                evalCounts: {
-                  ...n.evalCounts,
-                  [namingEval.kind]: isCancelled
-                    ? n.evalCounts[namingEval.kind] - 1
-                    : n.evalCounts[namingEval.kind] + 1,
-                },
-              }
-            : n
-        );
-      },
+      updateNamings,
       { revalidate: false }
     ),
   ]);
