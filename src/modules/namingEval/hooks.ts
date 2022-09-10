@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { ScopedMutator } from "swr/dist/types";
+import { Naming } from "../../models/naming";
 import {
   NamingEval,
   NamingEvalWillEdit,
@@ -24,18 +25,53 @@ export const useNamingEvalsByUserOfTarget = (params: {
   return { namingEvals: data, namingEvalsError: error };
 };
 
-const updateCache = async (
-  mutate: ScopedMutator,
-  namingEval: NamingEvalWillSubmit
-) => {
-  const { targetId, authorId } = namingEval;
+const updateCache = async (mutate: ScopedMutator, namingEval: NamingEval) => {
+  const { targetId, authorId, isCancelled } = namingEval;
   return Promise.all([
     mutate(`/api/targets/${targetId}/evals?authorId=${authorId}`),
     mutate(
-      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`,
+      async (namings: Naming[] | undefined) => {
+        if (!namings) {
+          return namings;
+        }
+        return namings.map((n) =>
+          n.id === namingEval.namingId
+            ? {
+                ...n,
+                evalCounts: {
+                  ...n.evalCounts,
+                  [namingEval.kind]: isCancelled
+                    ? n.evalCounts[namingEval.kind] - 1
+                    : n.evalCounts[namingEval.kind] + 1,
+                },
+              }
+            : n
+        );
+      },
+      { revalidate: false }
     ),
     mutate(
-      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`,
+      async (namings: Naming[] | undefined) => {
+        if (!namings) {
+          return namings;
+        }
+        return namings.map((n) =>
+          n.id === namingEval.namingId
+            ? {
+                ...n,
+                evalCounts: {
+                  ...n.evalCounts,
+                  [namingEval.kind]: isCancelled
+                    ? n.evalCounts[namingEval.kind] - 1
+                    : n.evalCounts[namingEval.kind] + 1,
+                },
+              }
+            : n
+        );
+      },
+      { revalidate: false }
     ),
   ]);
 };
@@ -47,20 +83,34 @@ export const useUpsertNamingEval = () => {
   const onCreate = async (namingEval: NamingEvalWillSubmit) => {
     setIsUpdating(true);
     const { namingId } = namingEval;
-    await authedPost(`/api/namings/${namingId}/evals/new`, namingEval);
-
-    await updateCache(mutate, namingEval);
+    const response = await authedPost(
+      `/api/namings/${namingId}/evals/new`,
+      namingEval
+    );
+    if (!response.ok) {
+      setIsUpdating(false);
+      return;
+    }
+    const newNamingEval = (await response.json()) as NamingEval;
+    await updateCache(mutate, newNamingEval);
     setIsUpdating(false);
   };
 
   const onEdit = async (namingEval: NamingEvalWillEdit) => {
     setIsUpdating(true);
     const { namingId, id } = namingEval;
-    await authedPost(`/api/namings/${namingId}/evals/${id}/edit`, {
-      ...namingEval,
-    });
-
-    await updateCache(mutate, namingEval);
+    const response = await authedPost(
+      `/api/namings/${namingId}/evals/${id}/edit`,
+      {
+        ...namingEval,
+      }
+    );
+    if (!response.ok) {
+      setIsUpdating(false);
+      return;
+    }
+    const newNamingEval = (await response.json()) as NamingEval;
+    await updateCache(mutate, newNamingEval);
     setIsUpdating(false);
   };
 

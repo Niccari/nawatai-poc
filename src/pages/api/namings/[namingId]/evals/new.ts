@@ -79,11 +79,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    await namingEvalRepository.create(params);
+    const namingEval = await namingEvalRepository.create(params);
     await updateEvalCounts(params, false);
     await createNotification(ownerId, params.namingId);
 
-    res.status(200).json({});
+    res.status(200).json(namingEval);
   } catch (e) {
     res.status(500).send(undefined);
   }

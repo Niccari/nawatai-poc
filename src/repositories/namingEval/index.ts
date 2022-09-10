@@ -46,15 +46,20 @@ class NamingEvalRepository implements INamingEvalRepository {
     return querySnapshots.docs.map((s) => this.toModel(s));
   }
 
-  public async create(entity: NamingEvalWillSubmit): Promise<void> {
+  public async create(entity: NamingEvalWillSubmit): Promise<NamingEval> {
     const collectionRef = firestoreClient.collection(this.collectionName);
-    await collectionRef.add({
+    const values = {
       ...entity,
       isCancelled: false,
-    });
+    };
+    await collectionRef.add(values);
+    return {
+      id: collectionRef.id,
+      ...values,
+    };
   }
 
-  public async update(entity: NamingEvalWillEdit): Promise<boolean> {
+  public async update(entity: NamingEvalWillEdit): Promise<NamingEval> {
     const namingEval = await this.get(entity.id);
     const docRef = firestoreClient.doc(`${this.collectionName}/${entity.id}`);
     const isCancelled = !namingEval.isCancelled;
@@ -65,7 +70,10 @@ class NamingEvalRepository implements INamingEvalRepository {
       },
       { merge: true }
     );
-    return isCancelled;
+    return {
+      ...namingEval,
+      isCancelled,
+    };
   }
 }
 

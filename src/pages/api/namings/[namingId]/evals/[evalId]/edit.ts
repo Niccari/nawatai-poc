@@ -25,10 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
   try {
-    const isCancelled = await namingEvalRepository.update(params);
-    await updateEvalCounts(params, isCancelled);
+    const namingEval = await namingEvalRepository.update(params);
+    await updateEvalCounts(params, namingEval.isCancelled);
 
-    res.status(200).json({});
+    res.status(200).json(namingEval);
   } catch (e) {
     res.status(500).send(undefined);
   }
