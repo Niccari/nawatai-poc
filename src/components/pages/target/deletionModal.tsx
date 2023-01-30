@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { PrimaryText } from "../../element/text";
+import { PrimaryText } from "../element/text";
 
 type Props = {
   isOpen: boolean;

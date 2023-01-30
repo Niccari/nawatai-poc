@@ -1,27 +1,32 @@
-import { Box, VStack, Text, Flex, Stack } from "@chakra-ui/react";
-import Image from "next/image";
+import { VStack, Text, Flex, Box, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { Naming } from "../../../models/naming";
+import { useNamingTarget } from "../../../modules/namingTarget/hooks";
+import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
-import { NamingTargetForView } from "../../models/namingTarget";
-import { usePersonalUser } from "../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
 
 type Props = {
-  target: NamingTargetForView;
+  naming: Naming;
 };
 
-const TargetSquare = ({ target }: Props): JSX.Element => {
-  const { id, authorId, title, comment, imageUrl, evalCounts } = target;
+const NamingSquare = ({ naming }: Props): JSX.Element => {
+  const { id, authorId, targetId, name, reason, evalCounts } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
+  const { target } = useNamingTarget(targetId);
+  if (!target) {
+    return <Box background={"#333"} h="300px" alignItems="center" />;
+  }
   return (
     <Box
-      h="300px"
       position="relative"
+      h="300px"
       backgroundColor="#333"
       alignItems="center"
-      onClick={() => router.push(`/targets/${id}`)}
+      onClick={() => router.push(`/targets/${targetId}`)}
     >
       <Box>
         {target.imageUrl && (
@@ -50,10 +55,11 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
             pr={2}
             backgroundColor="#00000099"
           >
-            <Text textColor="white" textStyle="h3">
-              {title}
+            {target.title && <Text textColor="white">{target.title}</Text>}
+            <Text textColor="white" textStyle="h3" mt={target.title ? 4 : 0}>
+              {name}
             </Text>
-            <Text textColor="white">{comment}</Text>
+            <Text textColor="white">{reason}</Text>
             <Text textColor="white" mt={2}>
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </Text>
@@ -67,4 +73,4 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
   );
 };
 
-export default TargetSquare;
+export default NamingSquare;

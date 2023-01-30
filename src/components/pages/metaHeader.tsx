@@ -10,7 +10,7 @@ const MetaHeader = ({
   title = "nawatai: 個人向け名付けブレストサービス",
   description = "nawataiはあらゆるものに名付けするサービスです。",
   imageUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp.png`,
-}: Props): JSX.Element => (
+}: Props) => (
   <Head>
     <title>{title}</title>
     <meta property="description" content={description} key="description" />

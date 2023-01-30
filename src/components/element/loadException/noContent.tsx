@@ -1,5 +1,5 @@
 import { Center } from "@chakra-ui/react";
-import { PrimaryText } from "../../element/text";
+import { PrimaryText } from "../text";
 
 type Props = {
   objectName: string;

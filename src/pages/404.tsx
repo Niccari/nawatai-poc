@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { PrimaryText } from "../element/text";
+import { PrimaryText } from "../components/element/text";
 import { Box, Center } from "@chakra-ui/react";
 
 const NotFoundPage: NextPage = () => {

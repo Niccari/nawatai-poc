@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { PrimaryText, SecondaryText } from "../../element/text";
+import { PrimaryText, SecondaryText } from "../../components/element/text";
 import { PersonalUser } from "../../models/personalUser";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";

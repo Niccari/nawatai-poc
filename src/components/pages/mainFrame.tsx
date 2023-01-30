@@ -8,7 +8,7 @@ type Props = {
   growContent?: boolean;
 };
 
-const MainFrame = ({ children }: Props): JSX.Element => {
+const MainFrame = ({ children }: Props) => {
   return (
     <Box>
       <AppBar />

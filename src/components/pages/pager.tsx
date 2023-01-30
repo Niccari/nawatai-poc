@@ -1,5 +1,5 @@
 import { Flex, Link, Text } from "@chakra-ui/react";
-import { NamingTargetListGenre } from "../models/namingTarget";
+import { NamingTargetListGenre } from "../../models/namingTarget";
 
 type Props = {
   endpoint: string;
@@ -8,7 +8,7 @@ type Props = {
   hasNext: boolean;
 };
 
-const Pager = ({ endpoint, genre, page, hasNext }: Props): JSX.Element => {
+const Pager = ({ endpoint, genre, page, hasNext }: Props) => {
   return (
     <Flex justifyContent="center">
       <Flex display="inline-flex">

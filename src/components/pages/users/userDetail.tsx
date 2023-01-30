@@ -1,8 +1,8 @@
 import { LinkIcon } from "@chakra-ui/icons";
 import { Flex, Box, Divider, Stack, Link, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { NextImageAvatar } from "../../element/nextImageAvatar";
-import { PrimaryText } from "../../element/text";
+import { NextImageAvatar } from "../element/nextImageAvatar";
+import { PrimaryText } from "../element/text";
 import { PersonalUserDetailView } from "../../models/personalUser";
 import { useLoginState } from "../../modules/login/hooks";
 

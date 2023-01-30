@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import LoadError from "../../../components/loadException/loadError";
+import LoadError from "../../../components/element/loadException/loadError";
 import LoadingContent from "../../../components/loading";
 import MetaHeader from "../../../components/metaHeader";
 import TabbedNamingDetailList from "../../../components/target/namings/tabbedNamingDetailList";

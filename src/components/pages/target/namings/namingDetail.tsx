@@ -8,8 +8,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import EvalButton from "../../../element/evalButton";
-import { PrimaryText } from "../../../element/text";
+import EvalButton from "../../element/evalButton";
+import { PrimaryText } from "../../element/text";
 import { Naming } from "../../../models/naming";
 import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
 import { useCRUDNaming } from "../../../modules/naming/hooks";

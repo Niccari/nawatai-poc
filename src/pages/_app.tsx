@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
-import MainFrame from "../components/mainFrame";
-import MetaHeader from "../components/metaHeader";
+import MainFrame from "../components/pages/mainFrame";
+import MetaHeader from "../components/pages/metaHeader";
 import theme from "../components/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {

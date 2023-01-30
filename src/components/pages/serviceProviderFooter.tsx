@@ -3,7 +3,7 @@ import { PlaceholderText } from "../element/text";
 
 type Props = {};
 
-const ServiceProviderFooter = ({}: Props): JSX.Element => {
+const ServiceProviderFooter = ({}: Props) => {
   return (
     <>
       <Divider orientation="horizontal" />
