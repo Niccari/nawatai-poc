@@ -1,8 +1,8 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import LoadingContent from "../../components/loading";
-import DeletionModal from "../../components/target/deletionModal";
+import LoadingContent from "../../components/pages/loading";
+import DeletionModal from "../../components/pages/target/deletionModal";
 import { PrimaryText } from "../../components/element/text";
 import { useLoginState } from "../../modules/login/hooks";
 import { useAnonymisePersonalUser } from "../../modules/personalUser/hooks";

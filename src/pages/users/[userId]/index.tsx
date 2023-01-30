@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import LoadingContent from "../../../components/loading";
-import MetaHeader from "../../../components/metaHeader";
-import UserDetail from "../../../components/users/userDetail";
+import LoadingContent from "../../../components/pages/loading";
+import MetaHeader from "../../../components/pages/metaHeader";
+import UserDetail from "../../../components/pages/users/userDetail";
 import { PersonalUserDetailView } from "../../../models/personalUser";
 
 type Props = {

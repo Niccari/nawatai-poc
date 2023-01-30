@@ -7,7 +7,7 @@ import { Box, Button, FormErrorMessage, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import LoadingContent from "../../../../components/loading";
+import LoadingContent from "../../../../components/pages/loading";
 import { PrimaryText } from "../../../../components/element/text";
 import { useLoginState } from "../../../../modules/login/hooks";
 import { useCRUDNaming } from "../../../../modules/naming/hooks";

@@ -1,7 +1,7 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
-import { useTargetNamings } from "../../../modules/naming/hooks";
+import { NamingTargetListGenre } from "../../../../models/namingTarget";
+import { useTargetNamings } from "../../../../modules/naming/hooks";
 import NamingDetailList from "./namingDetailList";
 
 type Props = {

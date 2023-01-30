@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadItemError from "../../../components/element/loadException/loadItemError";
-import LoadingContent from "../../../components/loading";
+import LoadingContent from "../../../components/pages/loading";
 import { PrimaryText } from "../../../components/element/text";
 import { useLoginState } from "../../../modules/login/hooks";
 import { useCRUDNaming, useNaming } from "../../../modules/naming/hooks";

@@ -8,17 +8,17 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import EvalButton from "../../element/evalButton";
-import { PrimaryText } from "../../element/text";
-import { Naming } from "../../../models/naming";
-import { NamingEval, NamingEvalKind } from "../../../models/namingEval";
-import { useCRUDNaming } from "../../../modules/naming/hooks";
-import { useUpsertNamingEval } from "../../../modules/namingEval/hooks";
-import { usePersonalUser } from "../../../modules/personalUser/hooks";
+import EvalButton from "../../../element/evalButton";
+import { PrimaryText } from "../../../element/text";
+import { Naming } from "../../../../models/naming";
+import { NamingEval, NamingEvalKind } from "../../../../models/namingEval";
+import { useCRUDNaming } from "../../../../modules/naming/hooks";
+import { useUpsertNamingEval } from "../../../../modules/namingEval/hooks";
+import { usePersonalUser } from "../../../../modules/personalUser/hooks";
 import TargetOwnerMenu from "../targetOwnerMenu";
 import DeletionModal from "../deletionModal";
 import BasicUser from "../../basicUser";
-import { useLoginState } from "../../../modules/login/hooks";
+import { useLoginState } from "../../../../modules/login/hooks";
 
 type Props = {
   naming: Naming;
