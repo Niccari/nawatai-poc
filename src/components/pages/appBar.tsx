@@ -1,6 +1,6 @@
-import { useLoginState } from "../modules/login/hooks";
-import ServiceLogo from "../assets/serviceLogo.svg";
-import ServiceLogoDarken from "../assets/serviceLogoDarken.svg";
+import { useLoginState } from "../../modules/login/hooks";
+import ServiceLogo from "../../assets/serviceLogo.svg";
+import ServiceLogoDarken from "../../assets/serviceLogoDarken.svg";
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { usePersonalUser } from "../modules/personalUser/hooks";
+import { usePersonalUser } from "../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import NotificationsList from "./notificationsList";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";

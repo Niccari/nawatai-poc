@@ -1,4 +1,4 @@
-import { useLoginState } from "../modules/login/hooks";
+import { useLoginState } from "../../modules/login/hooks";
 import {
   Avatar,
   AvatarBadge,
@@ -11,19 +11,22 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
-import { useUserNotification } from "../modules/notifications/hooks";
+import { useUserNotification } from "../../modules/notifications/hooks";
 import { useRouter } from "next/router";
-import { NotificationForView, NotificationKind } from "../models/notification";
+import {
+  NotificationForView,
+  NotificationKind,
+} from "../../models/notification";
 import { PrimaryText, SecondaryText } from "../element/text";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import {
   usePersonalUserActivity,
   useUpdateNotificationRead,
-} from "../modules/personalUserActivity/hooks";
+} from "../../modules/personalUserActivity/hooks";
 
 type Props = {};
 
-const NotificationsList = ({}: Props): JSX.Element => {
+const NotificationsList = ({}: Props) => {
   const router = useRouter();
   const { personalUser } = useLoginState();
   const { notifications } = useUserNotification(personalUser?.id);

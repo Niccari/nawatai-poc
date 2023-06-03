@@ -1,11 +1,11 @@
 import { Box, GridItem, SimpleGrid } from "@chakra-ui/react";
-import { NamingTargetListGenre } from "../../models/namingTarget";
-import LoadError from "../loadException/loadError";
-import NoContent from "../loadException/noContent";
-import { useNamings } from "../../modules/naming/hooks";
+import { NamingTargetListGenre } from "../../../models/namingTarget";
+import LoadError from "../../element/loadException/loadError";
+import NoContent from "../../element/loadException/noContent";
+import { useNamings } from "../../../modules/naming/hooks";
 import LoadingContent from "../loading";
 import NamingSquare from "./namingSquare";
-import Constants from "../../constants";
+import Constants from "../../../constants";
 import Pager from "../pager";
 
 type Props = {

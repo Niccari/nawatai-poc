@@ -2,14 +2,14 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import { PrimaryText } from "../element/text";
-import { PersonalUserBasicView } from "../models/personalUser";
+import { PersonalUserBasicView } from "../../models/personalUser";
 
 type Props = {
   user?: PersonalUserBasicView;
   noLink?: boolean;
 };
 
-const BasicUser = ({ user, noLink }: Props): JSX.Element => {
+const BasicUser = ({ user, noLink }: Props) => {
   const router = useRouter();
   const handleEditProfile = () => {
     if (noLink === true || !user?.id) {

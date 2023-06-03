@@ -1,11 +1,11 @@
 import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
-import Constants from "../../../constants";
-import { Naming } from "../../../models/naming";
-import { NamingTargetListGenre } from "../../../models/namingTarget";
-import { useLoginState } from "../../../modules/login/hooks";
-import { useNamingEvalsByUserOfTarget } from "../../../modules/namingEval/hooks";
-import LoadError from "../../loadException/loadError";
-import NoContent from "../../loadException/noContent";
+import Constants from "../../../../constants";
+import { Naming } from "../../../../models/naming";
+import { NamingTargetListGenre } from "../../../../models/namingTarget";
+import { useLoginState } from "../../../../modules/login/hooks";
+import { useNamingEvalsByUserOfTarget } from "../../../../modules/namingEval/hooks";
+import LoadError from "../../../element/loadException/loadError";
+import NoContent from "../../../element/loadException/noContent";
 import LoadingContent from "../../loading";
 import Pager from "../../pager";
 import NamingDetail from "./namingDetail";

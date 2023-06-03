@@ -1,6 +1,6 @@
 import { Flex, Stack } from "@chakra-ui/layout";
 import { NextPage } from "next";
-import { PrimaryText } from "../../element/text";
+import { PrimaryText } from "../../components/element/text";
 
 type Props = {};
 

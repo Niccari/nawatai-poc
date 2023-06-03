@@ -14,8 +14,8 @@ import {
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import LoadingContent from "../../components/loading";
-import { PrimaryText } from "../../element/text";
+import LoadingContent from "../../components/pages/loading";
+import { PrimaryText } from "../../components/element/text";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import { useCreateNamingTarget } from "../../modules/namingTarget/hooks";

@@ -1,9 +1,9 @@
 import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
-import Constants from "../../constants";
-import { NamingTargetListGenre } from "../../models/namingTarget";
-import { useNamingTargets } from "../../modules/namingTarget/hooks";
-import LoadError from "../loadException/loadError";
-import NoContent from "../loadException/noContent";
+import Constants from "../../../constants";
+import { NamingTargetListGenre } from "../../../models/namingTarget";
+import { useNamingTargets } from "../../../modules/namingTarget/hooks";
+import LoadError from "../../element/loadException/loadError";
+import NoContent from "../../element/loadException/noContent";
 import Pager from "../pager";
 import TargetSquare from "./targetSquare";
 

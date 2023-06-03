@@ -16,7 +16,7 @@ import {
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { PrimaryText } from "../../element/text";
+import { PrimaryText } from "../../components/element/text";
 import { PersonalUserDetailView } from "../../models/personalUser";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";

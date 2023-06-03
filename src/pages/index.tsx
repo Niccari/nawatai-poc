@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import { PrimaryText } from "../element/text";
+import { PrimaryText } from "../components/element/text";
 import { useRouterToNewUser } from "../modules/route/hooks";
-import TargetList from "../components/targets/targetList";
+import TargetList from "../components/pages/targets/targetList";
 import { Box } from "@chakra-ui/react";
 import { NamingTargetListGenre } from "../models/namingTarget";
-import NamingsList from "../components/namings/namingsList";
+import NamingsList from "../components/pages/namings/namingsList";
 
 const Dashboard: NextPage = () => {
   useRouterToNewUser();

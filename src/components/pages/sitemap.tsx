@@ -3,7 +3,7 @@ import { PrimaryText } from "../element/text";
 
 type Props = {};
 
-const Sitemap = ({}: Props): JSX.Element => {
+const Sitemap = ({}: Props) => {
   return (
     <Box w="100vw">
       <PrimaryText textStyle="h2">サイトマップ</PrimaryText>

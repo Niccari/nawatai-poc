@@ -3,9 +3,9 @@ import { Box, Button, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import LoadItemError from "../../../components/loadException/loadItemError";
-import LoadingContent from "../../../components/loading";
-import { PrimaryText } from "../../../element/text";
+import LoadItemError from "../../../components/element/loadException/loadItemError";
+import LoadingContent from "../../../components/pages/loading";
+import { PrimaryText } from "../../../components/element/text";
 import { useLoginState } from "../../../modules/login/hooks";
 import {
   useEditNamingTarget,

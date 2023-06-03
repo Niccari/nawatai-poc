@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { NamingEvalKind } from "../models/namingEval";
+import { NamingEvalKind } from "../../models/namingEval";
 import { PrimaryText } from "./text";
 
 type Props = {

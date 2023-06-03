@@ -1,6 +1,6 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 
-const LoadingContent = (): JSX.Element => (
+const LoadingContent = () => (
   <Flex h="200px" justifyContent="center" alignItems="center">
     <Spinner />
   </Flex>

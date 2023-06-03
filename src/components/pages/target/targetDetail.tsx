@@ -11,10 +11,10 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { PrimaryText } from "../../element/text";
-import { NamingTargetForView } from "../../models/namingTarget";
-import { useLoginState } from "../../modules/login/hooks";
-import { useDeleteNamingTarget } from "../../modules/namingTarget/hooks";
-import { usePersonalUser } from "../../modules/personalUser/hooks";
+import { NamingTargetForView } from "../../../models/namingTarget";
+import { useLoginState } from "../../../modules/login/hooks";
+import { useDeleteNamingTarget } from "../../../modules/namingTarget/hooks";
+import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
 import DeletionModal from "./deletionModal";
 import TargetOwnerMenu from "./targetOwnerMenu";

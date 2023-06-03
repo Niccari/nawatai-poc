@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import { PrimaryText } from "../../element/text";
+import { PrimaryText } from "../../components/element/text";
 import { useRouterToNewUser } from "../../modules/route/hooks";
-import TargetList from "../../components/targets/targetList";
+import TargetList from "../../components/pages/targets/targetList";
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NamingTargetListGenre } from "../../models/namingTarget";
