@@ -2,11 +2,11 @@ import { storageClient } from "../../services/firebaseOnServer";
 import { IImageRepository, ImageMetadata, ImageUploading } from "./interface";
 
 class ImageRepository implements IImageRepository {
-  resolveUrl(id: string): Promise<string> {
+  public async resolveUrl(id: string): Promise<string> {
     const bucket = storageClient.bucket();
     const file = bucket.file(`images/${id}`);
     const url = file.publicUrl();
-    return Promise.resolve(url);
+    return url;
   }
 
   public async delete(id: string): Promise<void> {
@@ -29,7 +29,11 @@ class ImageRepository implements IImageRepository {
   async setMetaData(id: string, metadata: ImageMetadata): Promise<void> {
     const bucket = storageClient.bucket();
     const file = bucket.file(`images/${id}`);
-    await file.setMetadata(metadata);
+    try {
+      await file.setMetadata(metadata);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async makePublic(id: string): Promise<void> {

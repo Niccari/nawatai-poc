@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Naming } from "../../../models/naming";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
-import { NextImageAvatar } from "../../element/nextImageAvatar";
 import BasicUser from "../basicUser";
 
 type Props = {
@@ -23,22 +22,26 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
   return (
     <Box
       position="relative"
-      h="300px"
+      w="100%"
+      aspectRatio="4 / 3"
       backgroundColor="#333"
       alignItems="center"
       onClick={() => router.push(`/targets/${targetId}`)}
     >
-      <Box>
-        {target.imageUrl && (
-          <Image
-            src={target.imageUrl}
-            alt={target.title}
-            layout="fill"
-            objectFit="cover"
-            quality={80}
-          />
-        )}
-      </Box>
+      {target.imageUrl && (
+        <Image
+          src={target.imageUrl}
+          alt={target.title ?? "naming image"}
+          fill
+          sizes="300"
+          priority
+          style={{
+            objectFit: "cover",
+            objectPosition: "center center",
+          }}
+          quality={80}
+        />
+      )}
       <Stack
         w="100%"
         h="100%"

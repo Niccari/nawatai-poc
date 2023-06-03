@@ -58,28 +58,40 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
         }}
       />
       <Flex pb={2} flexWrap="wrap" gap={4}>
-        <Box
-          background="#333"
-          w={{ base: "100vw", xl: "300px", lg: "300px", md: "300px" }}
-          h={{ base: "40vw", xl: "300px", lg: "300px", md: "300px" }}
-          overflow="hidden"
-          alignContent="center"
-          verticalAlign="center"
-        >
-          <Link href={imageUrl}>
-            <Box position="relative" top={{ md: "0", sm: "-20vw" }}>
-              <Image
-                src={imageUrl ?? ""}
-                alt={comment}
-                width="300px"
-                height="300px"
-                layout="responsive"
-                objectFit="cover"
-                quality={80}
-              />
-            </Box>
-          </Link>
-        </Box>
+        <Link href={imageUrl}>
+          <Box
+            background="#333"
+            position="relative"
+            w={{
+              base: "calc(100vw - 16px)",
+              xl: "300px",
+              lg: "300px",
+              md: "300px",
+            }}
+            aspectRatio={{
+              base: "4 / 3",
+              xl: "1 / 1",
+              lg: "1 / 1",
+              md: "1 / 1",
+            }}
+            overflow="hidden"
+            alignContent="center"
+            verticalAlign="center"
+          >
+            <Image
+              src={imageUrl ?? ""}
+              alt={comment}
+              fill
+              sizes="300"
+              style={{
+                objectFit: "cover",
+                objectPosition: "center center",
+              }}
+              priority
+              quality={80}
+            />
+          </Box>
+        </Link>
         <Stack flexGrow={1} justifyContent="space-between">
           <Stack>
             <Flex>

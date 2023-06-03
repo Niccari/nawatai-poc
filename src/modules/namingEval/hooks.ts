@@ -1,6 +1,5 @@
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { ScopedMutator } from "swr/dist/types";
 import { Naming } from "../../models/naming";
 import {
   NamingEval,
@@ -9,6 +8,7 @@ import {
 } from "../../models/namingEval";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 import { authedPost } from "../api";
+import { ScopedMutator } from "swr/_internal";
 
 const fetcher = async (url: string) => await (await fetch(url)).json();
 

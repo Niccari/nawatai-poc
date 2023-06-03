@@ -32,9 +32,11 @@ export const NextImageAvatar = (props: AvatarProps) => {
         >
           <ChakraNextImage
             src={src}
-            alt={name}
-            width="100%"
-            height="100%"
+            alt={name ?? "your avatar image"}
+            width={parseInt(width?.toString() ?? "40", 10)}
+            height={parseInt(height?.toString() ?? "40", 10)}
+            w="100%"
+            h="100%"
             borderRadius="50%"
             background={src ? "white" : "transparent"}
           />

@@ -37,4 +37,4 @@ export const NamingTargetListGenre = {
   LATEST: "latest",
 } as const;
 export type NamingTargetListGenre =
-  typeof NamingTargetListGenre[keyof typeof NamingTargetListGenre];
+  (typeof NamingTargetListGenre)[keyof typeof NamingTargetListGenre];

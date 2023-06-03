@@ -3,7 +3,7 @@ export const NotificationKind = {
   RECEIVED_EVAL: "receivedEval",
 } as const;
 export type NotificationKind =
-  typeof NotificationKind[keyof typeof NotificationKind];
+  (typeof NotificationKind)[keyof typeof NotificationKind];
 
 export type NotificationWillSubmit = {
   reactionKind: NotificationKind;
