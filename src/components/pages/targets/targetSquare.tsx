@@ -16,7 +16,8 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   return (
     <Box
-      h="300px"
+      w="100%"
+      aspectRatio="4 / 3"
       position="relative"
       backgroundColor="#333"
       alignItems="center"
@@ -29,7 +30,10 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
           fill
           sizes="300"
           priority
-          style={{ objectFit: "cover" }}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center center",
+          }}
           quality={80}
         />
       )}

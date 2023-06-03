@@ -22,7 +22,8 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
   return (
     <Box
       position="relative"
-      h="300px"
+      w="100%"
+      aspectRatio="4 / 3"
       backgroundColor="#333"
       alignItems="center"
       onClick={() => router.push(`/targets/${targetId}`)}
@@ -33,10 +34,11 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
           alt={target.title ?? "naming image"}
           fill
           sizes="300"
+          priority
           style={{
             objectFit: "cover",
+            objectPosition: "center center",
           }}
-          priority
           quality={80}
         />
       )}
