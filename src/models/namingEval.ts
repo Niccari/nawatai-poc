@@ -4,7 +4,8 @@ export const NamingEvalKind = {
   QUESTION: "question",
   MISSMATCH: "missmatch",
 } as const;
-export type NamingEvalKind = typeof NamingEvalKind[keyof typeof NamingEvalKind];
+export type NamingEvalKind =
+  (typeof NamingEvalKind)[keyof typeof NamingEvalKind];
 
 export type NamingEvalWillSubmit = {
   targetId: string;

@@ -50,11 +50,7 @@ const AppBar = ({}: Props): JSX.Element => {
       <Flex justifyContent="space-between" flexWrap="wrap" p={2} gap={4}>
         <Box>
           <Link href="/">
-            <a>
-              {(colorMode == "light" && <ServiceLogo />) || (
-                <ServiceLogoDarken />
-              )}
-            </a>
+            {(colorMode == "light" && <ServiceLogo />) || <ServiceLogoDarken />}
           </Link>
         </Box>
 

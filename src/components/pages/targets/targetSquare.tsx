@@ -1,7 +1,6 @@
 import { Box, VStack, Text, Flex, Stack } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { NamingTargetForView } from "../../../models/namingTarget";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
@@ -23,17 +22,17 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
       alignItems="center"
       onClick={() => router.push(`/targets/${id}`)}
     >
-      <Box>
-        {target.imageUrl && (
-          <Image
-            src={target.imageUrl}
-            alt={target.title}
-            layout="fill"
-            objectFit="cover"
-            quality={80}
-          />
-        )}
-      </Box>
+      {target.imageUrl && (
+        <Image
+          src={target.imageUrl}
+          alt={target.title ?? "target image"}
+          fill
+          sizes="300"
+          priority
+          style={{ objectFit: "cover" }}
+          quality={80}
+        />
+      )}
       <Stack
         w="100%"
         h="100%"

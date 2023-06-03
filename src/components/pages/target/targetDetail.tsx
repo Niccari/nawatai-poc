@@ -71,10 +71,14 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
               <Image
                 src={imageUrl ?? ""}
                 alt={comment}
-                width="300px"
-                height="300px"
-                layout="responsive"
-                objectFit="cover"
+                width="300"
+                height="300"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "auto",
+                }}
+                priority
                 quality={80}
               />
             </Box>
