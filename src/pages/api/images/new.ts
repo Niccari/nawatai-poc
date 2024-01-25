@@ -32,11 +32,15 @@ const uploadImageByStream = async (
       if (!Object.hasOwn(files, "imageFile")) {
         reject(new Error("imageFile not specified."));
       }
-      const { mimetype } = files.imageFile as FormidableFile;
-      resolve({
-        mimetype: mimetype ?? "application/octet-stream",
-        err,
-      });
+      const file = files["imageFile"];
+      if (file && file[0]) {
+        const { mimetype } = file[0];
+        resolve({
+          mimetype: mimetype ?? "application/octet-stream",
+          err,
+        });
+      }
+      reject(new Error("invalid image"));
     });
   });
 };
