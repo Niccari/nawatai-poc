@@ -31,13 +31,13 @@ const NotificationsList = ({}: Props) => {
   const { personalUser } = useLoginState();
   const { notifications } = useUserNotification(personalUser?.id);
   const { userActivity, userActivityError } = usePersonalUserActivity(
-    personalUser?.id
+    personalUser?.id,
   );
   const { onEdit } = useUpdateNotificationRead();
   const hasNotification = Boolean(
     notifications?.find(
-      (n) => userActivity && n.createdAt > userActivity.lastReadNotificationAt
-    )
+      (n) => userActivity && n.createdAt > userActivity.lastReadNotificationAt,
+    ),
   );
 
   const handleShowContent = (notification: NotificationForView) => {

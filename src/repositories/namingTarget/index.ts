@@ -16,7 +16,7 @@ class NamingTargetRepository implements INamingTargetRepository {
   private readonly collectionName = "NamingTargets";
 
   private toModel(
-    snapshot: DocumentSnapshot | QueryDocumentSnapshot
+    snapshot: DocumentSnapshot | QueryDocumentSnapshot,
   ): NamingTarget {
     const document = snapshot.data();
     if (!document) {
@@ -46,7 +46,7 @@ class NamingTargetRepository implements INamingTargetRepository {
   public async list(
     count: number,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<NamingTarget[]> {
     const offset = count * Math.max(page - 1, 0);
     const orderKey = (() => {
@@ -88,7 +88,7 @@ class NamingTargetRepository implements INamingTargetRepository {
   public async update(entity: NamingTargetWillEdit): Promise<NamingTarget> {
     const namingTarget = await this.get(entity.id);
     const updateItems = Object.fromEntries(
-      Object.entries(entity).filter(([k, v]) => v !== undefined)
+      Object.entries(entity).filter(([k, v]) => v !== undefined),
     );
     const newTarget = {
       ...namingTarget,
@@ -117,7 +117,7 @@ class NamingTargetRepository implements INamingTargetRepository {
         imageId: null,
         isDeleted: true,
       },
-      { merge: true }
+      { merge: true },
     );
   }
 

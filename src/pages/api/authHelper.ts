@@ -3,7 +3,7 @@ import { firebaseAuthClient } from "../../services/firebaseOnServer";
 
 export const getAuthedUserId = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
   if (!(req.headers && req.headers.authorization)) {
     res.status(400).send(undefined);

@@ -75,7 +75,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
         const { imageId } = await uploadImage(
           new File([blob], name, {
             type: blob.type,
-          })
+          }),
         );
         return imageId;
       }

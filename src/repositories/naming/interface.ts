@@ -6,13 +6,13 @@ export interface INamingRepository {
   list(
     count: number,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<Naming[]>;
   listByTarget(
     count: number,
     targetId: string,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<Naming[]>;
   create(entity: NamingWillSubmit): Promise<Naming>;
   update(entity: NamingWillEdit): Promise<Naming>;

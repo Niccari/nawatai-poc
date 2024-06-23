@@ -12,7 +12,7 @@ export const config = {
 
 const uploadImageByStream = async (
   writable: Writable,
-  req: NextApiRequest
+  req: NextApiRequest,
 ): Promise<{
   mimetype: string;
   err?: Error;

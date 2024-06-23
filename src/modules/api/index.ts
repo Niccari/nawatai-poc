@@ -16,7 +16,7 @@ export const authedGet = async (endpoint: string) => {
 
 export const authedPost = async (
   endpoint: string,
-  body: Record<string, unknown> | undefined = undefined
+  body: Record<string, unknown> | undefined = undefined,
 ) => {
   const bearer = await getBearer();
   return fetch(endpoint, {

@@ -32,10 +32,10 @@ const TabbedNamingDetailList = ({
         onChange={(index) =>
           index === 0
             ? router.push(
-                `/targets/${targetId}?genre=${NamingTargetListGenre.HOT}&page=${page}`
+                `/targets/${targetId}?genre=${NamingTargetListGenre.HOT}&page=${page}`,
               )
             : router.push(
-                `/targets/${targetId}?genre=${NamingTargetListGenre.LATEST}&page=${page}`
+                `/targets/${targetId}?genre=${NamingTargetListGenre.LATEST}&page=${page}`,
               )
         }
       >

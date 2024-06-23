@@ -78,7 +78,7 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
 
   const updatePersonalData = (
     key: keyof PersonalUserDetailView,
-    value: string
+    value: string,
   ) => {
     if (!personalUser) {
       return;

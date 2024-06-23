@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     Constants.namingsPageCount,
     targetId,
     genre,
-    parseInt(page, 10)
+    parseInt(page, 10),
   );
   res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate");
   res.status(200).json(items);

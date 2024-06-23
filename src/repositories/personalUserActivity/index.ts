@@ -13,7 +13,7 @@ class PersonalUserRepository implements IPersonalUserActivityRepository {
   private readonly collectionName = "PersonalUserActivity";
 
   private toModel(
-    snapshot: DocumentSnapshot | QueryDocumentSnapshot
+    snapshot: DocumentSnapshot | QueryDocumentSnapshot,
   ): PersonalUserActivity {
     const document = snapshot.data();
     if (!document) {
@@ -54,7 +54,7 @@ class PersonalUserRepository implements IPersonalUserActivityRepository {
         lastReadNotificationAt: new Date(0),
         signUpAt: new Date(0),
       },
-      { merge: true }
+      { merge: true },
     );
   }
 }

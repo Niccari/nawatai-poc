@@ -23,11 +23,11 @@ const fetcher = async (url: string): Promise<PersonalUser> => {
 
 export const useLoginState = () => {
   const [firebaseUser, setFirebaseUser] = useState<User | null | undefined>(
-    undefined
+    undefined,
   );
   const { data, isValidating } = useSWR<PersonalUserDetailView, Error>(
     firebaseUser ? `/api/users/${firebaseUser.uid}?detailed=true` : null,
-    fetcher
+    fetcher,
   );
   const login = async () => {
     const provider = new GoogleAuthProvider();

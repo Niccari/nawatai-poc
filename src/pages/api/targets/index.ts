@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const items = await namingTargetRepository.list(
     Constants.namingsPageCount,
     genre,
-    parseInt(page, 10)
+    parseInt(page, 10),
   );
   const targets: NamingTargetForView[] = await Promise.all(
     items.map(async (item) => ({
@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       imageUrl: item.imageId
         ? await imageRepository.resolveUrl(item.imageId)
         : undefined,
-    }))
+    })),
   );
   res.setHeader("Cache-Control", "s-maxage=10, stale-while-revalidate");
   res.status(200).json(targets);

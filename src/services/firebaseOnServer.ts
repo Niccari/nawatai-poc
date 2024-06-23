@@ -12,7 +12,7 @@ const firebaseConfig = {
 if (!getApps()?.length) {
   initializeApp({
     credential: cert(
-      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
+      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string),
     ),
     ...firebaseConfig,
   });

@@ -9,7 +9,7 @@ import { IPersonalUserRepository } from "./interface";
 
 class PersonalUserRepository implements IPersonalUserRepository {
   private toModel(
-    snapshot: DocumentSnapshot | QueryDocumentSnapshot
+    snapshot: DocumentSnapshot | QueryDocumentSnapshot,
   ): PersonalUser {
     const document = snapshot.data();
     if (!document) {
@@ -71,7 +71,7 @@ class PersonalUserRepository implements IPersonalUserRepository {
         twitterUserId: null,
         isDeleted: true,
       },
-      { merge: true }
+      { merge: true },
     );
   }
 }

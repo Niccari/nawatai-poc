@@ -11,11 +11,11 @@ const fetcher = async (url: string) => await (await fetch(url)).json();
 
 export const useNamingTargets = (
   genre: NamingTargetListGenre,
-  page: number = 1
+  page: number = 1,
 ) => {
   const { data, error } = useSWR<NamingTargetForView[], Error>(
     `/api/targets?genre=${genre}&page=${page}`,
-    fetcher
+    fetcher,
   );
 
   return { targets: data, targetsError: error };
@@ -24,7 +24,7 @@ export const useNamingTargets = (
 export const useNamingTarget = (targetId: string | undefined) => {
   const { data, error } = useSWR<NamingTargetForView, Error>(
     targetId ? `/api/targets/${targetId}` : null,
-    fetcher
+    fetcher,
   );
 
   return { target: data, targetError: error };
@@ -48,7 +48,7 @@ export const useCreateNamingTarget = () => {
         ];
         return final;
       },
-      { revalidate: false }
+      { revalidate: false },
     );
   };
   return { onPost };
@@ -64,7 +64,7 @@ export const useEditNamingTarget = () => {
         const result: NamingTargetForView = await response.json();
         return result;
       },
-      { revalidate: false }
+      { revalidate: false },
     );
   };
   return { onEdit };
@@ -84,7 +84,7 @@ export const useDeleteNamingTarget = () => {
         const result: NamingTargetForView = await response.json();
         return result;
       },
-      { revalidate: false }
+      { revalidate: false },
     );
   };
   return { onDelete };

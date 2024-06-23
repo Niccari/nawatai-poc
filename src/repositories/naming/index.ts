@@ -44,7 +44,7 @@ class NamingRepository implements INamingRepository {
   public async list(
     count: number,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<Naming[]> {
     const offset = count * Math.max(page - 1, 0);
     const orderKey = this.genreToField(genre);
@@ -62,7 +62,7 @@ class NamingRepository implements INamingRepository {
     count: number,
     targetId: string,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<Naming[]> {
     const offset = count * Math.max(page - 1, 0);
     const orderKey = this.genreToField(genre);
@@ -95,7 +95,7 @@ class NamingRepository implements INamingRepository {
   public async update(entity: NamingWillEdit): Promise<Naming> {
     const naming = await this.get(entity.id);
     const updateItems = Object.fromEntries(
-      Object.entries(entity).filter(([k, v]) => v !== undefined)
+      Object.entries(entity).filter(([k, v]) => v !== undefined),
     );
     const newNaming = {
       ...naming,
@@ -114,7 +114,7 @@ class NamingRepository implements INamingRepository {
         reason: "",
         isDeleted: true,
       },
-      { merge: true }
+      { merge: true },
     );
   }
 
@@ -127,7 +127,7 @@ class NamingRepository implements INamingRepository {
     Promise.all(
       ids.map(async (id) => {
         this.delete(id);
-      })
+      }),
     );
   }
 }
