@@ -15,7 +15,7 @@ class NotificationRepository implements INotificationRepository {
   private readonly collectionName = "Notifications";
 
   private toModel(
-    snapshot: DocumentSnapshot | QueryDocumentSnapshot
+    snapshot: DocumentSnapshot | QueryDocumentSnapshot,
   ): Notification {
     const document = snapshot.data();
     if (!document) {
@@ -59,7 +59,7 @@ class NotificationRepository implements INotificationRepository {
     Promise.all(
       querySnapshots.docs.map(async (snapshot) => {
         snapshot.ref.delete();
-      })
+      }),
     );
   }
 }

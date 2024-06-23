@@ -10,7 +10,7 @@ export interface INamingTargetRepository {
   list(
     count: number,
     genre: NamingTargetListGenre,
-    page: number
+    page: number,
   ): Promise<NamingTarget[]>;
   create(entity: NamingTargetWillSubmit): Promise<NamingTarget>;
   update(entity: NamingTargetWillEdit): Promise<NamingTarget>;

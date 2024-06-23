@@ -19,7 +19,7 @@ export const useNamingEvalsByUserOfTarget = (params: {
   const { authorId, targetId } = params;
   const { data, error } = useSWR<NamingEval[], Error>(
     authorId ? `/api/targets/${targetId}/evals?authorId=${authorId}` : null,
-    fetcher
+    fetcher,
   );
 
   return { namingEvals: data, namingEvalsError: error };
@@ -42,7 +42,7 @@ const updateCache = async (mutate: ScopedMutator, namingEval: NamingEval) => {
                 : n.evalCounts[namingEval.kind] + 1,
             },
           }
-        : n
+        : n,
     );
   };
   return Promise.all([
@@ -50,12 +50,12 @@ const updateCache = async (mutate: ScopedMutator, namingEval: NamingEval) => {
     mutate(
       `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`,
       updateNamings,
-      { revalidate: false }
+      { revalidate: false },
     ),
     mutate(
       `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`,
       updateNamings,
-      { revalidate: false }
+      { revalidate: false },
     ),
   ]);
 };
@@ -69,7 +69,7 @@ export const useUpsertNamingEval = () => {
     const { namingId } = namingEval;
     const response = await authedPost(
       `/api/namings/${namingId}/evals/new`,
-      namingEval
+      namingEval,
     );
     if (!response.ok) {
       setIsUpdating(false);
@@ -87,7 +87,7 @@ export const useUpsertNamingEval = () => {
       `/api/namings/${namingId}/evals/${id}/edit`,
       {
         ...namingEval,
-      }
+      },
     );
     if (!response.ok) {
       setIsUpdating(false);

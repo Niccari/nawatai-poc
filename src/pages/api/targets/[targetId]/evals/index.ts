@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const items = await namingEvalRepository.listByUserOfTarget(
     targetId,
-    authorId
+    authorId,
   );
   res.status(200).json(items);
 };

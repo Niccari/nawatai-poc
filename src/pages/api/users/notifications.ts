@@ -52,10 +52,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           message,
           authorIconUrl,
         };
-      })
+      }),
     );
   const filteredNotificationMessages = notificationMessages.filter(
-    (n) => n !== undefined
+    (n) => n !== undefined,
   ) as NotificationForView[];
   res.status(200).json(filteredNotificationMessages);
 };

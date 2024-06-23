@@ -31,10 +31,10 @@ const TargetsPage: NextPage = ({}) => {
         onChange={(index) =>
           index === 0
             ? router.push(
-                `/targets?genre=${NamingTargetListGenre.HOT}&page=${page}`
+                `/targets?genre=${NamingTargetListGenre.HOT}&page=${page}`,
               )
             : router.push(
-                `/targets?genre=${NamingTargetListGenre.LATEST}&page=${page}`
+                `/targets?genre=${NamingTargetListGenre.LATEST}&page=${page}`,
               )
         }
       >

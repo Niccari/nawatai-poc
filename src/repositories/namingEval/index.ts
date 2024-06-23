@@ -14,7 +14,7 @@ class NamingEvalRepository implements INamingEvalRepository {
   private readonly collectionName = "NamingEval";
 
   private toModel(
-    snapshot: DocumentSnapshot | QueryDocumentSnapshot
+    snapshot: DocumentSnapshot | QueryDocumentSnapshot,
   ): NamingEval {
     const document = snapshot.data();
     if (!document) {
@@ -36,7 +36,7 @@ class NamingEvalRepository implements INamingEvalRepository {
 
   public async listByUserOfTarget(
     targetId: string,
-    authorId: string
+    authorId: string,
   ): Promise<NamingEval[]> {
     const query = firestoreClient
       .collection(this.collectionName)
@@ -68,7 +68,7 @@ class NamingEvalRepository implements INamingEvalRepository {
         ...namingEval,
         isCancelled,
       },
-      { merge: true }
+      { merge: true },
     );
     return {
       ...namingEval,

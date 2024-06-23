@@ -14,7 +14,7 @@ import { getAuthedUserId } from "../../../authHelper";
 // TODO(Niccari): make evalCounts updates in background. Should use transaction
 export const updateEvalCounts = async (
   namingEval: NamingEvalWillSubmit | NamingEvalWillEdit,
-  isCancelled: boolean
+  isCancelled: boolean,
 ) => {
   const { targetId, namingId, kind } = namingEval;
   const point = (() => {

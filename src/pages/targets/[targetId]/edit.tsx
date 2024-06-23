@@ -25,7 +25,7 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
 
   const { onEdit } = useEditNamingTarget();
   const { target, targetError } = useNamingTarget(
-    targetId as string | undefined
+    targetId as string | undefined,
   );
 
   useEffect(() => {

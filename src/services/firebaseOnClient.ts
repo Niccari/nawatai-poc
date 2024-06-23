@@ -17,7 +17,7 @@ if (getApps().length === 0) {
   if (firebaseEmulatorHost && firebaseAuthEmulatorPort) {
     connectAuthEmulator(
       getAuth(),
-      `http://${firebaseEmulatorHost}:${parseInt(firebaseAuthEmulatorPort, 10)}`
+      `http://${firebaseEmulatorHost}:${parseInt(firebaseAuthEmulatorPort, 10)}`,
     );
   }
 }

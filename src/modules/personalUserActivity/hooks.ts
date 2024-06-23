@@ -10,7 +10,7 @@ const fetcher = async (url: string) => await (await authedGet(url)).json();
 export const usePersonalUserActivity = (userId?: string) => {
   const { data, error } = useSWR<PersonalUserActivity, Error>(
     userId ? `/api/users/${userId}/activities` : undefined,
-    fetcher
+    fetcher,
   );
   return { userActivity: data, userActivityError: error };
 };

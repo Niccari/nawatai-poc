@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const items = await namingRepository.list(
     Constants.namingsPageCount,
     genre,
-    parseInt(page, 10)
+    parseInt(page, 10),
   );
   res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
   res.status(200).json(items);

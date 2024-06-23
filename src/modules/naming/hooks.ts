@@ -8,7 +8,7 @@ const fetcher = async (url: string) => await (await fetch(url)).json();
 export const useNaming = (namingId?: string) => {
   const { data, error } = useSWR<Naming, Error>(
     namingId ? `/api/namings/${namingId}` : undefined,
-    fetcher
+    fetcher,
   );
 
   return { naming: data, namingError: error };
@@ -17,7 +17,7 @@ export const useNaming = (namingId?: string) => {
 export const useNamings = (genre: NamingTargetListGenre, page: number = 1) => {
   const { data, error } = useSWR<Naming[], Error>(
     `/api/namings?genre=${genre}&page=${page}`,
-    fetcher
+    fetcher,
   );
 
   return { namings: data, namingsError: error };
@@ -26,13 +26,13 @@ export const useNamings = (genre: NamingTargetListGenre, page: number = 1) => {
 export const useTargetNamings = (
   targetId: string | undefined,
   genre: NamingTargetListGenre,
-  page: number = 1
+  page: number = 1,
 ) => {
   const { data, error } = useSWR<Naming[], Error>(
     targetId
       ? `/api/targets/${targetId}/namings?genre=${genre}&page=${page}`
       : null,
-    fetcher
+    fetcher,
   );
 
   return { namings: data, namingsError: error };
@@ -55,7 +55,7 @@ export const useCRUDNaming = () => {
         ];
         return final;
       },
-      { revalidate: false }
+      { revalidate: false },
     );
   };
 
@@ -67,17 +67,17 @@ export const useCRUDNaming = () => {
         const result: Naming = await response.json();
         return result;
       },
-      { revalidate: false }
+      { revalidate: false },
     );
   };
 
   const runDelete = async (targetId: string, id: string) => {
     await authedPost(`/api/namings/${id}/delete`);
     mutate(
-      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.HOT}&page=1`,
     );
     mutate(
-      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`
+      `/api/targets/${targetId}/namings?genre=${NamingTargetListGenre.LATEST}&page=1`,
     );
   };
   return { runCreate, runUpdate, runDelete };
