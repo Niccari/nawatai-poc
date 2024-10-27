@@ -1,12 +1,10 @@
 import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-} from "@chakra-ui/form-control";
-import {
   Box,
   Button,
+  FormControl,
   FormErrorMessage,
+  FormHelperText,
+  FormLabel,
   Input,
   InputGroup,
   Stack,
