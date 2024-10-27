@@ -1,4 +1,4 @@
-import { Flex, Stack } from "@chakra-ui/layout";
+import { Flex, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { PrimaryText } from "../../components/element/text";
 
