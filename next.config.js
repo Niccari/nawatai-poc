@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrnpictMode: true,
+  reactStrictMode: true,
   swcMinify: true,
   images: {
     domains: ['localhost', '127.0.0.1', 'storage.googleapis.com'],
