@@ -12,7 +12,7 @@ type Props = {
   page: number;
 };
 
-const TargetList = ({ genre, page }: Props): JSX.Element => {
+const TargetList = ({ genre, page }: Props): React.ReactElement => {
   const { targets, targetsError } = useNamingTargets(genre, page);
 
   if (targets === undefined) {

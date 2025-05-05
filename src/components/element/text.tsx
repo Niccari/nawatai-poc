@@ -1,4 +1,5 @@
-import { useColorModeValue, Text, TextProps } from "@chakra-ui/react";
+import { Text, TextProps } from "@chakra-ui/react";
+import { useColorModeValue } from "../ui/color-mode";
 
 export const PrimaryText = (props: TextProps) => {
   const fontColor = useColorModeValue("#212121", "#DEDEDE");
@@ -13,4 +14,8 @@ export const SecondaryText = (props: TextProps) => {
 export const PlaceholderText = (props: TextProps) => {
   const fontColor = useColorModeValue("#A1A1A1", "#5E5E5E");
   return <Text color={fontColor} {...props} />;
+};
+
+export const WhiteText = (props: TextProps) => {
+  return <Text color="white" {...props} />;
 };

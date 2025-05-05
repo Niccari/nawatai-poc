@@ -4,12 +4,13 @@ import { useRouter } from "next/router";
 import { NamingTargetForView } from "../../../models/namingTarget";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
+import { WhiteText } from "../../element/text";
 
 type Props = {
   target: NamingTargetForView;
 };
 
-const TargetSquare = ({ target }: Props): JSX.Element => {
+const TargetSquare = ({ target }: Props): React.ReactElement => {
   const { id, authorId, title, comment, imageUrl, evalCounts } = target;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();
@@ -53,13 +54,11 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
             pr={2}
             backgroundColor="#00000099"
           >
-            <Text textColor="white" textStyle="h3">
-              {title}
-            </Text>
-            <Text textColor="white">{comment}</Text>
-            <Text textColor="white" mt={2}>
+            <WhiteText textStyle="h3">{title}</WhiteText>
+            <WhiteText>{comment}</WhiteText>
+            <WhiteText mt={2}>
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
-            </Text>
+            </WhiteText>
           </Box>
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, Field, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -49,19 +42,19 @@ const EditNamingPage: NextPage<Props> = ({}) => {
       </PrimaryText>
       <Box mt={4}>
         <div>
-          <Stack spacing={2}>
-            <FormControl>
-              <FormLabel>つける名前</FormLabel>
+          <Stack gap={2}>
+            <Field.Root>
+              <Field.Label>つける名前</Field.Label>
               <Input type="text" value={naming.name} disabled />
-            </FormControl>
-            <FormControl>
-              <FormLabel>名付けについて補足してください</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>名付けについて補足してください</Field.Label>
               <Input
                 type="text"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
-            </FormControl>
+            </Field.Root>
           </Stack>
           <Button
             mt={4}

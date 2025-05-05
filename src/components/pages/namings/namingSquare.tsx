@@ -1,17 +1,18 @@
-import { VStack, Text, Flex, Box, Stack } from "@chakra-ui/react";
+import { VStack, Box, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Naming } from "../../../models/naming";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
 import BasicUser from "../basicUser";
+import { WhiteText } from "../../element/text";
 
 type Props = {
   naming: Naming;
 };
 
-const NamingSquare = ({ naming }: Props): JSX.Element => {
-  const { id, authorId, targetId, name, reason, evalCounts } = naming;
+const NamingSquare = ({ naming }: Props): React.ReactElement => {
+  const { authorId, targetId, name, reason, evalCounts } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
@@ -58,14 +59,14 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
             pr={2}
             backgroundColor="#00000099"
           >
-            {target.title && <Text textColor="white">{target.title}</Text>}
-            <Text textColor="white" textStyle="h3" mt={target.title ? 4 : 0}>
+            {target.title && <WhiteText>{target.title}</WhiteText>}
+            <WhiteText textStyle="h3" mt={target.title ? 4 : 0}>
               {name}
-            </Text>
-            <Text textColor="white">{reason}</Text>
-            <Text textColor="white" mt={2}>
+            </WhiteText>
+            <WhiteText>{reason}</WhiteText>
+            <WhiteText mt={2}>
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
-            </Text>
+            </WhiteText>
           </Box>
         </VStack>
         <Box w="100%" p={2} backgroundColor="#00000099">

@@ -1,12 +1,10 @@
 import {
+  DialogRoot,
+  DialogContent,
+  DialogBody,
+  DialogHeader,
+  DialogFooter,
   Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react";
 import { PrimaryText } from "../../element/text";
 
@@ -20,34 +18,38 @@ const DeletionModal = ({
   isOpen,
   onClose,
   requestDelete,
-}: Props): JSX.Element => {
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>削除しますか？</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <PrimaryText>後から復元できません。よろしいですか？</PrimaryText>
-          </ModalBody>
-
-          <ModalFooter justifyContent="space-between">
-            <Button onClick={onClose}>閉じる</Button>
-            <Button
-              colorScheme="red"
-              variant="ghost"
-              onClick={() => {
-                requestDelete();
-                onClose();
-              }}
-            >
-              削除する
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
+}: Props): React.ReactElement => (
+  <>
+    <DialogRoot
+      lazyMount
+      trapFocus={false}
+      open={isOpen}
+      onOpenChange={(p) => {
+        if (!p.open) {
+          onClose();
+        }
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>削除しますか？</DialogHeader>
+        <DialogBody>
+          <PrimaryText>後から復元できません。よろしいですか？</PrimaryText>
+        </DialogBody>
+        <DialogFooter justifyContent="space-between">
+          <Button onClick={onClose}>閉じる</Button>
+          <Button
+            colorScheme="red"
+            variant="ghost"
+            onClick={() => {
+              requestDelete();
+              onClose();
+            }}
+          >
+            削除する
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
+  </>
+);
 export default DeletionModal;

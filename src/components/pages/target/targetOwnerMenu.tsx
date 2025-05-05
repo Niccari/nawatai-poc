@@ -1,22 +1,36 @@
-import { TriangleDownIcon } from "@chakra-ui/icons";
-import { MenuButton, Menu, MenuItem, MenuList } from "@chakra-ui/react";
+import { Button, Menu } from "@chakra-ui/react";
+import { TriangleDownIcon } from "../../element/compat/icons";
 
 type Props = {
   handleEdit?: () => void;
   handleDelete?: () => void;
 };
 
-const TargetOwnerMenu = ({ handleEdit, handleDelete }: Props): JSX.Element => {
+const TargetOwnerMenu = ({
+  handleEdit,
+  handleDelete,
+}: Props): React.ReactElement => {
   return (
-    <Menu>
-      <MenuButton type="button" aria-label="targetOwnerMenu">
-        <TriangleDownIcon />
-      </MenuButton>
-      <MenuList>
-        {handleEdit && <MenuItem onClick={handleEdit}>🖊 手直しする</MenuItem>}
-        {handleDelete && <MenuItem onClick={handleDelete}>❌ 消す</MenuItem>}
-      </MenuList>
-    </Menu>
+    <Menu.Root>
+      <Menu.Trigger>
+        <Button type="button" aria-label="targetOwnerMenu">
+          <TriangleDownIcon />
+        </Button>
+      </Menu.Trigger>
+      <Menu.Positioner />
+      <Menu.Content>
+        {handleEdit && (
+          <Menu.Item onClick={handleEdit} value="edit">
+            🖊 手直しする
+          </Menu.Item>
+        )}
+        {handleDelete && (
+          <Menu.Item onClick={handleDelete} value="delete">
+            ❌ 消す
+          </Menu.Item>
+        )}
+      </Menu.Content>
+    </Menu.Root>
   );
 };
 

@@ -5,7 +5,7 @@ type Props = {
   objectName: string;
 };
 
-const NoContent = ({ objectName }: Props): JSX.Element => {
+const NoContent = ({ objectName }: Props): React.ReactElement => {
   return (
     <Center flexDirection="column" h="200px">
       <PrimaryText textStyle="h3">{objectName}はまだありません</PrimaryText>

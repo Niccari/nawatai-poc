@@ -13,7 +13,7 @@ type Props = {};
 const EditAccountPage: NextPage<Props> = ({}) => {
   const route = useRouter();
   const { personalUser: owner, logout } = useLoginState();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
   const { onDelete } = useAnonymisePersonalUser();
 
   useDashboardRedirectIfNotLogined();
@@ -33,7 +33,7 @@ const EditAccountPage: NextPage<Props> = ({}) => {
   return (
     <>
       <DeletionModal
-        isOpen={isOpen}
+        isOpen={open}
         onClose={onClose}
         requestDelete={() => {
           handleDelete();

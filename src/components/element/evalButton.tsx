@@ -9,7 +9,7 @@ type Props = {
   disabled?: boolean;
 };
 
-const EvalButton = (props: Props): JSX.Element => {
+const EvalButton = (props: Props): React.ReactElement => {
   const { kind, count, onEval, disabled } = props;
   const icon = (() => {
     switch (kind) {

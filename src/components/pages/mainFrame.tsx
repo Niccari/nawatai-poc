@@ -1,4 +1,4 @@
-import { Box, Divider, Flex } from "@chakra-ui/react";
+import { Box, Separator } from "@chakra-ui/react";
 import AppBar from "./appBar";
 import ServiceProviderFooter from "./serviceProviderFooter";
 import Sitemap from "./sitemap";
@@ -13,7 +13,7 @@ const MainFrame = ({ children }: Props) => {
     <Box>
       <AppBar />
       <Box p="2">{children}</Box>
-      <Divider mt={2} orientation="horizontal" />
+      <Separator mt={2} orientation="horizontal" />
       <Box mt={2} p="2">
         <Sitemap />
       </Box>

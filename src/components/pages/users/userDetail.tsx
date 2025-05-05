@@ -1,16 +1,16 @@
-import { LinkIcon } from "@chakra-ui/icons";
-import { Flex, Box, Divider, Stack, Link, Button } from "@chakra-ui/react";
+import { Flex, Box, Separator, Stack, Link, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
 import { PersonalUserDetailView } from "../../../models/personalUser";
 import { useLoginState } from "../../../modules/login/hooks";
+import { LinkIcon } from "../../element/compat/icons";
 
 type Props = {
   user: PersonalUserDetailView;
 };
 
-const UserDetail = ({ user }: Props): JSX.Element => {
+const UserDetail = ({ user }: Props): React.ReactElement => {
   const router = useRouter();
   const { personalUser: owner } = useLoginState();
 
@@ -63,7 +63,7 @@ const UserDetail = ({ user }: Props): JSX.Element => {
           </Stack>
         </Stack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

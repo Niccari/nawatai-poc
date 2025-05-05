@@ -1,12 +1,8 @@
 import {
-  Avatar,
   Box,
   Button,
+  Field,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
   Input,
   Spinner,
   Stack,
@@ -20,6 +16,7 @@ import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
 import { useLoginState } from "../../modules/login/hooks";
 import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
+import { Avatar } from "../../components/element/compat/avatar";
 
 type Props = {};
 
@@ -128,52 +125,54 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
       </Box>
       <Box mt={4}>
         <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isUserIdError}>
-              <FormLabel>ユーザID</FormLabel>
+          <Stack gap={2}>
+            <Field.Root invalid={isUserIdError}>
+              <Field.Label>ユーザID</Field.Label>
               <Input
                 type="text"
                 value={personalUser.userId}
                 onChange={(e) => updatePersonalData("userId", e.target.value)}
               />
               {!isUserIdError ? (
-                <FormHelperText>ユーザ名を入力してください</FormHelperText>
+                <Field.HelperText>ユーザ名を入力してください</Field.HelperText>
               ) : (
-                <FormErrorMessage>
+                <Field.ErrorText>
                   ユーザ名には半角英数字、-、_が使えます
-                </FormErrorMessage>
+                </Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>ニックネーム</FormLabel>
+            </Field.Root>
+            <Field.Root disabled={isNameError}>
+              <Field.Label>ニックネーム</Field.Label>
               <Input
                 type="text"
                 value={personalUser.name}
                 onChange={(e) => updatePersonalData("name", e.target.value)}
               />
               {!isNameError ? (
-                <FormHelperText>ニックネームを入力してください</FormHelperText>
+                <Field.HelperText>
+                  ニックネームを入力してください
+                </Field.HelperText>
               ) : (
-                <FormErrorMessage>ニックネームは必須です</FormErrorMessage>
+                <Field.ErrorText>ニックネームは必須です</Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>URL</FormLabel>
+            </Field.Root>
+            <Field.Root invalid={isNameError}>
+              <Field.Label>URL</Field.Label>
               <Input
                 type="text"
                 value={personalUser.url}
                 onChange={(e) => updatePersonalData("url", e.target.value)}
               />
               {!isUrlError ? (
-                <FormHelperText>
+                <Field.HelperText>
                   (公開したい場合のみ) ご自身に関するページのURLを入れてください
-                </FormHelperText>
+                </Field.HelperText>
               ) : (
-                <FormErrorMessage>URL以外が入力されています</FormErrorMessage>
+                <Field.ErrorText>URL以外が入力されています</Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>TwitterユーザID</FormLabel>
+            </Field.Root>
+            <Field.Root invalid={isNameError}>
+              <Field.Label>TwitterユーザID</Field.Label>
               <Input
                 type="text"
                 value={personalUser.twitterUserId}
@@ -182,23 +181,23 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
                 }
               />
               {!isTwitterError ? (
-                <FormHelperText>
+                <Field.HelperText>
                   (公開したい場合のみ) TwitterのユーザIDを入れてください
-                </FormHelperText>
+                </Field.HelperText>
               ) : (
-                <FormErrorMessage>
+                <Field.ErrorText>
                   TwitterのユーザIDは半角英数字、_のみが使えます
-                </FormErrorMessage>
+                </Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>紹介プロフィール</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>紹介プロフィール</Field.Label>
               <Input
                 type="text"
                 value={personalUser.profile}
                 onChange={(e) => updatePersonalData("profile", e.target.value)}
               />
-            </FormControl>
+            </Field.Root>
           </Stack>
           <Button mt={4} onClick={editUser}>
             これでOK!

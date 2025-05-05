@@ -4,26 +4,23 @@ import ServiceLogoDarken from "../../assets/serviceLogoDarken.svg";
 import {
   Box,
   Button,
-  Divider,
   Flex,
   HStack,
   IconButton,
   Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useColorMode,
+  Separator,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import NotificationsList from "./notificationsList";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { useColorMode } from "../ui/color-mode";
+import { MoonIcon, SunIcon } from "../element/compat/icons";
 
 type Props = {};
 
-const AppBar = ({}: Props): JSX.Element => {
+const AppBar = ({}: Props): React.ReactElement => {
   const router = useRouter();
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
@@ -56,44 +53,41 @@ const AppBar = ({}: Props): JSX.Element => {
 
         <HStack alignItems="center">
           {(colorMode == "light" && (
-            <IconButton
-              aria-label="darken"
-              icon={<MoonIcon />}
-              onClick={toggleColorMode}
-            />
+            <IconButton aria-label="darken" onClick={toggleColorMode}>
+              <MoonIcon />
+            </IconButton>
           )) || (
-            <IconButton
-              aria-label="lighten"
-              icon={<SunIcon />}
-              onClick={toggleColorMode}
-            />
+            <IconButton aria-label="lighten" onClick={toggleColorMode}>
+              <SunIcon />
+            </IconButton>
           )}
           {isLogined && (
             <>
               <NotificationsList />
-              <Menu>
-                <MenuButton
-                  w="40px"
-                  h="40px"
-                  type="button"
-                  aria-label="UserIcon"
-                >
-                  <NextImageAvatar
-                    src={user?.imageUrl ?? ""}
-                    width="40px"
-                    height="40px"
-                  />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem onClick={handleEditUser}>
-                    プロフィールを編集する
-                  </MenuItem>
-                  <MenuItem onClick={handleEditAccount}>
-                    アカウントを管理する
-                  </MenuItem>
-                  <MenuItem onClick={logout}>ログアウト</MenuItem>
-                </MenuList>
-              </Menu>
+              <Menu.Root>
+                <Menu.Trigger />
+                <Menu.Positioner />
+                <Menu.Content>
+                  <Button w="40px" h="40px" type="button" aria-label="UserIcon">
+                    <NextImageAvatar
+                      src={user?.imageUrl ?? ""}
+                      width="40px"
+                      height="40px"
+                    />
+                  </Button>
+                  <Menu.ItemGroup>
+                    <Menu.Item onClick={handleEditUser} value="edit-user">
+                      プロフィールを編集する
+                    </Menu.Item>
+                    <Menu.Item onClick={handleEditAccount} value="edit-account">
+                      アカウントを管理する
+                    </Menu.Item>
+                    <Menu.Item onClick={logout} value="logout">
+                      ログアウト
+                    </Menu.Item>
+                  </Menu.ItemGroup>
+                </Menu.Content>
+              </Menu.Root>
               <Button colorScheme="orange" size="sm" onClick={createNewTarget}>
                 名付けを求める
               </Button>
@@ -106,7 +100,7 @@ const AppBar = ({}: Props): JSX.Element => {
           )}
         </HStack>
       </Flex>
-      <Divider orientation="horizontal" />
+      <Separator orientation="horizontal" />
     </>
   );
 };

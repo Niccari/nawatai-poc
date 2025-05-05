@@ -1,7 +1,7 @@
 import {
   Flex,
   Box,
-  Divider,
+  Separator,
   Stack,
   Link,
   useDisclosure,
@@ -23,13 +23,13 @@ type Props = {
   target: NamingTargetForView;
 };
 
-const TargetDetail = ({ target }: Props): JSX.Element => {
+const TargetDetail = ({ target }: Props): React.ReactElement => {
   const { id, authorId, title, comment, imageUrl, isDeleted } = target;
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
   const { onDelete } = useDeleteNamingTarget();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
 
   const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
@@ -44,14 +44,14 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
         <Center h="136px">
           <PrimaryText>この名付け対象は削除されました</PrimaryText>
         </Center>
-        <Divider />
+        <Separator />
       </Box>
     );
   }
   return (
     <Box>
       <DeletionModal
-        isOpen={isOpen}
+        isOpen={open}
         onClose={onClose}
         requestDelete={() => {
           onDelete(id);
@@ -118,7 +118,7 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
           </Stack>
         </Stack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

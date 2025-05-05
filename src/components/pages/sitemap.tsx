@@ -7,7 +7,7 @@ const Sitemap = ({}: Props) => {
   return (
     <Box w="100vw">
       <PrimaryText textStyle="h2">サイトマップ</PrimaryText>
-      <Stack spacing={2} mt={2}>
+      <Stack gap={2} mt={2}>
         <Link href="/info/story">
           <PrimaryText>nawataiについて</PrimaryText>
         </Link>

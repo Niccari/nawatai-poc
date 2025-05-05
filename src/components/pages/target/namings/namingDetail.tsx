@@ -1,7 +1,7 @@
 import {
   Flex,
   Box,
-  Divider,
+  Separator,
   Stack,
   useDisclosure,
   Center,
@@ -25,7 +25,7 @@ type Props = {
   namingEvals: NamingEval[];
 };
 
-const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
+const NamingDetail = ({ naming, namingEvals }: Props): React.ReactElement => {
   const { id, name, reason, evalCounts, targetId, authorId } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
 
@@ -34,7 +34,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   const { isUpdating, onCreate, onEdit } = useUpsertNamingEval();
   const { runDelete } = useCRUDNaming();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
 
   const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
@@ -78,14 +78,14 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
         <Center h="136px">
           <PrimaryText>この名付けは削除されました</PrimaryText>
         </Center>
-        <Divider />
+        <Separator />
       </Box>
     );
   }
   return (
     <Box>
       <DeletionModal
-        isOpen={isOpen}
+        isOpen={open}
         onClose={onClose}
         requestDelete={() => {
           requestDelete();
@@ -140,7 +140,7 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
           <BasicUser user={user} />
         </Stack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

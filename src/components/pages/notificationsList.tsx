@@ -1,16 +1,5 @@
 import { useLoginState } from "../../modules/login/hooks";
-import {
-  Avatar,
-  AvatarBadge,
-  Box,
-  Flex,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
-import { BellIcon } from "@chakra-ui/icons";
+import { Box, Flex, Menu } from "@chakra-ui/react";
 import { useUserNotification } from "../../modules/notifications/hooks";
 import { useRouter } from "next/router";
 import {
@@ -23,6 +12,8 @@ import {
   usePersonalUserActivity,
   useUpdateNotificationRead,
 } from "../../modules/personalUserActivity/hooks";
+import { BellIcon } from "../element/compat/icons";
+import { Avatar } from "../element/compat/avatar";
 
 type Props = {};
 
@@ -59,47 +50,47 @@ const NotificationsList = ({}: Props) => {
   };
 
   return (
-    <Menu>
-      <MenuButton type="button" w="40px" h="40px" aria-label="Notification">
-        <Avatar h="40px" w="40px" icon={<BellIcon />}>
-          {hasNotification && (
-            <AvatarBadge boxSize="1.25em" bg="red.500"></AvatarBadge>
+    <Menu.Root>
+      <Menu.Trigger />
+      <Menu.Positioner />
+      <Menu.Content>
+        <Menu.ItemGroup>
+          {(notifications &&
+            notifications.length > 0 &&
+            notifications.map((n) => (
+              <Menu.Item
+                key={n.id}
+                onClick={() => handleShowContent(n)}
+                bg={
+                  userActivity &&
+                  n.createdAt > userActivity.lastReadNotificationAt
+                    ? "orange.100"
+                    : "transparent"
+                }
+                value={`notification-${n}`}
+              >
+                <div>
+                  <Flex>
+                    <NextImageAvatar
+                      src={n.authorIconUrl}
+                      width="40px"
+                      height="40px"
+                    />
+                    <Box ml={2}>
+                      <PrimaryText>{n.message}</PrimaryText>
+                      <SecondaryText fontSize="sm">
+                        {n.createdAt.toLocaleString()}
+                      </SecondaryText>
+                    </Box>
+                  </Flex>
+                </div>
+              </Menu.Item>
+            ))) || (
+            <Menu.Item value="no-notification">通知はありません</Menu.Item>
           )}
-        </Avatar>
-      </MenuButton>
-      <MenuList>
-        {(notifications &&
-          notifications.length > 0 &&
-          notifications.map((n) => (
-            <MenuItem
-              key={n.id}
-              onClick={() => handleShowContent(n)}
-              bg={
-                userActivity &&
-                n.createdAt > userActivity.lastReadNotificationAt
-                  ? "orange.100"
-                  : "transparent"
-              }
-            >
-              <div>
-                <Flex>
-                  <NextImageAvatar
-                    src={n.authorIconUrl}
-                    width="40px"
-                    height="40px"
-                  />
-                  <Box ml={2}>
-                    <PrimaryText>{n.message}</PrimaryText>
-                    <SecondaryText fontSize="sm">
-                      {n.createdAt.toLocaleString()}
-                    </SecondaryText>
-                  </Box>
-                </Flex>
-              </div>
-            </MenuItem>
-          ))) || <MenuItem>通知はありません</MenuItem>}
-      </MenuList>
-    </Menu>
+        </Menu.ItemGroup>
+      </Menu.Content>
+    </Menu.Root>
   );
 };
 

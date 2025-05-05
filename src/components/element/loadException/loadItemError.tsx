@@ -3,7 +3,7 @@ import { PrimaryText } from "../text";
 
 type Props = {};
 
-const LoadItemError = ({}: Props): JSX.Element => {
+const LoadItemError = ({}: Props): React.ReactElement => {
   return (
     <Center flexDirection="column" h="200px">
       <PrimaryText textStyle="h3">データが見つかりませんでした</PrimaryText>

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, Field, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -54,21 +47,21 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
       </PrimaryText>
       <Box mt={4}>
         <div>
-          <Stack spacing={2}>
-            <FormControl>
-              <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
+          <Stack gap={2}>
+            <Field.Root>
+              <Field.Label>どんな名前を付けて欲しいですか？</Field.Label>
               <Input type="text" value={target.title} disabled />
-            </FormControl>
-            <FormControl>
-              <FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
                 名付けにあたり、気をつけて欲しい点は何ですか？
-              </FormLabel>
+              </Field.Label>
               <Input
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-            </FormControl>
+            </Field.Root>
           </Stack>
           <Button
             mt={4}

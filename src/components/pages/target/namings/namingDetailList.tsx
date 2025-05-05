@@ -25,7 +25,7 @@ const NamingDetailList = ({
   targetId,
   page,
   genre,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const { personalUser } = useLoginState();
   const { namingEvals, namingEvalsError } = useNamingEvalsByUserOfTarget({
     targetId,

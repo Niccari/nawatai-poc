@@ -3,7 +3,7 @@ import { PrimaryText } from "../text";
 
 type Props = {};
 
-const LoadError = ({}: Props): JSX.Element => {
+const LoadError = ({}: Props): React.ReactElement => {
   return (
     <Center flexDirection="column" h="200px">
       <PrimaryText textStyle="h3">データを読み込めませんでした</PrimaryText>

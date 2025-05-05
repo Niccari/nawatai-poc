@@ -1,4 +1,4 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Box, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { NamingTargetListGenre } from "../../../../models/namingTarget";
 import { useTargetNamings } from "../../../../modules/naming/hooks";
@@ -16,34 +16,31 @@ const TabbedNamingDetailList = ({
   authorId,
   page,
   genre,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const router = useRouter();
-  const index = genre === NamingTargetListGenre.HOT ? 0 : 1;
   const { namings, namingsError } = useTargetNamings(targetId, genre, page);
   if (!targetId) {
     return <></>;
   }
   return (
     <Box>
-      <Tabs
-        defaultIndex={index}
+      <Tabs.Root
+        defaultValue={genre}
         size="md"
         variant="enclosed"
-        onChange={(index) =>
-          index === 0
-            ? router.push(
-                `/targets/${targetId}?genre=${NamingTargetListGenre.HOT}&page=${page}`,
-              )
-            : router.push(
-                `/targets/${targetId}?genre=${NamingTargetListGenre.LATEST}&page=${page}`,
-              )
+        onChange={(newGenre) =>
+          router.push(`/targets/${targetId}?genre=${newGenre}&page=${page}`)
         }
       >
-        <TabList>
-          <Tab>ホット順</Tab>
-          <Tab>最新順</Tab>
-        </TabList>
-      </Tabs>
+        <Tabs.List>
+          <Tabs.Trigger value={NamingTargetListGenre.HOT}>
+            ホット順
+          </Tabs.Trigger>
+          <Tabs.Trigger value={NamingTargetListGenre.LATEST}>
+            最新順
+          </Tabs.Trigger>
+        </Tabs.List>
+      </Tabs.Root>
       {namings && (
         <Box mt={4} ml={4} mr={4}>
           <NamingDetailList

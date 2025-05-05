@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  InputGroup,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -52,38 +42,38 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
       </PrimaryText>
       <Box mt={4}>
         <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isTitleError}>
-              <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
+          <Stack gap={2}>
+            <Field.Root invalid={isTitleError}>
+              <Field.Label>どんな名前を付けて欲しいですか？</Field.Label>
               <Input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
               {!isTitleError ? (
-                <FormHelperText>
+                <Field.HelperText>
                   名付け対象についての説明を入力してください
-                </FormHelperText>
+                </Field.HelperText>
               ) : (
-                <FormErrorMessage>
+                <Field.ErrorText>
                   名付け対象についての説明は必須です
-                </FormErrorMessage>
+                </Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
                 名付けにあたり、気をつけて欲しい点は何ですか？
-              </FormLabel>
+              </Field.Label>
               <Input
                 type="text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-            </FormControl>
-            <FormControl>
-              <FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
                 もし名付け対象の画像があれば、アップロードしてください
-              </FormLabel>
+              </Field.Label>
               <InputGroup>
                 <Box
                   w="300px"
@@ -108,11 +98,11 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
                 </Box>
               </InputGroup>
               {fileState.imageSetError && (
-                <FormErrorMessage>
+                <Field.ErrorText>
                   画像を読み込めませんでした。他のソフトで閲覧できるかご確認ください。
-                </FormErrorMessage>
+                </Field.ErrorText>
               )}
-            </FormControl>
+            </Field.Root>
           </Stack>
           <Button
             mt={4}

@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, Field, Input, Stack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -45,30 +36,30 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
       </PrimaryText>
       <Box mt={4}>
         <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>つける名前</FormLabel>
+          <Stack gap={2}>
+            <Field.Root invalid={isNameError}>
+              <Field.Label>つける名前</Field.Label>
               <Input
                 type="text"
                 value={name}
                 onChange={(e) => setTitle(e.target.value)}
               />
               {!isNameError ? (
-                <FormHelperText>
+                <Field.HelperText>
                   ※ 付けた名前は編集で変更できません
-                </FormHelperText>
+                </Field.HelperText>
               ) : (
-                <FormErrorMessage>名前は必須です</FormErrorMessage>
+                <Field.ErrorText>名前は必須です</Field.ErrorText>
               )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>名付けについて補足してください</FormLabel>
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>名付けについて補足してください</Field.Label>
               <Input
                 type="text"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
-            </FormControl>
+            </Field.Root>
           </Stack>
           <Button
             mt={4}
