@@ -1,17 +1,23 @@
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Box, VStack } from "../../components/ui/layout";
+import { Heading } from "../../components/ui/typography";
+import { ActionButton } from "../../components/element/actionButton";
 import {
-  Box,
-  Button,
+  Form,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  InputGroup,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "../../components/ui/form";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingContent from "../../components/pages/loading";
 import { PrimaryText } from "../../components/element/text";
 import { useImageLoader, useImageUploader } from "../../modules/image/hooks";
@@ -21,19 +27,29 @@ import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
 type Props = {};
 
+const formSchema = z.object({
+  title: z.string().min(1, "名付け対象についての説明は必須です"),
+  comment: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
 const CreateNewTargetPage: NextPage<Props> = ({}) => {
   const { firebaseUser, isLogined } = useLoginState();
   useDashboardRedirectIfNotLogined();
   const router = useRouter();
 
-  const [title, setTitle] = useState("");
-  const [comment, setComment] = useState("");
   const { fileState, handleImageSet } = useImageLoader();
-
   const { onPost } = useCreateNamingTarget();
   const { uploadImage } = useImageUploader();
 
-  const isTitleError = Boolean(!title);
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      comment: "",
+    },
+  });
 
   if (!firebaseUser || !isLogined) {
     return <LoadingContent />;
@@ -45,95 +61,98 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
     }
   };
 
+  const onSubmit = async (data: FormData) => {
+    if (!fileState.file) {
+      return;
+    }
+    const { imageId } = await uploadImage(fileState.file);
+    onPost({
+      authorId: firebaseUser.uid,
+      title: data.title,
+      comment: data.comment || "",
+      imageId,
+    });
+    router.push("/");
+  };
+
   return (
     <>
-      <PrimaryText textStyle="h1" mt={4}>
+      <Heading as="h1" size="xl" className="mt-4">
         名付けを求める
-      </PrimaryText>
-      <Box mt={4}>
-        <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isTitleError}>
-              <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
-              <Input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+      </Heading>
+      <Box className="mt-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <VStack spacing="4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      名付け対象についての説明を入力してください
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {!isTitleError ? (
-                <FormHelperText>
-                  名付け対象についての説明を入力してください
-                </FormHelperText>
-              ) : (
-                <FormErrorMessage>
-                  名付け対象についての説明は必須です
-                </FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>
-                名付けにあたり、気をつけて欲しい点は何ですか？
-              </FormLabel>
-              <Input
-                type="text"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
+              <FormField
+                control={form.control}
+                name="comment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      名付けにあたり、気をつけて欲しい点は何ですか？
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </FormControl>
-            <FormControl>
-              <FormLabel>
-                もし名付け対象の画像があれば、アップロードしてください
-              </FormLabel>
-              <InputGroup>
-                <Box
-                  w="300px"
-                  h="300px"
-                  background="#333"
-                  backgroundSize="cover"
-                  backgroundPosition="center"
-                  backgroundRepeat="no-repeat"
-                  backgroundImage={
-                    fileState.imageDataUrl ? fileState.imageDataUrl : undefined
-                  }
-                >
-                  <Input
-                    type="file"
-                    height="100%"
-                    width="100%"
-                    opacity="0"
-                    aria-hidden="true"
-                    accept="image/*"
-                    onChange={(e) => onSetImage(e)}
-                  />
-                </Box>
-              </InputGroup>
-              {fileState.imageSetError && (
-                <FormErrorMessage>
-                  画像を読み込めませんでした。他のソフトで閲覧できるかご確認ください。
-                </FormErrorMessage>
-              )}
-            </FormControl>
-          </Stack>
-          <Button
-            mt={4}
-            disabled={isTitleError}
-            onClick={async () => {
-              if (!fileState.file) {
-                return;
-              }
-              const { imageId } = await uploadImage(fileState.file);
-              onPost({
-                authorId: firebaseUser.uid,
-                title,
-                comment,
-                imageId,
-              });
-              router.push("/");
-            }}
-          >
-            これでOK!
-          </Button>
-        </div>
+              <FormItem>
+                <FormLabel>
+                  もし名付け対象の画像があれば、アップロードしてください
+                </FormLabel>
+                <div className="relative">
+                  <Box
+                    className="w-[300px] h-[300px] bg-gray-800 bg-cover bg-center bg-no-repeat"
+                    style={{
+                      backgroundImage: fileState.imageDataUrl
+                        ? `url(${fileState.imageDataUrl})`
+                        : undefined,
+                    }}
+                  >
+                    <Input
+                      type="file"
+                      className="h-full w-full opacity-0"
+                      aria-hidden="true"
+                      accept="image/*"
+                      onChange={(e) => onSetImage(e)}
+                    />
+                  </Box>
+                </div>
+                {fileState.imageSetError && (
+                  <FormMessage>
+                    画像を読み込めませんでした。他のソフトで閲覧できるかご確認ください。
+                  </FormMessage>
+                )}
+              </FormItem>
+            </VStack>
+            <ActionButton
+              type="submit"
+              className="mt-4"
+              disabled={!fileState.file}
+            >
+              これでOK!
+            </ActionButton>
+          </form>
+        </Form>
       </Box>
     </>
   );

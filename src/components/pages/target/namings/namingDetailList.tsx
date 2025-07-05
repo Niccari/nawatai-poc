@@ -1,4 +1,4 @@
-import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
 import Constants from "../../../../constants";
 import { Naming } from "../../../../models/naming";
 import { NamingTargetListGenre } from "../../../../models/namingTarget";
@@ -25,7 +25,7 @@ const NamingDetailList = ({
   targetId,
   page,
   genre,
-}: Props): JSX.Element => {
+}: Props) => {
   const { personalUser } = useLoginState();
   const { namingEvals, namingEvalsError } = useNamingEvalsByUserOfTarget({
     targetId,
@@ -60,7 +60,7 @@ const NamingDetailList = ({
   }
   return (
     <Box>
-      <SimpleGrid columns={[1, null, 1, 2]} gap={4}>
+      <div className="grid grid-cols-1 gap-4">
         {namings.map((n) => (
           <NamingDetail
             key={n.id}
@@ -68,7 +68,7 @@ const NamingDetailList = ({
             namingEvals={namingEvals?.filter((e) => e.namingId === n.id) ?? []}
           />
         ))}
-      </SimpleGrid>
+      </div>
       <Pager
         endpoint={`/targets/${targetId}`}
         page={page}

@@ -1,16 +1,22 @@
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Box, Flex, VStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { Heading } from "@/components/ui/typography";
+import { ActionButton } from "../../components/element/actionButton";
 import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
+  Form,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Spinner,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -21,35 +27,65 @@ import { useLoginState } from "../../modules/login/hooks";
 import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../modules/route/hooks";
 
+const formSchema = z.object({
+  userId: z
+    .string()
+    .min(1, "ユーザIDは必須です")
+    .regex(
+      /^[0-9a-zA-Z-_]*$/,
+      "ユーザIDは英数字とハイフン、アンダースコアのみ使用可能です",
+    ),
+  name: z.string().min(1, "ニックネームは必須です"),
+  url: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^http[s]*:\/\/.*$/.test(val),
+      "正しいURLを入力してください",
+    ),
+  twitterUserId: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^[\d\w_]+$/.test(val),
+      "TwitterユーザIDは英数字とアンダースコアのみ使用可能です",
+    ),
+  profile: z.string().optional(),
+});
+
 type Props = {};
 
 const EditUserProfilePage: NextPage<Props> = ({}) => {
   const router = useRouter();
   const { firebaseUser, personalUser: owner } = useLoginState();
 
-  const [personalUser, setPersonalUser] = useState<
-    PersonalUserDetailView | undefined
-  >(undefined);
-
   const { fileState, handleImageSet } = useImageLoader();
   const { uploadImage } = useImageUploader();
-
   const { onEdit } = useUpsertPersonalUser();
 
-  const isUserIdError = personalUser?.id?.length === 0;
-  const isNameError = !personalUser?.name;
-  const isUrlError =
-    personalUser?.url && !/^http[s]*:\/\/.*$/.exec(personalUser.url);
-  const isTwitterError =
-    personalUser?.twitterUserId &&
-    !/^[\d\w_]+$/.exec(personalUser.twitterUserId);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: "",
+      name: "",
+      url: "",
+      twitterUserId: "",
+      profile: "",
+    },
+  });
 
   useDashboardRedirectIfNotLogined();
   useEffect(() => {
-    if (owner && !personalUser) {
-      setPersonalUser(owner);
+    if (owner) {
+      form.reset({
+        userId: owner.userId || "",
+        name: owner.name || "",
+        url: owner.url || "",
+        twitterUserId: owner.twitterUserId || "",
+        profile: owner.profile || "",
+      });
     }
-  }, [personalUser, owner]);
+  }, [owner, form]);
 
   const onSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,8 +94,8 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
     }
   };
 
-  const editUser = async () => {
-    if (!firebaseUser || !personalUser) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!firebaseUser || !owner) {
       return;
     }
     const { uid } = firebaseUser;
@@ -70,140 +106,129 @@ const EditUserProfilePage: NextPage<Props> = ({}) => {
       const { imageId } = await uploadImage(fileState.file);
       return imageId;
     })();
-    await onEdit({ ...personalUser, iconImageId });
+    await onEdit({ ...owner, ...values, iconImageId });
     router.push(`/users/${uid}`);
   };
 
-  const updatePersonalData = (
-    key: keyof PersonalUserDetailView,
-    value: string,
-  ) => {
-    if (!personalUser) {
-      return;
-    }
-    setPersonalUser({
-      ...personalUser,
-      [key]: value,
-    });
-  };
-
-  if (!personalUser) {
+  if (!owner) {
     return (
-      <Flex justifyContent="center" alignItems="center">
+      <Flex justify="center" align="center">
         <Spinner />
       </Flex>
     );
   }
   return (
     <>
-      <PrimaryText textStyle="h1" mt={4}>
+      <Heading as="h1" size="xl" className="mt-4">
         プロフィール設定
-      </PrimaryText>
-      <PrimaryText mt={4}>ユーザアイコン</PrimaryText>
-      <Box w="80px" h="80px" position="relative">
-        <Avatar
-          w="100%"
-          h="100%"
-          left="0"
-          top="0"
-          border="1px solid #EEE"
-          backgroundColor="#FFF"
-          src={
-            fileState.imageDataUrl
-              ? fileState.imageDataUrl
-              : personalUser?.imageUrl
-          }
-        ></Avatar>
-        <Box position="absolute" w="100%" h="100%" left="0" top="0">
+      </Heading>
+      <PrimaryText className="mt-4">ユーザアイコン</PrimaryText>
+      <Box className="w-20 h-20 relative">
+        <Avatar className="w-full h-full border border-gray-200 bg-white">
+          <AvatarImage
+            src={
+              fileState.imageDataUrl ? fileState.imageDataUrl : owner?.imageUrl
+            }
+          />
+        </Avatar>
+        <Box className="absolute w-full h-full left-0 top-0">
           <Input
             type="file"
-            opacity="0"
-            w="100%"
-            h="100%"
+            className="opacity-0 w-full h-full"
             aria-hidden="true"
             accept="image/*"
             onChange={(e) => onSetImage(e)}
           />
         </Box>
       </Box>
-      <Box mt={4}>
-        <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isUserIdError}>
-              <FormLabel>ユーザID</FormLabel>
-              <Input
-                type="text"
-                value={personalUser.userId}
-                onChange={(e) => updatePersonalData("userId", e.target.value)}
+      <Box className="mt-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <VStack spacing="2">
+              <FormField
+                control={form.control}
+                name="userId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ユーザID</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      ユーザ名を入力してください
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {!isUserIdError ? (
-                <FormHelperText>ユーザ名を入力してください</FormHelperText>
-              ) : (
-                <FormErrorMessage>
-                  ユーザ名には半角英数字、-、_が使えます
-                </FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>ニックネーム</FormLabel>
-              <Input
-                type="text"
-                value={personalUser.name}
-                onChange={(e) => updatePersonalData("name", e.target.value)}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ニックネーム</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      ニックネームを入力してください
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {!isNameError ? (
-                <FormHelperText>ニックネームを入力してください</FormHelperText>
-              ) : (
-                <FormErrorMessage>ニックネームは必須です</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>URL</FormLabel>
-              <Input
-                type="text"
-                value={personalUser.url}
-                onChange={(e) => updatePersonalData("url", e.target.value)}
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      (公開したい場合のみ)
+                      ご自身に関するページのURLを入れてください
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {!isUrlError ? (
-                <FormHelperText>
-                  (公開したい場合のみ) ご自身に関するページのURLを入れてください
-                </FormHelperText>
-              ) : (
-                <FormErrorMessage>URL以外が入力されています</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>TwitterユーザID</FormLabel>
-              <Input
-                type="text"
-                value={personalUser.twitterUserId}
-                onChange={(e) =>
-                  updatePersonalData("twitterUserId", e.target.value)
-                }
+              <FormField
+                control={form.control}
+                name="twitterUserId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>TwitterユーザID</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      (公開したい場合のみ) TwitterのユーザIDを入れてください
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {!isTwitterError ? (
-                <FormHelperText>
-                  (公開したい場合のみ) TwitterのユーザIDを入れてください
-                </FormHelperText>
-              ) : (
-                <FormErrorMessage>
-                  TwitterのユーザIDは半角英数字、_のみが使えます
-                </FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>紹介プロフィール</FormLabel>
-              <Input
-                type="text"
-                value={personalUser.profile}
-                onChange={(e) => updatePersonalData("profile", e.target.value)}
+              <FormField
+                control={form.control}
+                name="profile"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>紹介プロフィール</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </FormControl>
-          </Stack>
-          <Button mt={4} onClick={editUser}>
-            これでOK!
-          </Button>
-        </div>
+            </VStack>
+            <ActionButton type="submit" className="mt-4">
+              これでOK!
+            </ActionButton>
+          </form>
+        </Form>
       </Box>
     </>
   );

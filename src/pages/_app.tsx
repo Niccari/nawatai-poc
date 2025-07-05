@@ -1,17 +1,19 @@
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ThemeProvider } from "@/components/theme-provider";
 import MainFrame from "../components/pages/mainFrame";
 import MetaHeader from "../components/pages/metaHeader";
-import theme from "../components/theme";
+import { Toaster } from "@/components/ui/sonner";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
+    <ThemeProvider defaultTheme="dark">
       <MainFrame>
         <MetaHeader />
         <Component {...pageProps} />
+        <Toaster />
       </MainFrame>
-    </ChakraProvider>
+    </ThemeProvider>
   );
 }
 

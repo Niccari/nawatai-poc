@@ -1,4 +1,5 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
+import { Flex } from "../ui/layout";
+import Link from "next/link";
 import { NamingTargetListGenre } from "../../models/namingTarget";
 
 type Props = {
@@ -10,22 +11,20 @@ type Props = {
 
 const Pager = ({ endpoint, genre, page, hasNext }: Props) => {
   return (
-    <Flex justifyContent="center">
-      <Flex display="inline-flex">
+    <Flex justify="center">
+      <Flex className="inline-flex">
         <Link
           href={`${endpoint}?genre=${genre}&page=${page - 1}`}
-          visibility={page > 1 ? "visible" : "hidden"}
+          className={page > 1 ? "visible" : "invisible"}
         >
-          <Text>{"<"}</Text>
+          <span>{"<"}</span>
         </Link>
-        <Text pl={2} pr={2}>
-          {page}
-        </Text>
+        <span className="px-2">{page}</span>
         <Link
           href={`${endpoint}?genre=${genre}&page=${page + 1}`}
-          visibility={hasNext ? "visible" : "hidden"}
+          className={hasNext ? "visible" : "invisible"}
         >
-          <Text>{">"}</Text>
+          <span>{">"}</span>
         </Link>
       </Flex>
     </Flex>

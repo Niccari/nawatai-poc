@@ -1,17 +1,18 @@
 import type { NextPage } from "next";
 import { PrimaryText } from "../components/element/text";
-import { Box, Center } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
+import { Heading } from "@/components/ui/typography";
 
 const NotFoundPage: NextPage = () => {
   return (
-    <Center w="100%" h="200px">
+    <div className="w-full h-[200px] flex items-center justify-center">
       <Box>
-        <PrimaryText textStyle="h2">
+        <Heading as="h2" size="lg">
           ページが見つかりませんでした。。。
-        </PrimaryText>
+        </Heading>
         <PrimaryText>アクセス先が正しいか、お確かめください。</PrimaryText>
       </Box>
-    </Center>
+    </div>
   );
 };
 

@@ -1,11 +1,20 @@
+import { Box, VStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Heading } from "@/components/ui/typography";
+import { ActionButton } from "../../../components/element/actionButton";
 import {
-  Box,
-  Button,
+  Form,
   FormControl,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -16,6 +25,11 @@ import { useLoginState } from "../../../modules/login/hooks";
 import { useCRUDNaming, useNaming } from "../../../modules/naming/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../../modules/route/hooks";
 
+const formSchema = z.object({
+  name: z.string().min(1, "名前は必須です"),
+  reason: z.string().optional(),
+});
+
 type Props = {};
 
 const EditNamingPage: NextPage<Props> = ({}) => {
@@ -25,16 +39,24 @@ const EditNamingPage: NextPage<Props> = ({}) => {
   const { namingId } = router.query;
 
   const { naming, namingError } = useNaming(namingId as string | undefined);
-
-  const [reason, setReason] = useState<string | undefined>(undefined);
-
   const { runUpdate } = useCRUDNaming();
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      reason: "",
+    },
+  });
+
   useEffect(() => {
-    if (reason === undefined && naming?.reason) {
-      setReason(naming?.reason);
+    if (naming) {
+      form.reset({
+        name: naming.name,
+        reason: naming.reason || "",
+      });
     }
-  }, [reason, setReason, naming]);
+  }, [naming, form]);
 
   if (typeof namingId !== "string" || namingError) {
     return <LoadItemError />;
@@ -44,38 +66,53 @@ const EditNamingPage: NextPage<Props> = ({}) => {
   }
   return (
     <>
-      <PrimaryText textStyle="h1" mt={4}>
+      <Heading as="h1" size="xl" className="mt-4">
         名付けする
-      </PrimaryText>
-      <Box mt={4}>
-        <div>
-          <Stack spacing={2}>
-            <FormControl>
-              <FormLabel>つける名前</FormLabel>
-              <Input type="text" value={naming.name} disabled />
-            </FormControl>
-            <FormControl>
-              <FormLabel>名付けについて補足してください</FormLabel>
-              <Input
-                type="text"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-              />
-            </FormControl>
-          </Stack>
-          <Button
-            mt={4}
-            onClick={() => {
+      </Heading>
+      <Box className="mt-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((values) => {
               runUpdate({
                 id: naming.id,
-                reason,
+                reason: values.reason,
               });
               router.push(`/targets/${naming.targetId}`);
-            }}
+            })}
           >
-            これでOK!
-          </Button>
-        </div>
+            <VStack spacing="2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>つける名前</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} disabled />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>名付けについて補足してください</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </VStack>
+            <ActionButton type="submit" className="mt-4">
+              これでOK!
+            </ActionButton>
+          </form>
+        </Form>
       </Box>
     </>
   );

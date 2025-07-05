@@ -1,4 +1,4 @@
-import { Box, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Box } from "../../ui/layout";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import LoadError from "../../element/loadException/loadError";
 import NoContent from "../../element/loadException/noContent";
@@ -13,7 +13,7 @@ type Props = {
   page: number;
 };
 
-const NamingsList = ({ genre, page }: Props): JSX.Element => {
+const NamingsList = ({ genre, page }: Props) => {
   const { namings, namingsError } = useNamings(genre, page);
 
   if (namings === undefined) {
@@ -40,13 +40,11 @@ const NamingsList = ({ genre, page }: Props): JSX.Element => {
   }
   return (
     <Box>
-      <SimpleGrid columns={[1, null, 2, 3]} gap={4}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {namings.map((n) => (
-          <GridItem key={n.id}>
-            <NamingSquare naming={n} />
-          </GridItem>
+          <NamingSquare key={n.id} naming={n} />
         ))}
-      </SimpleGrid>
+      </div>
       <Pager
         endpoint="/namings"
         page={page}

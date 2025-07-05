@@ -1,14 +1,18 @@
-import { Center } from "@chakra-ui/react";
 import { PrimaryText } from "../text";
+import { Heading } from "@/components/ui/typography";
 
 type Props = {};
 
-const LoadItemError = ({}: Props): JSX.Element => {
+const LoadItemError = ({}: Props) => {
   return (
-    <Center flexDirection="column" h="200px">
-      <PrimaryText textStyle="h3">データが見つかりませんでした</PrimaryText>
-      <PrimaryText mt={2}>URLが正しいか、お確かめ下さい。</PrimaryText>
-    </Center>
+    <div className="flex flex-col items-center justify-center h-[200px]">
+      <Heading as="h3" size="md">
+        データが見つかりませんでした
+      </Heading>
+      <PrimaryText className="mt-2">
+        URLが正しいか、お確かめ下さい。
+      </PrimaryText>
+    </div>
   );
 };
 

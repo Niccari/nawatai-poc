@@ -1,16 +1,13 @@
 import { useLoginState } from "../../modules/login/hooks";
+import { Avatar } from "@/components/ui/avatar";
+import { Box, Flex } from "@/components/ui/layout";
 import {
-  Avatar,
-  AvatarBadge,
-  Box,
-  Flex,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
-import { BellIcon } from "@chakra-ui/icons";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Bell } from "lucide-react";
 import { useUserNotification } from "../../modules/notifications/hooks";
 import { useRouter } from "next/router";
 import {
@@ -59,47 +56,49 @@ const NotificationsList = ({}: Props) => {
   };
 
   return (
-    <Menu>
-      <MenuButton type="button" w="40px" h="40px" aria-label="Notification">
-        <Avatar h="40px" w="40px" icon={<BellIcon />}>
-          {hasNotification && (
-            <AvatarBadge boxSize="1.25em" bg="red.500"></AvatarBadge>
-          )}
-        </Avatar>
-      </MenuButton>
-      <MenuList>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className="w-10 h-10 relative rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground inline-flex items-center justify-center"
+        aria-label="Notification"
+      >
+        <Bell size={20} />
+        {hasNotification && (
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-80">
         {(notifications &&
           notifications.length > 0 &&
           notifications.map((n) => (
-            <MenuItem
+            <DropdownMenuItem
               key={n.id}
               onClick={() => handleShowContent(n)}
-              bg={
+              className={
                 userActivity &&
                 n.createdAt > userActivity.lastReadNotificationAt
-                  ? "orange.100"
-                  : "transparent"
+                  ? "bg-orange-100"
+                  : ""
               }
             >
-              <div>
+              <div className="w-full">
                 <Flex>
                   <NextImageAvatar
                     src={n.authorIconUrl}
                     width="40px"
                     height="40px"
                   />
-                  <Box ml={2}>
+                  <Box className="ml-2">
                     <PrimaryText>{n.message}</PrimaryText>
-                    <SecondaryText fontSize="sm">
+                    <SecondaryText className="text-sm">
                       {n.createdAt.toLocaleString()}
                     </SecondaryText>
                   </Box>
                 </Flex>
               </div>
-            </MenuItem>
-          ))) || <MenuItem>通知はありません</MenuItem>}
-      </MenuList>
-    </Menu>
+            </DropdownMenuItem>
+          ))) || <DropdownMenuItem>通知はありません</DropdownMenuItem>}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

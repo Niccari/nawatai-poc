@@ -1,13 +1,7 @@
-import {
-  Flex,
-  Box,
-  Divider,
-  Stack,
-  Link,
-  useDisclosure,
-  Center,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Flex, Box, VStack } from "../../ui/layout";
+import { Separator } from "../../ui/separator";
+import { Heading } from "@/components/ui/typography";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { PrimaryText } from "../../element/text";
@@ -23,61 +17,43 @@ type Props = {
   target: NamingTargetForView;
 };
 
-const TargetDetail = ({ target }: Props): JSX.Element => {
+const TargetDetail = ({ target }: Props) => {
   const { id, authorId, title, comment, imageUrl, isDeleted } = target;
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
   const { user } = usePersonalUser(authorId);
   const { onDelete } = useDeleteNamingTarget();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
     router.push(`/targets/${target.id}/edit`);
   };
   const handleDelete = () => {
-    onOpen();
+    setIsModalOpen(true);
   };
   if (isDeleted) {
     return (
       <Box>
-        <Center h="136px">
+        <div className="flex items-center justify-center h-[136px]">
           <PrimaryText>この名付け対象は削除されました</PrimaryText>
-        </Center>
-        <Divider />
+        </div>
+        <Separator />
       </Box>
     );
   }
   return (
     <Box>
       <DeletionModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         requestDelete={() => {
           onDelete(id);
         }}
       />
-      <Flex pb={2} flexWrap="wrap" gap={4}>
-        <Link href={imageUrl}>
-          <Box
-            background="#333"
-            position="relative"
-            w={{
-              base: "calc(100vw - 16px)",
-              xl: "300px",
-              lg: "300px",
-              md: "300px",
-            }}
-            aspectRatio={{
-              base: "4 / 3",
-              xl: "1 / 1",
-              lg: "1 / 1",
-              md: "1 / 1",
-            }}
-            overflow="hidden"
-            alignContent="center"
-            verticalAlign="center"
-          >
+      <Flex wrap="wrap" gap="4" className="pb-2 flex-col sm:flex-row">
+        <a href={imageUrl} className="block w-full sm:w-auto">
+          <Box className="bg-gray-800 relative overflow-hidden flex items-center justify-center w-[calc(100vw-16px)] aspect-[4/3] sm:w-[300px] sm:aspect-square">
             <Image
               src={imageUrl ?? ""}
               alt={comment}
@@ -91,19 +67,17 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
               quality={80}
             />
           </Box>
-        </Link>
-        <Stack flexGrow={1} justifyContent="space-between">
-          <Stack>
-            <Flex>
-              <PrimaryText
-                textStyle="h2"
-                flex={1}
-                whiteSpace="nowrap"
-                textOverflow="ellipsis"
-                overflow="hidden"
+        </a>
+        <VStack className="flex-1 justify-between">
+          <VStack>
+            <Flex className="w-full">
+              <Heading
+                as="h2"
+                size="lg"
+                className="flex-1 whitespace-nowrap text-ellipsis overflow-hidden"
               >
                 {title}
-              </PrimaryText>
+              </Heading>
               {isOwner && (
                 <TargetOwnerMenu
                   handleEdit={isOwner ? handleEdit : undefined}
@@ -112,13 +86,13 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
               )}
             </Flex>
             <PrimaryText>{comment}</PrimaryText>
-          </Stack>
-          <Stack>
+          </VStack>
+          <VStack>
             <BasicUser user={user} />
-          </Stack>
-        </Stack>
+          </VStack>
+        </VStack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

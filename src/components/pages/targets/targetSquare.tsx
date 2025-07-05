@@ -1,5 +1,7 @@
-import { Box, VStack, Text, Flex, Stack } from "@chakra-ui/react";
+import { Box, VStack, HStack } from "@/components/ui/layout";
+import { Text } from "@/components/ui/typography";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { NamingTargetForView } from "../../../models/namingTarget";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
@@ -9,18 +11,14 @@ type Props = {
   target: NamingTargetForView;
 };
 
-const TargetSquare = ({ target }: Props): JSX.Element => {
+const TargetSquare = ({ target }: Props) => {
   const { id, authorId, title, comment, imageUrl, evalCounts } = target;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();
   const { user } = usePersonalUser(authorId);
   return (
     <Box
-      w="100%"
-      aspectRatio="4 / 3"
-      position="relative"
-      backgroundColor="#333"
-      alignItems="center"
+      className="w-full aspect-[4/3] relative bg-gray-800 flex items-center cursor-pointer"
       onClick={() => router.push(`/targets/${id}`)}
     >
       {target.imageUrl && (
@@ -37,35 +35,29 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
           quality={80}
         />
       )}
-      <Stack
-        w="100%"
-        h="100%"
-        position="absolute"
-        top="0"
-        left="0"
-        justifyContent="space-between"
-      >
-        <VStack w="100%" justifyContent="center" flexGrow={1}>
-          <Box
-            w="100%"
-            textAlign="center"
-            pl={2}
-            pr={2}
-            backgroundColor="#00000099"
-          >
-            <Text textColor="white" textStyle="h3">
+      <VStack className="w-full h-full absolute top-0 left-0 justify-between">
+        <VStack className="w-full justify-center flex-1">
+          <Box className="w-full text-center px-2 bg-black/60">
+            <Text
+              color="secondary"
+              size="lg"
+              weight="semibold"
+              className="text-[#f1f1f1]"
+            >
               {title}
             </Text>
-            <Text textColor="white">{comment}</Text>
-            <Text textColor="white" mt={2}>
+            <Text color="secondary" className="text-[#f1f1f1]">
+              {comment}
+            </Text>
+            <Text color="secondary" className="mt-2 text-[#f1f1f1]">
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </Text>
           </Box>
         </VStack>
-        <Box w="100%" p={2} backgroundColor="#00000099">
+        <Box className="w-full p-2 bg-black/60">
           <BasicUser user={user} noLink />
         </Box>
-      </Stack>
+      </VStack>
     </Box>
   );
 };
