@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@/components/ui/layout";
+import { Box } from "@/components/ui/layout";
 import Constants from "../../../../constants";
 import { Naming } from "../../../../models/naming";
 import { NamingTargetListGenre } from "../../../../models/namingTarget";
@@ -60,7 +60,7 @@ const NamingDetailList = ({
   }
   return (
     <Box>
-      <SimpleGrid columns={1} spacing="4">
+      <div className="grid grid-cols-1 gap-4">
         {namings.map((n) => (
           <NamingDetail
             key={n.id}
@@ -68,7 +68,7 @@ const NamingDetailList = ({
             namingEvals={namingEvals?.filter((e) => e.namingId === n.id) ?? []}
           />
         ))}
-      </SimpleGrid>
+      </div>
       <Pager
         endpoint={`/targets/${targetId}`}
         page={page}

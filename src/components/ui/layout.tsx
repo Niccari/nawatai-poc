@@ -105,39 +105,6 @@ export const HStack = forwardRef<HTMLDivElement, StackProps>(
 );
 HStack.displayName = "HStack";
 
-interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  columns?: number | { [key: string]: number };
-  spacing?: string;
-}
-
-export const SimpleGrid = forwardRef<HTMLDivElement, GridProps>(
-  ({ className, columns = 1, spacing = "4", ...props }, ref) => {
-    let gridClasses = "grid";
-
-    if (typeof columns === "number") {
-      gridClasses += ` grid-cols-${columns}`;
-    } else {
-      const responsiveColumns = Object.entries(columns)
-        .map(([breakpoint, cols]) =>
-          breakpoint === "base"
-            ? `grid-cols-${cols}`
-            : `${breakpoint}:grid-cols-${cols}`,
-        )
-        .join(" ");
-      gridClasses += ` ${responsiveColumns}`;
-    }
-
-    return (
-      <div
-        ref={ref}
-        className={cn(gridClasses, `gap-${spacing}`, className)}
-        {...props}
-      />
-    );
-  },
-);
-SimpleGrid.displayName = "SimpleGrid";
-
 export const Container = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>

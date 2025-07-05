@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "../../ui/layout";
+import { Box } from "../../ui/layout";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import LoadError from "../../element/loadException/loadError";
 import NoContent from "../../element/loadException/noContent";
@@ -40,11 +40,11 @@ const NamingsList = ({ genre, page }: Props): JSX.Element => {
   }
   return (
     <Box>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {namings.map((n) => (
           <NamingSquare key={n.id} naming={n} />
         ))}
-      </SimpleGrid>
+      </div>
       <Pager
         endpoint="/namings"
         page={page}

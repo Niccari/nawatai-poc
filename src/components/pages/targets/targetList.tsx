@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid } from "../../ui/layout";
+import { Box, Flex } from "../../ui/layout";
 import { Spinner } from "../../ui/spinner";
 import Constants from "../../../constants";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
@@ -44,11 +44,11 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
   }
   return (
     <Box>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {targets.map((t) => (
           <TargetSquare key={t.id} target={t} />
         ))}
-      </SimpleGrid>
+      </div>
       <Pager
         endpoint="/targets"
         page={page}
