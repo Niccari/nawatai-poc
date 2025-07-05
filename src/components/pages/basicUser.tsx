@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "../ui/layout";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import { PrimaryText } from "../element/text";
@@ -18,18 +18,14 @@ const BasicUser = ({ user, noLink }: Props) => {
     router.push(`/users/${user.id}`);
   };
   return (
-    <Flex alignItems="center" onClick={handleEditProfile}>
+    <Flex align="center" onClick={handleEditProfile}>
       <NextImageAvatar
         width="40px"
         height="40px"
         src={user?.imageUrl}
       ></NextImageAvatar>
-      {!noLink && <PrimaryText ml={2}>{user?.name}</PrimaryText>}
-      {noLink && (
-        <Text color="white" ml={2}>
-          {user?.name}
-        </Text>
-      )}
+      {!noLink && <PrimaryText className="ml-2">{user?.name}</PrimaryText>}
+      {noLink && <span className="text-white ml-2">{user?.name}</span>}
     </Flex>
   );
 };

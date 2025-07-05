@@ -1,47 +1,39 @@
-import { Avatar, AvatarProps, Box, chakra } from "@chakra-ui/react";
-import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { cn } from "@/lib/utils";
 
-const ChakraNextImage = chakra(Image, {
-  shouldForwardProp: (prop) =>
-    ["width", "height", "left", "top", "position", "src", "alt"].includes(prop),
-});
-export const NextImageAvatar = (props: AvatarProps) => {
-  const { src, name, width, padding, height } = props;
+type NextImageAvatarProps = {
+  src?: string;
+  name?: string;
+  width?: string;
+  height?: string;
+  className?: string;
+};
+
+export const NextImageAvatar = ({
+  src,
+  name,
+  width = "40px",
+  height = "40px",
+  className,
+}: NextImageAvatarProps) => {
   return (
-    <Box
-      position="relative"
-      width={width || "40px"}
-      height={height || "40px"}
-      borderRadius="50%"
-      background="#DDD"
+    <div
+      className={cn(
+        "relative bg-gray-300 rounded-full flex items-center justify-center",
+        className,
+      )}
+      style={{ width, height }}
     >
-      <Avatar
-        left="1px"
-        top="1px"
-        width="calc(100% - 2px)"
-        height="calc(100% - 2px)"
-        position="absolute"
-      />
-      {src && (
-        <Box
-          position="absolute"
-          left="1px"
-          top="1px"
-          width="calc(100% - 2px)"
-          height="calc(100% - 2px)"
-        >
-          <ChakraNextImage
+      <Avatar className="w-[calc(100%-2px)] h-[calc(100%-2px)]">
+        {src && (
+          <AvatarImage
             src={src}
             alt={name ?? "your avatar image"}
-            width={parseInt(width?.toString() ?? "40", 10)}
-            height={parseInt(height?.toString() ?? "40", 10)}
-            w="100%"
-            h="100%"
-            borderRadius="50%"
-            background={src ? "white" : "transparent"}
+            className="w-full h-full rounded-full bg-white"
           />
-        </Box>
-      )}
-    </Box>
+        )}
+        <AvatarFallback className="w-full h-full rounded-full" />
+      </Avatar>
+    </div>
   );
 };

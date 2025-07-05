@@ -1,4 +1,5 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadError from "../../../components/element/loadException/loadError";
@@ -13,6 +14,7 @@ import {
 } from "../../../models/namingTarget";
 import { useLoginState } from "../../../modules/login/hooks";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
+import { ActionButton } from "@/components/element/actionButton";
 
 type Props = {
   ogpTarget: NamingTargetForView;
@@ -54,16 +56,11 @@ const TargetPage: NextPage<Props> = ({ ogpTarget }) => {
         <>
           <TargetDetail target={target} />
           {isLogined && (
-            <Button
-              mt={2}
-              colorScheme="orange"
-              size="sm"
-              onClick={handleNaming}
-            >
+            <ActionButton className="mt-4" onClick={handleNaming}>
               名付けする！
-            </Button>
+            </ActionButton>
           )}
-          <Box mt={4}>
+          <Box className="mt-4">
             <TabbedNamingDetailList
               targetId={targetId}
               authorId={target.authorId}

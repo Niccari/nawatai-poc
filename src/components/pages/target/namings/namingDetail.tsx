@@ -1,12 +1,7 @@
-import {
-  Flex,
-  Box,
-  Divider,
-  Stack,
-  useDisclosure,
-  Center,
-  HStack,
-} from "@chakra-ui/react";
+import { Flex, Box, VStack, HStack } from "@/components/ui/layout";
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui/typography";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import EvalButton from "../../../element/evalButton";
 import { PrimaryText } from "../../../element/text";
@@ -34,14 +29,14 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   const { isUpdating, onCreate, onEdit } = useUpsertNamingEval();
   const { runDelete } = useCRUDNaming();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
 
   const isOwner = loginUser?.id === authorId;
   const handleEdit = () => {
     router.push(`/namings/${id}/edit`);
   };
   const handleDelete = () => {
-    onOpen();
+    setIsOpen(true);
   };
 
   const requestDelete = async () => {
@@ -75,10 +70,10 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
   if (naming.isDeleted) {
     return (
       <Box>
-        <Center h="136px">
+        <div className="h-34 flex items-center justify-center">
           <PrimaryText>この名付けは削除されました</PrimaryText>
-        </Center>
-        <Divider />
+        </div>
+        <Separator />
       </Box>
     );
   }
@@ -86,23 +81,21 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
     <Box>
       <DeletionModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
         requestDelete={() => {
           requestDelete();
         }}
       />
-      <Flex pb={2}>
-        <Stack minW="200px" flexGrow={1} justifyContent="space-between">
+      <Flex className="pb-2">
+        <VStack className="min-w-[200px] flex-1 justify-between">
           <Flex>
-            <PrimaryText
-              textStyle="h2"
-              flex={1}
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-              overflow="hidden"
+            <Heading
+              as="h2"
+              size="lg"
+              className="flex-1 whitespace-nowrap truncate"
             >
               {name}
-            </PrimaryText>
+            </Heading>
             {isOwner && (
               <TargetOwnerMenu
                 handleEdit={isOwner ? handleEdit : undefined}
@@ -138,9 +131,9 @@ const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
             />
           </HStack>
           <BasicUser user={user} />
-        </Stack>
+        </VStack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

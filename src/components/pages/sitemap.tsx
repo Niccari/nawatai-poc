@@ -1,13 +1,17 @@
-import { Box, Link, Stack, Text } from "@chakra-ui/react";
+import { Box, VStack } from "@/components/ui/layout";
+import Link from "next/link";
 import { PrimaryText } from "../element/text";
+import { Heading } from "@/components/ui/typography";
 
 type Props = {};
 
 const Sitemap = ({}: Props) => {
   return (
-    <Box w="100vw">
-      <PrimaryText textStyle="h2">サイトマップ</PrimaryText>
-      <Stack spacing={2} mt={2}>
+    <Box className="w-screen">
+      <Heading as="h2" size="lg">
+        サイトマップ
+      </Heading>
+      <VStack spacing="2" className="mt-2">
         <Link href="/info/story">
           <PrimaryText>nawataiについて</PrimaryText>
         </Link>
@@ -17,7 +21,7 @@ const Sitemap = ({}: Props) => {
         <Link href="https://gist.github.com/Niccari/8daadcd07b7f0051351241fe638d8acc">
           <PrimaryText>プライバシーポリシー</PrimaryText>
         </Link>
-      </Stack>
+      </VStack>
     </Box>
   );
 };

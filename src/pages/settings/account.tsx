@@ -1,4 +1,7 @@
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/typography";
+import { useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadingContent from "../../components/pages/loading";
@@ -13,7 +16,7 @@ type Props = {};
 const EditAccountPage: NextPage<Props> = ({}) => {
   const route = useRouter();
   const { personalUser: owner, logout } = useLoginState();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
   const { onDelete } = useAnonymisePersonalUser();
 
   useDashboardRedirectIfNotLogined();
@@ -34,16 +37,16 @@ const EditAccountPage: NextPage<Props> = ({}) => {
     <>
       <DeletionModal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
         requestDelete={() => {
           handleDelete();
         }}
       />
-      <PrimaryText textStyle="h2" mt={4}>
+      <Heading as="h2" size="lg" className="mt-4">
         アカウント設定
-      </PrimaryText>
-      <Box mt={4}>
-        <Button colorScheme="red" onClick={onOpen}>
+      </Heading>
+      <Box className="mt-4">
+        <Button variant="destructive" onClick={() => setIsOpen(true)}>
           アカウントを削除する
         </Button>
       </Box>

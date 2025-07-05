@@ -1,4 +1,5 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useRouter } from "next/router";
 import { NamingTargetListGenre } from "../../../../models/namingTarget";
 import { useTargetNamings } from "../../../../modules/naming/hooks";
@@ -26,11 +27,9 @@ const TabbedNamingDetailList = ({
   return (
     <Box>
       <Tabs
-        defaultIndex={index}
-        size="md"
-        variant="enclosed"
-        onChange={(index) =>
-          index === 0
+        defaultValue={index === 0 ? "hot" : "latest"}
+        onValueChange={(value) =>
+          value === "hot"
             ? router.push(
                 `/targets/${targetId}?genre=${NamingTargetListGenre.HOT}&page=${page}`,
               )
@@ -39,13 +38,13 @@ const TabbedNamingDetailList = ({
               )
         }
       >
-        <TabList>
-          <Tab>ホット順</Tab>
-          <Tab>最新順</Tab>
-        </TabList>
+        <TabsList>
+          <TabsTrigger value="hot">ホット順</TabsTrigger>
+          <TabsTrigger value="latest">最新順</TabsTrigger>
+        </TabsList>
       </Tabs>
       {namings && (
-        <Box mt={4} ml={4} mr={4}>
+        <Box className="mt-4 mx-4">
           <NamingDetailList
             namings={namings}
             namingsError={namingsError}

@@ -1,13 +1,21 @@
+import { Box, VStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Heading } from "@/components/ui/typography";
+import { ActionButton } from "../../../../components/element/actionButton";
 import {
-  Box,
-  Button,
+  Form,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -17,6 +25,11 @@ import { useLoginState } from "../../../../modules/login/hooks";
 import { useCRUDNaming } from "../../../../modules/naming/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../../../modules/route/hooks";
 
+const formSchema = z.object({
+  name: z.string().min(1, "名前は必須です"),
+  reason: z.string().optional(),
+});
+
 type Props = {};
 
 const CreateNewNamingPage: NextPage<Props> = ({}) => {
@@ -24,12 +37,16 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
   useDashboardRedirectIfNotLogined();
   const router = useRouter();
 
-  const [name, setTitle] = useState("");
-  const [reason, setReason] = useState("");
-
   const { runCreate } = useCRUDNaming();
   const { targetId } = router.query;
-  const isNameError = Boolean(!name);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      reason: "",
+    },
+  });
 
   if (typeof targetId !== "string") {
     return <>エラー: 不正なURLです</>;
@@ -40,52 +57,58 @@ const CreateNewNamingPage: NextPage<Props> = ({}) => {
   }
   return (
     <>
-      <PrimaryText textStyle="h1" mt={4}>
+      <Heading as="h1" size="xl" className="mt-4">
         名付けする
-      </PrimaryText>
-      <Box mt={4}>
-        <div>
-          <Stack spacing={2}>
-            <FormControl isInvalid={isNameError}>
-              <FormLabel>つける名前</FormLabel>
-              <Input
-                type="text"
-                value={name}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              {!isNameError ? (
-                <FormHelperText>
-                  ※ 付けた名前は編集で変更できません
-                </FormHelperText>
-              ) : (
-                <FormErrorMessage>名前は必須です</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel>名付けについて補足してください</FormLabel>
-              <Input
-                type="text"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-              />
-            </FormControl>
-          </Stack>
-          <Button
-            mt={4}
-            disabled={isNameError}
-            onClick={() => {
+      </Heading>
+      <Box className="mt-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((values) => {
               runCreate({
                 authorId: firebaseUser.uid,
                 targetId,
-                name,
-                reason,
+                name: values.name,
+                reason: values.reason,
               });
               router.push(`/targets/${targetId}`);
-            }}
+            })}
           >
-            これでOK!
-          </Button>
-        </div>
+            <VStack spacing="2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>つける名前</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      ※ 付けた名前は編集で変更できません
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="reason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>名付けについて補足してください</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </VStack>
+            <ActionButton type="submit" className="mt-4">
+              これでOK!
+            </ActionButton>
+          </form>
+        </Form>
       </Box>
     </>
   );
