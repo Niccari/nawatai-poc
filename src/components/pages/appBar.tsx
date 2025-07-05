@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
+import { ActionButton } from "../element/actionButton";
 import NotificationsList from "./notificationsList";
 import { Moon, Sun } from "lucide-react";
 
@@ -95,23 +96,13 @@ const AppBar = ({}: Props): JSX.Element => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button
-                size="sm"
-                onClick={createNewTarget}
-                className="bg-orange-500 hover:bg-orange-600 text-white"
-              >
+              <ActionButton onClick={createNewTarget}>
                 名付けを求める
-              </Button>
+              </ActionButton>
             </>
           )}
           {!isLoading && !isAuthed && (
-            <Button
-              size="sm"
-              onClick={login}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-            >
-              ログイン
-            </Button>
+            <ActionButton onClick={login}>ログイン</ActionButton>
           )}
         </HStack>
       </Flex>

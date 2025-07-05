@@ -2,6 +2,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Box, VStack } from "../../components/ui/layout";
 import { Heading } from "../../components/ui/typography";
+import { ActionButton } from "../../components/element/actionButton";
 import {
   Form,
   FormControl,
@@ -143,9 +144,13 @@ const CreateNewTargetPage: NextPage<Props> = ({}) => {
                 )}
               </FormItem>
             </VStack>
-            <Button type="submit" className="mt-4" disabled={!fileState.file}>
+            <ActionButton
+              type="submit"
+              className="mt-4"
+              disabled={!fileState.file}
+            >
               これでOK!
-            </Button>
+            </ActionButton>
           </form>
         </Form>
       </Box>

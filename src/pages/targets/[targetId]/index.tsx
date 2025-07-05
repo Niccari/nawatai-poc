@@ -14,6 +14,7 @@ import {
 } from "../../../models/namingTarget";
 import { useLoginState } from "../../../modules/login/hooks";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
+import { ActionButton } from "@/components/element/actionButton";
 
 type Props = {
   ogpTarget: NamingTargetForView;
@@ -55,14 +56,9 @@ const TargetPage: NextPage<Props> = ({ ogpTarget }) => {
         <>
           <TargetDetail target={target} />
           {isLogined && (
-            <Button
-              className="mt-2"
-              variant="default"
-              size="sm"
-              onClick={handleNaming}
-            >
+            <ActionButton className="mt-4" onClick={handleNaming}>
               名付けする！
-            </Button>
+            </ActionButton>
           )}
           <Box className="mt-4">
             <TabbedNamingDetailList

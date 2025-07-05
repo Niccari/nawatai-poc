@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Heading } from "@/components/ui/typography";
+import { ActionButton } from "../../../components/element/actionButton";
 import {
   Form,
   FormControl,
@@ -107,9 +108,9 @@ const EditNamingPage: NextPage<Props> = ({}) => {
                 )}
               />
             </VStack>
-            <Button type="submit" className="mt-4">
+            <ActionButton type="submit" className="mt-4">
               これでOK!
-            </Button>
+            </ActionButton>
           </form>
         </Form>
       </Box>

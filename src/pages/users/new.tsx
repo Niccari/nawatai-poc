@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Heading } from "@/components/ui/typography";
+import { ActionButton } from "../../components/element/actionButton";
 import {
   Form,
   FormControl,
@@ -193,9 +194,9 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
                       )}
                     />
                   </VStack>
-                  <Button type="submit" className="mt-4">
+                  <ActionButton type="submit" className="mt-4">
                     これでOK!
-                  </Button>
+                  </ActionButton>
                 </form>
               </Form>
             </Box>
