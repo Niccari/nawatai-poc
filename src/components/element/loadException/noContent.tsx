@@ -5,7 +5,7 @@ type Props = {
   objectName: string;
 };
 
-const NoContent = ({ objectName }: Props): JSX.Element => {
+const NoContent = ({ objectName }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center h-[200px]">
       <Heading as="h3" size="md">

@@ -12,7 +12,7 @@ type Props = {
   naming: Naming;
 };
 
-const NamingSquare = ({ naming }: Props): JSX.Element => {
+const NamingSquare = ({ naming }: Props) => {
   const { id, authorId, targetId, name, reason, evalCounts } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();

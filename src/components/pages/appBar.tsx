@@ -21,7 +21,7 @@ import { Moon, Sun } from "lucide-react";
 
 type Props = {};
 
-const AppBar = ({}: Props): JSX.Element => {
+const AppBar = ({}: Props) => {
   const router = useRouter();
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
@@ -71,18 +71,15 @@ const AppBar = ({}: Props): JSX.Element => {
             <>
               <NotificationsList />
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button
-                    variant="ghost"
-                    className="w-10 h-10 p-0"
-                    aria-label="User menu"
-                  >
-                    <NextImageAvatar
-                      src={user?.imageUrl ?? ""}
-                      width="40px"
-                      height="40px"
-                    />
-                  </Button>
+                <DropdownMenuTrigger
+                  className="w-10 h-10 p-0 rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  aria-label="User menu"
+                >
+                  <NextImageAvatar
+                    src={user?.imageUrl ?? ""}
+                    width="40px"
+                    height="40px"
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={handleEditUser}>

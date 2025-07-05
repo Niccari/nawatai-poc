@@ -3,7 +3,7 @@ import { Heading } from "@/components/ui/typography";
 
 type Props = {};
 
-const LoadError = ({}: Props): JSX.Element => {
+const LoadError = ({}: Props) => {
   return (
     <div className="flex flex-col items-center justify-center h-[200px]">
       <Heading as="h3" size="md">

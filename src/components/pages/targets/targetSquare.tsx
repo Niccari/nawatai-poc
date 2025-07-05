@@ -11,7 +11,7 @@ type Props = {
   target: NamingTargetForView;
 };
 
-const TargetSquare = ({ target }: Props): JSX.Element => {
+const TargetSquare = ({ target }: Props) => {
   const { id, authorId, title, comment, imageUrl, evalCounts } = target;
   const { precise, fun, question, missmatch } = evalCounts;
   const router = useRouter();

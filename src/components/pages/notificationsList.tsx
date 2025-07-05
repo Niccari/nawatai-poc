@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import { useUserNotification } from "../../modules/notifications/hooks";
 import { useRouter } from "next/router";
@@ -58,18 +57,14 @@ const NotificationsList = ({}: Props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-10 h-10 relative"
-          aria-label="Notification"
-        >
-          <Bell size={20} />
-          {hasNotification && (
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        className="w-10 h-10 relative rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground inline-flex items-center justify-center"
+        aria-label="Notification"
+      >
+        <Bell size={20} />
+        {hasNotification && (
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80">
         {(notifications &&

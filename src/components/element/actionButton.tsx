@@ -16,7 +16,7 @@ export const ActionButton = ({
   disabled,
   className,
   type = "button",
-}: Props): JSX.Element => {
+}: Props) => {
   const isSubmitButton = type === "submit";
 
   const baseClasses = "bg-orange-500 hover:bg-orange-600 text-white";

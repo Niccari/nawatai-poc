@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, forwardRef } from "react";
+import React, { HTMLAttributes, forwardRef } from "react";
 
 interface TextProps extends HTMLAttributes<HTMLElement> {
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   weight?: "normal" | "medium" | "semibold" | "bold";
   color?: "primary" | "secondary" | "muted" | "accent" | "destructive";

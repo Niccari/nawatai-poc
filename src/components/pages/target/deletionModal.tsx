@@ -15,11 +15,7 @@ type Props = {
   requestDelete: () => void;
 };
 
-const DeletionModal = ({
-  isOpen,
-  onClose,
-  requestDelete,
-}: Props): JSX.Element => {
+const DeletionModal = ({ isOpen, onClose, requestDelete }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>

@@ -14,7 +14,7 @@ type Props = {
   user: PersonalUserDetailView;
 };
 
-const UserDetail = ({ user }: Props): JSX.Element => {
+const UserDetail = ({ user }: Props) => {
   const router = useRouter();
   const { personalUser: owner } = useLoginState();
 

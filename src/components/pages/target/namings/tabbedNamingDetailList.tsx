@@ -12,12 +12,7 @@ type Props = {
   genre: NamingTargetListGenre;
 };
 
-const TabbedNamingDetailList = ({
-  targetId,
-  authorId,
-  page,
-  genre,
-}: Props): JSX.Element => {
+const TabbedNamingDetailList = ({ targetId, authorId, page, genre }: Props) => {
   const router = useRouter();
   const index = genre === NamingTargetListGenre.HOT ? 0 : 1;
   const { namings, namingsError } = useTargetNamings(targetId, genre, page);

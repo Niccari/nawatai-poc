@@ -20,7 +20,7 @@ type Props = {
   namingEvals: NamingEval[];
 };
 
-const NamingDetail = ({ naming, namingEvals }: Props): JSX.Element => {
+const NamingDetail = ({ naming, namingEvals }: Props) => {
   const { id, name, reason, evalCounts, targetId, authorId } = naming;
   const { precise, fun, question, missmatch } = evalCounts;
 

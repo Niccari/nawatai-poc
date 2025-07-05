@@ -13,7 +13,7 @@ type Props = {
   page: number;
 };
 
-const NamingsList = ({ genre, page }: Props): JSX.Element => {
+const NamingsList = ({ genre, page }: Props) => {
   const { namings, namingsError } = useNamings(genre, page);
 
   if (namings === undefined) {

@@ -17,7 +17,7 @@ type Props = {
   target: NamingTargetForView;
 };
 
-const TargetDetail = ({ target }: Props): JSX.Element => {
+const TargetDetail = ({ target }: Props) => {
   const { id, authorId, title, comment, imageUrl, isDeleted } = target;
   const router = useRouter();
   const { personalUser: loginUser } = useLoginState();
