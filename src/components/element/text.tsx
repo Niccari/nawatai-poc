@@ -1,16 +1,16 @@
-import { useColorModeValue, Text, TextProps } from "@chakra-ui/react";
+import { Text } from "@/components/ui/typography";
+import { ComponentProps } from "react";
+
+type TextProps = ComponentProps<typeof Text>;
 
 export const PrimaryText = (props: TextProps) => {
-  const fontColor = useColorModeValue("#212121", "#DEDEDE");
-  return <Text color={fontColor} {...props} />;
+  return <Text color="primary" {...props} />;
 };
 
 export const SecondaryText = (props: TextProps) => {
-  const fontColor = useColorModeValue("#666666", "#999999");
-  return <Text color={fontColor} {...props} />;
+  return <Text color="secondary" {...props} />;
 };
 
 export const PlaceholderText = (props: TextProps) => {
-  const fontColor = useColorModeValue("#A1A1A1", "#5E5E5E");
-  return <Text color={fontColor} {...props} />;
+  return <Text color="muted" {...props} />;
 };

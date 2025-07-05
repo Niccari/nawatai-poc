@@ -1,5 +1,9 @@
-import { LinkIcon } from "@chakra-ui/icons";
-import { Flex, Box, Divider, Stack, Link, Button } from "@chakra-ui/react";
+import { Link as LinkIcon } from "lucide-react";
+import { Flex, Box, VStack, HStack } from "@/components/ui/layout";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/typography";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { NextImageAvatar } from "../../element/nextImageAvatar";
 import { PrimaryText } from "../../element/text";
@@ -22,31 +26,30 @@ const UserDetail = ({ user }: Props): JSX.Element => {
   };
   return (
     <Box>
-      <Flex pb={2}>
-        <Box width="80px" height="80px">
+      <Flex className="pb-2">
+        <Box className="w-20 h-20">
           <NextImageAvatar src={imageUrl ?? ""} width="80px" height="80px" />
         </Box>
-        <Stack minW="200px" flexGrow={1} ml={4} justifyContent="space-between">
-          <Stack>
-            <Flex alignItems="center">
-              <Box flex={1}>
-                <PrimaryText
-                  textStyle="h2"
-                  whiteSpace="nowrap"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
+        <VStack className="min-w-[200px] flex-1 ml-4 justify-between">
+          <VStack>
+            <Flex align="center">
+              <Box className="flex-1">
+                <Heading
+                  as="h2"
+                  size="lg"
+                  className="whitespace-nowrap truncate"
                 >
                   {name}
-                </PrimaryText>
+                </Heading>
               </Box>
               {isOwner && <Button onClick={handleEditProfile}>編集する</Button>}
             </Flex>
             <PrimaryText>{profile}</PrimaryText>
-          </Stack>
-          <Stack>
+          </VStack>
+          <VStack>
             {url && (
               <Flex>
-                <LinkIcon />
+                <LinkIcon size={16} />
                 <Link href={url}>
                   <PrimaryText>{url}</PrimaryText>
                 </Link>
@@ -54,16 +57,16 @@ const UserDetail = ({ user }: Props): JSX.Element => {
             )}
             {twitterUserId && (
               <Flex>
-                <LinkIcon />
+                <LinkIcon size={16} />
                 <Link href={`https://twitter.com/${twitterUserId}`}>
                   <PrimaryText>{twitterUserId}</PrimaryText>
                 </Link>
               </Flex>
             )}
-          </Stack>
-        </Stack>
+          </VStack>
+        </VStack>
       </Flex>
-      <Divider />
+      <Separator />
     </Box>
   );
 };

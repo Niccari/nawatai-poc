@@ -1,5 +1,11 @@
-import { TriangleDownIcon } from "@chakra-ui/icons";
-import { MenuButton, Menu, MenuItem, MenuList } from "@chakra-ui/react";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   handleEdit?: () => void;
@@ -8,15 +14,23 @@ type Props = {
 
 const TargetOwnerMenu = ({ handleEdit, handleDelete }: Props): JSX.Element => {
   return (
-    <Menu>
-      <MenuButton type="button" aria-label="targetOwnerMenu">
-        <TriangleDownIcon />
-      </MenuButton>
-      <MenuList>
-        {handleEdit && <MenuItem onClick={handleEdit}>🖊 手直しする</MenuItem>}
-        {handleDelete && <MenuItem onClick={handleDelete}>❌ 消す</MenuItem>}
-      </MenuList>
-    </Menu>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button variant="ghost" size="sm" aria-label="targetOwnerMenu">
+          <ChevronDown size={16} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {handleEdit && (
+          <DropdownMenuItem onClick={handleEdit}>
+            🖊 手直しする
+          </DropdownMenuItem>
+        )}
+        {handleDelete && (
+          <DropdownMenuItem onClick={handleDelete}>❌ 消す</DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

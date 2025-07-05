@@ -1,11 +1,19 @@
+import { Box, VStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Heading } from "@/components/ui/typography";
 import {
-  Box,
-  Button,
+  Form,
   FormControl,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -19,6 +27,11 @@ import {
 } from "../../../modules/namingTarget/hooks";
 import { useDashboardRedirectIfNotLogined } from "../../../modules/route/hooks";
 
+const formSchema = z.object({
+  title: z.string().min(1, "タイトルは必須です"),
+  comment: z.string().optional(),
+});
+
 type Props = {};
 
 const CreateEditTargetPage: NextPage<Props> = ({}) => {
@@ -27,18 +40,27 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
   const router = useRouter();
 
   const { targetId } = router.query;
-  const [comment, setComment] = useState<string | undefined>(undefined);
-
   const { onEdit } = useEditNamingTarget();
   const { target, targetError } = useNamingTarget(
     targetId as string | undefined,
   );
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      comment: "",
+    },
+  });
+
   useEffect(() => {
-    if (comment === undefined && target) {
-      setComment(target.comment);
+    if (target) {
+      form.reset({
+        title: target.title,
+        comment: target.comment || "",
+      });
     }
-  }, [comment, setComment, target]);
+  }, [target, form]);
 
   if (typeof targetId !== "string" || targetError) {
     return <LoadItemError />;
@@ -49,40 +71,55 @@ const CreateEditTargetPage: NextPage<Props> = ({}) => {
 
   return (
     <>
-      <PrimaryText textStyle="h1" mt={4}>
+      <Heading as="h1" size="xl" className="mt-4">
         名付け対象を編集する
-      </PrimaryText>
-      <Box mt={4}>
-        <div>
-          <Stack spacing={2}>
-            <FormControl>
-              <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
-              <Input type="text" value={target.title} disabled />
-            </FormControl>
-            <FormControl>
-              <FormLabel>
-                名付けにあたり、気をつけて欲しい点は何ですか？
-              </FormLabel>
-              <Input
-                type="text"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </FormControl>
-          </Stack>
-          <Button
-            mt={4}
-            onClick={async () => {
+      </Heading>
+      <Box className="mt-4">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(async (values) => {
               await onEdit({
                 id: target.id,
-                comment,
+                comment: values.comment,
               });
               router.push(`/targets/${targetId}`);
-            }}
+            })}
           >
-            これでOK!
-          </Button>
-        </div>
+            <VStack spacing="2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>どんな名前を付けて欲しいですか？</FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} disabled />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="comment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      名付けにあたり、気をつけて欲しい点は何ですか？
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </VStack>
+            <Button type="submit" className="mt-4">
+              これでOK!
+            </Button>
+          </form>
+        </Form>
       </Box>
     </>
   );

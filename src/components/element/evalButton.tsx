@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import { NamingEvalKind } from "../../models/namingEval";
 import { PrimaryText } from "./text";
 
@@ -29,6 +29,7 @@ const EvalButton = (props: Props): JSX.Element => {
       onClick={() => {
         onEval(kind);
       }}
+      variant="outline"
     >
       <PrimaryText>{`${icon} ${count}`}</PrimaryText>
     </Button>

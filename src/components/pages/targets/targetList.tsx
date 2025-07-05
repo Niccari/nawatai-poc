@@ -1,4 +1,5 @@
-import { Box, Flex, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid } from "../../ui/layout";
+import { Spinner } from "../../ui/spinner";
 import Constants from "../../../constants";
 import { NamingTargetListGenre } from "../../../models/namingTarget";
 import { useNamingTargets } from "../../../modules/namingTarget/hooks";
@@ -17,7 +18,7 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
 
   if (targets === undefined) {
     return (
-      <Flex justifyContent="center" alignItems="center">
+      <Flex justify="center" align="center">
         <Spinner />
       </Flex>
     );
@@ -43,11 +44,9 @@ const TargetList = ({ genre, page }: Props): JSX.Element => {
   }
   return (
     <Box>
-      <SimpleGrid columns={[1, null, 2, 3]} gap={4}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="4">
         {targets.map((t) => (
-          <GridItem key={t.id}>
-            <TargetSquare target={t} />
-          </GridItem>
+          <TargetSquare key={t.id} target={t} />
         ))}
       </SimpleGrid>
       <Pager

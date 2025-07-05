@@ -1,4 +1,5 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadError from "../../../components/element/loadException/loadError";
@@ -55,15 +56,15 @@ const TargetPage: NextPage<Props> = ({ ogpTarget }) => {
           <TargetDetail target={target} />
           {isLogined && (
             <Button
-              mt={2}
-              colorScheme="orange"
+              className="mt-2"
+              variant="default"
               size="sm"
               onClick={handleNaming}
             >
               名付けする！
             </Button>
           )}
-          <Box mt={4}>
+          <Box className="mt-4">
             <TabbedNamingDetailList
               targetId={targetId}
               authorId={target.authorId}

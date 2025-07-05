@@ -1,16 +1,21 @@
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Box, Flex, VStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { Heading } from "@/components/ui/typography";
 import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
+  Form,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Spinner,
-  Stack,
-} from "@chakra-ui/react";
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { PrimaryText, SecondaryText } from "../../components/element/text";
@@ -20,32 +25,46 @@ import { useLoginState } from "../../modules/login/hooks";
 import { useUpsertPersonalUser } from "../../modules/personalUser/hooks";
 import { useDashboardRedirectIfUserNotRegistered } from "../../modules/route/hooks";
 
+const formSchema = z.object({
+  userId: z
+    .string()
+    .min(1, "ユーザIDは必須です")
+    .regex(
+      /^[0-9a-zA-Z-_]*$/,
+      "ユーザIDは英数字とハイフン、アンダースコアのみ使用可能です",
+    ),
+  name: z.string().min(1, "ニックネームは必須です"),
+  profile: z.string().optional(),
+});
+
 type Props = {};
 
 const CreateNewUserPage: NextPage<Props> = ({}) => {
   const { firebaseUser, isLoading, isLogined } = useLoginState();
-  const [id, setId] = useState(Math.random().toString(32).slice(2));
-  const [name, setName] = useState("");
   const [userIconUrl, setUserIconUrl] = useState("");
-  const [profile, setProfile] = useState("");
-
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { fileState, handleImageSet } = useImageLoader();
   const { uploadImage } = useImageUploader();
   const { onCreate } = useUpsertPersonalUser();
 
-  const isIdError = !/^[0-9a-zA-Z-_]*$/.exec(id);
-  const isNameError = name === "";
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: Math.random().toString(32).slice(2),
+      name: "",
+      profile: "",
+    },
+  });
 
   useDashboardRedirectIfUserNotRegistered();
   useEffect(() => {
     if (!isLoading && firebaseUser && !isInitialized) {
       setIsInitialized(true);
-      setName(firebaseUser.displayName ?? "");
+      form.setValue("name", firebaseUser.displayName ?? "");
       setUserIconUrl(firebaseUser.photoURL ?? "");
     }
-  }, [firebaseUser, isLoading, isInitialized]);
+  }, [firebaseUser, isLoading, isInitialized, form]);
 
   const onSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -54,7 +73,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
     }
   };
 
-  const createUser = async () => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!firebaseUser) {
       return;
     }
@@ -71,7 +90,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
         }
         const blob = await response.blob();
         const { imageId } = await uploadImage(
-          new File([blob], name, {
+          new File([blob], values.name, {
             type: blob.type,
           }),
         );
@@ -82,10 +101,10 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
     })();
     const personalUser: PersonalUser = {
       id: uid,
-      name,
-      userId: id,
+      name: values.name,
+      userId: values.userId,
       iconImageId,
-      profile,
+      profile: values.profile || "",
     };
     onCreate(personalUser);
   };
@@ -94,90 +113,91 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
     <>
       {!isInitialized ||
         (isLogined && (
-          <Flex justifyContent="center" alignItems="center">
+          <Flex justify="center" align="center">
             <Spinner />
           </Flex>
         )) || (
           <>
-            <PrimaryText textStyle="h1" mt={4}>
+            <Heading as="h1" size="xl" className="mt-4">
               あと1ステップです！
-            </PrimaryText>
+            </Heading>
             <SecondaryText>プロフィールを入力しましょう</SecondaryText>
-            <PrimaryText mt={4}>ユーザアイコン</PrimaryText>
-            <Box w="80px" h="80px" position="relative">
-              <Avatar
-                w="100%"
-                h="100%"
-                left="0"
-                top="0"
-                border="1px solid #EEE"
-                backgroundColor="#FFF"
-                src={
-                  fileState.imageDataUrl ? fileState.imageDataUrl : userIconUrl
-                }
-              ></Avatar>
-              <Box position="absolute" w="100%" h="100%" left="0" top="0">
+            <PrimaryText className="mt-4">ユーザアイコン</PrimaryText>
+            <Box className="w-20 h-20 relative">
+              <Avatar className="w-full h-full border border-gray-200 bg-white">
+                <AvatarImage
+                  src={
+                    fileState.imageDataUrl
+                      ? fileState.imageDataUrl
+                      : userIconUrl
+                  }
+                />
+              </Avatar>
+              <Box className="absolute w-full h-full left-0 top-0">
                 <Input
                   type="file"
-                  opacity="0"
-                  w="100%"
-                  h="100%"
+                  className="opacity-0 w-full h-full"
                   aria-hidden="true"
                   accept="image/*"
                   onChange={(e) => onSetImage(e)}
                 />
               </Box>
             </Box>
-            <Box mt={4}>
-              <div>
-                <Stack spacing={2}>
-                  <FormControl isInvalid={isIdError}>
-                    <FormLabel>ユーザID</FormLabel>
-                    <Input
-                      type="text"
-                      value={id}
-                      onChange={(e) => setId(e.target.value)}
+            <Box className="mt-4">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <VStack spacing="4">
+                    <FormField
+                      control={form.control}
+                      name="userId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ユーザID</FormLabel>
+                          <FormControl>
+                            <Input type="text" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            ユーザ名を入力してください
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {!isIdError ? (
-                      <FormHelperText>
-                        ユーザ名を入力してください
-                      </FormHelperText>
-                    ) : (
-                      <FormErrorMessage>
-                        ユーザ名には半角英数字、-、_が使えます
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                  <FormControl isInvalid={isNameError}>
-                    <FormLabel>ニックネーム</FormLabel>
-                    <Input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ニックネーム</FormLabel>
+                          <FormControl>
+                            <Input type="text" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            ニックネームを入力してください
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    {!isNameError ? (
-                      <FormHelperText>
-                        ニックネームを入力してください
-                      </FormHelperText>
-                    ) : (
-                      <FormErrorMessage>
-                        ニックネームは必須です
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>紹介プロフィール</FormLabel>
-                    <Input
-                      type="text"
-                      value={profile}
-                      onChange={(e) => setProfile(e.target.value)}
+                    <FormField
+                      control={form.control}
+                      name="profile"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>紹介プロフィール</FormLabel>
+                          <FormControl>
+                            <Input type="text" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                </Stack>
-                <Button mt={4} onClick={createUser}>
-                  これでOK!
-                </Button>
-              </div>
+                  </VStack>
+                  <Button type="submit" className="mt-4">
+                    これでOK!
+                  </Button>
+                </form>
+              </Form>
             </Box>
           </>
         )}

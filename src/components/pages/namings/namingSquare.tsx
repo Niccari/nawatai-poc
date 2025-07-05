@@ -1,4 +1,5 @@
-import { VStack, Text, Flex, Box, Stack } from "@chakra-ui/react";
+import { VStack, Box } from "@/components/ui/layout";
+import { Text } from "@/components/ui/typography";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { Naming } from "../../../models/naming";
@@ -17,15 +18,11 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
   const { user } = usePersonalUser(authorId);
   const { target } = useNamingTarget(targetId);
   if (!target) {
-    return <Box background={"#333"} h="300px" alignItems="center" />;
+    return <Box className="bg-gray-800 h-[300px] flex items-center" />;
   }
   return (
     <Box
-      position="relative"
-      w="100%"
-      aspectRatio="4 / 3"
-      backgroundColor="#333"
-      alignItems="center"
+      className="relative w-full aspect-[4/3] bg-gray-800 flex items-center cursor-pointer"
       onClick={() => router.push(`/targets/${targetId}`)}
     >
       {target.imageUrl && (
@@ -42,36 +39,28 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
           quality={80}
         />
       )}
-      <Stack
-        w="100%"
-        h="100%"
-        position="absolute"
-        top="0"
-        left="0"
-        justifyContent="space-between"
-      >
-        <VStack w="100%" justifyContent="center" flexGrow={1}>
-          <Box
-            w="100%"
-            textAlign="center"
-            pl={2}
-            pr={2}
-            backgroundColor="#00000099"
-          >
-            {target.title && <Text textColor="white">{target.title}</Text>}
-            <Text textColor="white" textStyle="h3" mt={target.title ? 4 : 0}>
+      <VStack className="w-full h-full absolute top-0 left-0 justify-between">
+        <VStack className="w-full justify-center flex-1">
+          <Box className="w-full text-center px-2 bg-black/60">
+            {target.title && <Text color="secondary">{target.title}</Text>}
+            <Text
+              color="secondary"
+              size="lg"
+              weight="semibold"
+              className={target.title ? "mt-4" : ""}
+            >
               {name}
             </Text>
-            <Text textColor="white">{reason}</Text>
-            <Text textColor="white" mt={2}>
+            <Text color="secondary">{reason}</Text>
+            <Text color="secondary" className="mt-2">
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </Text>
           </Box>
         </VStack>
-        <Box w="100%" p={2} backgroundColor="#00000099">
+        <Box className="w-full p-2 bg-black/60">
           <BasicUser user={user} noLink />
         </Box>
-      </Stack>
+      </VStack>
     </Box>
   );
 };

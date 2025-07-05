@@ -1,25 +1,22 @@
 import { useLoginState } from "../../modules/login/hooks";
 import ServiceLogo from "../../assets/serviceLogo.svg";
 import ServiceLogoDarken from "../../assets/serviceLogoDarken.svg";
+import { Box, Flex, HStack } from "@/components/ui/layout";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useColorMode,
-} from "@chakra-ui/react";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/lib/theme";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { usePersonalUser } from "../../modules/personalUser/hooks";
 import { NextImageAvatar } from "../element/nextImageAvatar";
 import NotificationsList from "./notificationsList";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Moon, Sun } from "lucide-react";
 
 type Props = {};
 
@@ -28,7 +25,7 @@ const AppBar = ({}: Props): JSX.Element => {
   const { firebaseUser, isLoading, isAuthed, isLogined, login, logout } =
     useLoginState();
   const { user } = usePersonalUser(firebaseUser?.uid);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { theme, toggleTheme } = useTheme();
 
   const createNewTarget = () => {
     router.push("/targets/new");
@@ -47,66 +44,78 @@ const AppBar = ({}: Props): JSX.Element => {
 
   return (
     <>
-      <Flex justifyContent="space-between" flexWrap="wrap" p={2} gap={4}>
+      <Flex justify="between" wrap="wrap" className="p-2 gap-4">
         <Box>
           <Link href="/">
-            {(colorMode == "light" && <ServiceLogo />) || <ServiceLogoDarken />}
+            {theme === "dark" ? <ServiceLogoDarken /> : <ServiceLogo />}
           </Link>
         </Box>
 
-        <HStack alignItems="center">
-          {(colorMode == "light" && (
-            <IconButton
-              aria-label="darken"
-              icon={<MoonIcon />}
-              onClick={toggleColorMode}
-            />
-          )) || (
-            <IconButton
-              aria-label="lighten"
-              icon={<SunIcon />}
-              onClick={toggleColorMode}
-            />
-          )}
+        <HStack className="items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            aria-label={
+              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+            }
+          >
+            {theme === "light" ? (
+              <Moon className="h-4 w-4" />
+            ) : (
+              <Sun className="h-4 w-4" />
+            )}
+          </Button>
           {isLogined && (
             <>
               <NotificationsList />
-              <Menu>
-                <MenuButton
-                  w="40px"
-                  h="40px"
-                  type="button"
-                  aria-label="UserIcon"
-                >
-                  <NextImageAvatar
-                    src={user?.imageUrl ?? ""}
-                    width="40px"
-                    height="40px"
-                  />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem onClick={handleEditUser}>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button
+                    variant="ghost"
+                    className="w-10 h-10 p-0"
+                    aria-label="User menu"
+                  >
+                    <NextImageAvatar
+                      src={user?.imageUrl ?? ""}
+                      width="40px"
+                      height="40px"
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleEditUser}>
                     プロフィールを編集する
-                  </MenuItem>
-                  <MenuItem onClick={handleEditAccount}>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleEditAccount}>
                     アカウントを管理する
-                  </MenuItem>
-                  <MenuItem onClick={logout}>ログアウト</MenuItem>
-                </MenuList>
-              </Menu>
-              <Button colorScheme="orange" size="sm" onClick={createNewTarget}>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>
+                    ログアウト
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button
+                size="sm"
+                onClick={createNewTarget}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
                 名付けを求める
               </Button>
             </>
           )}
           {!isLoading && !isAuthed && (
-            <Button colorScheme="orange" size="sm" onClick={login}>
+            <Button
+              size="sm"
+              onClick={login}
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+            >
               ログイン
             </Button>
           )}
         </HStack>
       </Flex>
-      <Divider orientation="horizontal" />
+      <Separator orientation="horizontal" />
     </>
   );
 };
