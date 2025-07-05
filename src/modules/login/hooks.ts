@@ -28,6 +28,14 @@ export const useLoginState = () => {
   const { data, isValidating } = useSWR<PersonalUserDetailView, Error>(
     firebaseUser ? `/api/users/${firebaseUser.uid}?detailed=true` : null,
     fetcher,
+    {
+      // fixes mobile safari isValidating stuck problem
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      errorRetryInterval: 10000,
+      loadingTimeout: 5000,
+    }
   );
   const login = async () => {
     const provider = new GoogleAuthProvider();
