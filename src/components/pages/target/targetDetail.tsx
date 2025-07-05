@@ -53,17 +53,12 @@ const TargetDetail = ({ target }: Props): JSX.Element => {
       />
       <Flex wrap="wrap" gap="4" className="pb-2 flex-col sm:flex-row">
         <a href={imageUrl} className="block w-full sm:w-auto">
-          <Box
-            className="bg-gray-800 relative overflow-hidden flex items-center justify-center w-full sm:w-[300px]"
-            style={{
-              aspectRatio: "min(4/3, 1/1)",
-            }}
-          >
+          <Box className="bg-gray-800 relative overflow-hidden flex items-center justify-center w-[calc(100vw-16px)] aspect-[4/3] sm:w-[300px] sm:aspect-square">
             <Image
               src={imageUrl ?? ""}
               alt={comment}
               fill
-              sizes="(max-width: 640px) 100vw, 300px"
+              sizes="300"
               style={{
                 objectFit: "cover",
                 objectPosition: "center center",
