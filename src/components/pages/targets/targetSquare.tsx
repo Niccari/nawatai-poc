@@ -1,6 +1,7 @@
 import { Box, VStack, HStack } from "@/components/ui/layout";
 import { Text } from "@/components/ui/typography";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { NamingTargetForView } from "../../../models/namingTarget";
 import { usePersonalUser } from "../../../modules/personalUser/hooks";
@@ -37,11 +38,18 @@ const TargetSquare = ({ target }: Props): JSX.Element => {
       <VStack className="w-full h-full absolute top-0 left-0 justify-between">
         <VStack className="w-full justify-center flex-1">
           <Box className="w-full text-center px-2 bg-black/60">
-            <Text color="secondary" size="lg" weight="semibold">
+            <Text
+              color="secondary"
+              size="lg"
+              weight="semibold"
+              className="text-[#f1f1f1]"
+            >
               {title}
             </Text>
-            <Text color="secondary">{comment}</Text>
-            <Text color="secondary" className="mt-2">
+            <Text color="secondary" className="text-[#f1f1f1]">
+              {comment}
+            </Text>
+            <Text color="secondary" className="mt-2 text-[#f1f1f1]">
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </Text>
           </Box>

@@ -1,6 +1,7 @@
 import { VStack, Box } from "@/components/ui/layout";
 import { Text } from "@/components/ui/typography";
 import { useRouter } from "next/router";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Naming } from "../../../models/naming";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
@@ -42,17 +43,23 @@ const NamingSquare = ({ naming }: Props): JSX.Element => {
       <VStack className="w-full h-full absolute top-0 left-0 justify-between">
         <VStack className="w-full justify-center flex-1">
           <Box className="w-full text-center px-2 bg-black/60">
-            {target.title && <Text color="secondary">{target.title}</Text>}
+            {target.title && (
+              <Text color="secondary" className="text-[#f1f1f1]">
+                {target.title}
+              </Text>
+            )}
             <Text
-              color="secondary"
+              color="primary"
               size="lg"
               weight="semibold"
-              className={target.title ? "mt-4" : ""}
+              className={cn(target.title ? "mt-4" : "", "text-[#f1f1f1]")}
             >
               {name}
             </Text>
-            <Text color="secondary">{reason}</Text>
-            <Text color="secondary" className="mt-2">
+            <Text color="secondary" className="text-[#f1f1f1]">
+              {reason}
+            </Text>
+            <Text color="secondary" className="mt-2 text-[#f1f1f1]">
               👍 {precise} 😂 {fun} ❓ {question} 😵 {missmatch}
             </Text>
           </Box>
