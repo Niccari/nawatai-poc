@@ -1,10 +1,4 @@
-import {
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithRedirect,
-  signOut,
-  User,
-} from "firebase/auth";
+import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import {
@@ -30,18 +24,24 @@ export const useLoginState = () => {
     fetcher,
   );
   const login = async () => {
+    const { GoogleAuthProvider, signInWithRedirect } = await import("firebase/auth");
     const provider = new GoogleAuthProvider();
     signInWithRedirect(authClient, provider);
   };
 
   const logout = async () => {
+    const { signOut } = await import("firebase/auth");
     signOut(authClient);
   };
 
   useEffect(() => {
-    onAuthStateChanged(authClient, (newUser) => {
-      setFirebaseUser(newUser);
-    });
+    const initAuth = async () => {
+      const { onAuthStateChanged } = await import("firebase/auth");
+      onAuthStateChanged(authClient, (newUser) => {
+        setFirebaseUser(newUser);
+      });
+    };
+    initAuth();
   }, []);
 
   const isAuthed = Boolean(firebaseUser);
