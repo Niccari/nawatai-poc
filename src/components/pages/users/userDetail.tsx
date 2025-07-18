@@ -49,7 +49,7 @@ const UserDetail = ({ user }: Props) => {
           <VStack>
             {url && (
               <Flex>
-                <LinkIcon size={16} />
+                <LinkIcon className="w-4 h-4" />
                 <Link href={url}>
                   <PrimaryText>{url}</PrimaryText>
                 </Link>
@@ -57,7 +57,7 @@ const UserDetail = ({ user }: Props) => {
             )}
             {twitterUserId && (
               <Flex>
-                <LinkIcon size={16} />
+                <LinkIcon className="w-4 h-4" />
                 <Link href={`https://twitter.com/${twitterUserId}`}>
                   <PrimaryText>{twitterUserId}</PrimaryText>
                 </Link>
