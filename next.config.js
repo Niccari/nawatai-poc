@@ -15,6 +15,19 @@ const nextConfig = {
     });
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: "/__/auth/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, immutable",
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
