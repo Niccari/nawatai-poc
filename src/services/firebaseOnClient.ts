@@ -1,6 +1,3 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
-
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -8,18 +5,41 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (getApps().length === 0) {
-  initializeApp(firebaseConfig);
+let authClientInstance: any = null;
 
-  const firebaseEmulatorHost = process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST;
-  const firebaseAuthEmulatorPort =
-    process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_AUTH_PORT;
-  if (firebaseEmulatorHost && firebaseAuthEmulatorPort) {
-    connectAuthEmulator(
-      getAuth(),
-      `http://${firebaseEmulatorHost}:${parseInt(firebaseAuthEmulatorPort, 10)}`,
-    );
+const initializeAuthClient = async () => {
+  if (authClientInstance) return authClientInstance;
+
+  const { initializeApp, getApps } = await import("firebase/app");
+  const { getAuth, connectAuthEmulator } = await import("firebase/auth");
+
+  if (getApps().length === 0) {
+    initializeApp(firebaseConfig);
+
+    const firebaseEmulatorHost = process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST;
+    const firebaseAuthEmulatorPort =
+      process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_AUTH_PORT;
+    if (firebaseEmulatorHost && firebaseAuthEmulatorPort) {
+      connectAuthEmulator(
+        getAuth(),
+        `http://${firebaseEmulatorHost}:${parseInt(firebaseAuthEmulatorPort, 10)}`,
+      );
+    }
   }
-}
-const authClient = getAuth();
-export { authClient };
+
+  authClientInstance = getAuth();
+  return authClientInstance;
+};
+
+const authClient = new Proxy({} as any, {
+  get: (target, prop) => {
+    if (!authClientInstance) {
+      throw new Error(
+        "Auth client not initialized. Call initializeAuthClient() first.",
+      );
+    }
+    return authClientInstance[prop];
+  },
+});
+
+export { authClient, initializeAuthClient };

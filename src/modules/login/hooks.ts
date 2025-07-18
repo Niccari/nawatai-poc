@@ -1,11 +1,14 @@
-import { User } from "firebase/auth";
+import type { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import {
   PersonalUser,
   PersonalUserDetailView,
 } from "../../models/personalUser";
-import { authClient } from "../../services/firebaseOnClient";
+import {
+  authClient,
+  initializeAuthClient,
+} from "../../services/firebaseOnClient";
 
 const fetcher = async (url: string): Promise<PersonalUser> => {
   const response = await fetch(url);
@@ -24,19 +27,25 @@ export const useLoginState = () => {
     fetcher,
   );
   const login = async () => {
-    const { GoogleAuthProvider, signInWithRedirect } = await import("firebase/auth");
+    const { GoogleAuthProvider, signInWithRedirect } = await import(
+      "firebase/auth"
+    );
+    await initializeAuthClient();
     const provider = new GoogleAuthProvider();
     signInWithRedirect(authClient, provider);
   };
 
   const logout = async () => {
     const { signOut } = await import("firebase/auth");
+    await initializeAuthClient();
     signOut(authClient);
+    setFirebaseUser(null);
   };
 
   useEffect(() => {
     const initAuth = async () => {
       const { onAuthStateChanged } = await import("firebase/auth");
+      await initializeAuthClient();
       onAuthStateChanged(authClient, (newUser) => {
         setFirebaseUser(newUser);
       });
