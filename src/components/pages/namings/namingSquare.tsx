@@ -31,13 +31,13 @@ const NamingSquare = ({ naming }: Props) => {
           src={target.imageUrl}
           alt={target.title ?? "naming image"}
           fill
-          sizes="300"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority
           style={{
             objectFit: "cover",
             objectPosition: "center center",
           }}
-          quality={80}
+          quality={75}
         />
       )}
       <VStack className="w-full h-full absolute top-0 left-0 justify-between">
