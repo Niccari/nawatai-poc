@@ -1,8 +1,13 @@
 import { Box } from "@/components/ui/layout";
 import { Separator } from "@/components/ui/separator";
-import AppBar from "./appBar";
+import dynamic from "next/dynamic";
 import ServiceProviderFooter from "./serviceProviderFooter";
 import Sitemap from "./sitemap";
+
+const AppBar = dynamic(() => import("./appBar"), {
+  ssr: false,
+  loading: () => <div className="h-16" />,
+});
 
 type Props = {
   children: React.ReactNode;

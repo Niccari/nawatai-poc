@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,6 +15,19 @@ const nextConfig = {
     });
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: "/__/auth/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, immutable",
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
@@ -21,4 +38,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);
