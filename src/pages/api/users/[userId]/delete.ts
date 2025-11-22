@@ -5,11 +5,16 @@ import notificationRepository from "../../../../repositories/notification";
 import personalUserActivityRepository from "../../../../repositories/personalUserActivity";
 import personalUserRepository from "../../../../repositories/personalUser";
 import { getAuthedUserId } from "../../authHelper";
+import { verifyCsrfToken } from "../../csrfProtection";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.query;
   if (req.method !== "POST" || typeof userId !== "string") {
     res.status(400).send(undefined);
+    return;
+  }
+  // CSRF保護
+  if (!verifyCsrfToken(req, res)) {
     return;
   }
   const ownerId = await getAuthedUserId(req, res);
