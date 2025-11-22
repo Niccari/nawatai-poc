@@ -14,6 +14,7 @@ export const getAuthedUserId = async (
     const { uid } = await firebaseAuthClient.verifyIdToken(idToken);
     return uid;
   } catch (e) {
-    return res.status(401).send(undefined);
+    res.status(401).send(undefined);
+    return;
   }
 };
