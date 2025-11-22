@@ -8,8 +8,9 @@ import { getAuthedUserId } from "../../authHelper";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.query;
-  if (req.method !== "POST" && typeof userId !== "string") {
+  if (req.method !== "POST" || typeof userId !== "string") {
     res.status(400).send(undefined);
+    return;
   }
   const ownerId = await getAuthedUserId(req, res);
   if (!ownerId) {
