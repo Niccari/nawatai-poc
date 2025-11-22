@@ -10,6 +10,7 @@ import namingEvalRepository from "../../../../../repositories/namingEval";
 import namingTargetRepository from "../../../../../repositories/namingTarget";
 import notificationRepository from "../../../../../repositories/notification";
 import { getAuthedUserId } from "../../../authHelper";
+import { namingEvalSubmitSchema } from "../../../validation";
 
 // TODO(Niccari): make evalCounts updates in background. Should use transaction
 export const updateEvalCounts = async (
@@ -66,10 +67,12 @@ const createNotification = async (ownerId: string, namingId: string) => {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
+    return;
   }
   let params: NamingEvalWillSubmit;
   try {
-    params = JSON.parse(req.body);
+    const body = JSON.parse(req.body);
+    params = namingEvalSubmitSchema.parse(body);
   } catch (e) {
     res.status(400).send(undefined);
     return;

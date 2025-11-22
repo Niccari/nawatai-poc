@@ -56,9 +56,9 @@ class NotificationRepository implements INotificationRepository {
       .collection(this.collectionName)
       .where("toAuthorId", "==", id);
     const querySnapshots = await query.get();
-    Promise.all(
+    await Promise.all(
       querySnapshots.docs.map(async (snapshot) => {
-        snapshot.ref.delete();
+        return snapshot.ref.delete();
       }),
     );
   }
