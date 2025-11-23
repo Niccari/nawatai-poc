@@ -124,9 +124,9 @@ class NamingRepository implements INamingRepository {
       .where("authorId", "==", id);
     const querySnapshots = await query.get();
     const ids = querySnapshots.docs.map((s) => s.id);
-    Promise.all(
+    await Promise.all(
       ids.map(async (id) => {
-        this.delete(id);
+        return this.delete(id);
       }),
     );
   }

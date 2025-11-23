@@ -2,11 +2,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import imageRepository from "../../../../repositories/image/firebase";
 import namingTargetRepository from "../../../../repositories/namingTarget";
 import { getAuthedUserId } from "../../authHelper";
+import { verifyCsrfToken } from "../../csrfProtection";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { targetId } = req.query;
   if (req.method !== "POST" || typeof targetId !== "string") {
     res.status(400).send(undefined);
+    return;
+  }
+  // CSRF保護
+  if (!verifyCsrfToken(req, res)) {
     return;
   }
   const ownerId = await getAuthedUserId(req, res);

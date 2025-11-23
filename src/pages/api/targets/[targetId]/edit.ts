@@ -6,14 +6,17 @@ import {
 import imageRepository from "../../../../repositories/image/firebase";
 import namingTargetRepository from "../../../../repositories/namingTarget";
 import { getAuthedUserId } from "../../authHelper";
+import { namingTargetEditSchema } from "../../validation";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
+    return;
   }
   let params: NamingTargetWillEdit;
   try {
-    params = JSON.parse(req.body);
+    const body = JSON.parse(req.body);
+    params = namingTargetEditSchema.parse(body);
   } catch (e) {
     res.status(400).send(undefined);
     return;
@@ -22,8 +25,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ownerId) {
     return;
   }
-  const { authorId } = await namingTargetRepository.get(params.id);
-  if (ownerId !== authorId) {
+  const existingTarget = await namingTargetRepository.get(params.id);
+  if (!existingTarget) {
+    res.status(404).send(undefined);
+    return;
+  }
+  if (ownerId !== existingTarget.authorId) {
     res.status(403).send(undefined);
     return;
   }
