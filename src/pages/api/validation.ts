@@ -9,10 +9,17 @@ export const namingSubmitSchema = z.object({
   reason: z.string().max(500).optional(),
 });
 
+export const evalCountsSchema = z.object({
+  [NamingEvalKind.PRECISE]: z.number(),
+  [NamingEvalKind.FUN]: z.number(),
+  [NamingEvalKind.QUESTION]: z.number(),
+  [NamingEvalKind.MISSMATCH]: z.number(),
+});
+
 export const namingEditSchema = z.object({
   id: z.string().min(1),
   reason: z.string().max(500).optional(),
-  evalCounts: z.record(z.number()).optional(),
+  evalCounts: evalCountsSchema.optional(),
   totalEvalCounts: z.number().optional(),
 });
 
@@ -27,7 +34,7 @@ export const namingTargetSubmitSchema = z.object({
 export const namingTargetEditSchema = z.object({
   id: z.string().min(1),
   comment: z.string().max(1000).optional(),
-  evalCounts: z.record(z.number()).optional(),
+  evalCounts: evalCountsSchema.optional(),
   totalEvalCounts: z.number().optional(),
 });
 
