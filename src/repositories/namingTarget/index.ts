@@ -95,7 +95,7 @@ class NamingTargetRepository implements INamingTargetRepository {
       ...updateItems,
     };
     const docRef = firestoreClient.doc(`${this.collectionName}/${entity.id}`);
-    docRef.set(newTarget, { merge: true });
+    await docRef.set(newTarget, { merge: true });
     return newTarget;
   }
 
@@ -110,7 +110,7 @@ class NamingTargetRepository implements INamingTargetRepository {
       }
     }
     const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
-    docRef.set(
+    await docRef.set(
       {
         title: "",
         comment: "",
@@ -126,7 +126,11 @@ class NamingTargetRepository implements INamingTargetRepository {
       .collection(this.collectionName)
       .where("authorId", "==", id);
     const querySnapshots = await query.get();
-    Promise.all(querySnapshots.docs.map((doc) => this.delete(doc.id)));
+    await Promise.all(
+      querySnapshots.docs.map(async (doc) => {
+        return this.delete(doc.id);
+      }),
+    );
   }
 }
 

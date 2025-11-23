@@ -2,10 +2,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { NamingWillEdit } from "../../../../models/naming";
 import namingRepository from "../../../../repositories/naming";
 import { getAuthedUserId } from "../../authHelper";
+import { namingEditSchema } from "../../validation";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
+    return;
   }
   const ownerId = await getAuthedUserId(req, res);
   if (!ownerId) {
@@ -13,13 +15,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   let params: NamingWillEdit;
   try {
-    params = JSON.parse(req.body);
+    const body = JSON.parse(req.body);
+    params = namingEditSchema.parse(body);
   } catch (e) {
     res.status(400).send(undefined);
     return;
   }
-  const { authorId } = await namingRepository.get(params.id);
-  if (authorId !== ownerId) {
+  const existingNaming = await namingRepository.get(params.id);
+  if (!existingNaming) {
+    res.status(404).send(undefined);
+    return;
+  }
+  if (existingNaming.authorId !== ownerId) {
     res.status(403).send(undefined);
     return;
   }

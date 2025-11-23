@@ -38,18 +38,18 @@ class PersonalUserRepository implements IPersonalUserActivityRepository {
       signUpAt: new Date(),
       lastReadNotificationAt: new Date(),
     };
-    docRef.create(values);
+    await docRef.create(values);
   }
 
   public async update(entity: PersonalUserActivityWillEdit): Promise<void> {
     const { id, ...params } = entity;
     const docRef = firestoreClient.doc(`${this.collectionName}/${id}`);
-    docRef.set(params, { merge: true });
+    await docRef.set(params, { merge: true });
   }
 
   public async anonymize(authorId: string): Promise<void> {
     const docRef = firestoreClient.doc(`${this.collectionName}/${authorId}`);
-    docRef.set(
+    await docRef.set(
       {
         lastReadNotificationAt: new Date(0),
         signUpAt: new Date(0),

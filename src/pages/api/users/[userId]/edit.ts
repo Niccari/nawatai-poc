@@ -3,10 +3,12 @@ import { PersonalUser } from "../../../../models/personalUser";
 import imageRepository from "../../../../repositories/image/firebase";
 import personalUserRepository from "../../../../repositories/personalUser";
 import { getAuthedUserId } from "../../authHelper";
+import { personalUserSchema } from "../../validation";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     res.status(400).send(undefined);
+    return;
   }
   const ownerId = await getAuthedUserId(req, res);
   if (!ownerId) {
@@ -14,7 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   let params: PersonalUser;
   try {
-    params = JSON.parse(req.body);
+    const body = JSON.parse(req.body);
+    params = personalUserSchema.parse(body);
   } catch (e) {
     res.status(400).send(undefined);
     return;

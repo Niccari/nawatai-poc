@@ -39,3 +39,18 @@ next-env.d.ts
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+## Firebase Hosting
+/firebase.json
+*.cache
+hosting/.cache
+
+## Firebase Emulators
+/firebase-*.zip
+/firebase-*/
+/exported-dev-data/
+/.firebase/
+/emulator-ui/
+
+# Claude
+.claude/
