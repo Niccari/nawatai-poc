@@ -7,7 +7,7 @@
     "emulator": "firebase emulators:start --import=exported-dev-data --export-on-exit=exported-dev-data",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --dir src",
+    "lint": "eslint src",
     "lint:fix": "eslint src --ext .js,.ts,.jsx,.tsx --fix && prettier --write --ignore-path .gitignore './src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
@@ -27,7 +27,7 @@
     "firebase-admin": "^13.6.0",
     "formidable": "^3.5.4",
     "lucide-react": "^0.556.0",
-    "next": "^15.5.7",
+    "next": "^16.0.7",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-hook-form": "^7.68.0",
@@ -37,15 +37,16 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^15.5.7",
+    "@next/bundle-analyzer": "^16.0.7",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/formidable": "^3.4.6",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.22",
+    "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
-    "eslint-config-next": "15.5.7",
+    "eslint-config-next": "16.0.7",
     "eslint-config-prettier": "^10.1.8",
     "firebase-tools": "^14.27.0",
     "postcss": "^8.5.6",

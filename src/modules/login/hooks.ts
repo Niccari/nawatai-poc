@@ -27,9 +27,8 @@ export const useLoginState = () => {
     fetcher,
   );
   const login = async () => {
-    const { GoogleAuthProvider, signInWithRedirect } = await import(
-      "firebase/auth"
-    );
+    const { GoogleAuthProvider, signInWithRedirect } =
+      await import("firebase/auth");
     await initializeAuthClient();
     const provider = new GoogleAuthProvider();
     signInWithRedirect(authClient, provider);

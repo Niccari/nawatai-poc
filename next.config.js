@@ -4,9 +4,38 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactCompiler: true,
   reactStrictMode: true,
+  allowedDevOrigins: [
+    '127.0.0.1:3000',
+    'localhost:3000',
+  ],
   images: {
-    domains: ['localhost', '127.0.0.1', 'storage.googleapis.com'],
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development', // Only for Firebase Storage emulator in development
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9199',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '9199',
+      },
+    ],
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
   },
   webpack(config) {
     config.module.rules.push({
