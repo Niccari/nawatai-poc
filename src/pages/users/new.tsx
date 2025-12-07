@@ -52,7 +52,7 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userId: Math.random().toString(32).slice(2),
+      userId: crypto.randomUUID(),
       name: "",
       profile: "",
     },
@@ -65,7 +65,8 @@ const CreateNewUserPage: NextPage<Props> = ({}) => {
       form.setValue("name", firebaseUser.displayName ?? "");
       setUserIconUrl(firebaseUser.photoURL ?? "");
     }
-  }, [firebaseUser, isLoading, isInitialized, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firebaseUser, isLoading, form]);
 
   const onSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
