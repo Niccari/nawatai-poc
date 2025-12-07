@@ -20,5 +20,4 @@ export type PersonalUserBasicView = {
 };
 
 export interface PersonalUserDetailView
-  extends PersonalUserBasicView,
-    PersonalUserProfile {}
+  extends PersonalUserBasicView, PersonalUserProfile {}
