@@ -1,5 +1,4 @@
 import { Box } from "@/components/ui/layout";
-import { Button } from "@/components/ui/button";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import LoadError from "../../../components/element/loadException/loadError";
@@ -8,13 +7,15 @@ import MetaHeader from "../../../components/pages/metaHeader";
 import TabbedNamingDetailList from "../../../components/pages/target/namings/tabbedNamingDetailList";
 import TargetDetail from "../../../components/pages/target/targetDetail";
 import {
-  NamingTarget,
   NamingTargetForView,
   NamingTargetListGenre,
 } from "../../../models/namingTarget";
 import { useLoginState } from "../../../modules/login/hooks";
 import { useNamingTarget } from "../../../modules/namingTarget/hooks";
 import { ActionButton } from "@/components/element/actionButton";
+import namingTargetRepository from "../../../repositories/namingTarget";
+import imageRepository from "../../../repositories/image/firebase";
+import Constants from "../../../constants";
 
 type Props = {
   ogpTarget: NamingTargetForView;
@@ -82,14 +83,21 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   }
   try {
-    const target: NamingTargetForView = await (
-      await fetch(
-        `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets/${targetId}`,
-      )
-    ).json();
+    const target = await namingTargetRepository.get(targetId);
+    const targetForView: NamingTargetForView = {
+      id: target.id,
+      authorId: target.authorId,
+      title: target.title,
+      comment: target.comment,
+      imageUrl: target.imageId
+        ? await imageRepository.resolveUrl(target.imageId)
+        : undefined,
+      evalCounts: target.evalCounts,
+      isDeleted: target.isDeleted,
+    };
     return {
       props: {
-        ogpTarget: target,
+        ogpTarget: targetForView,
       },
       revalidate: 60,
     };
@@ -102,11 +110,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const targets: NamingTarget[] = await (
-      await fetch(
-        `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/targets?genre=${NamingTargetListGenre.LATEST}&page=1`,
-      )
-    ).json();
+    const targets = await namingTargetRepository.list(
+      Constants.namingTargetsPageCount,
+      NamingTargetListGenre.LATEST,
+      1,
+    );
     return {
       paths: targets.map((t) => `/targets/${t.id}`),
       fallback: true,
