@@ -5,6 +5,8 @@ import LoadingContent from "../../../components/pages/loading";
 import MetaHeader from "../../../components/pages/metaHeader";
 import UserDetail from "../../../components/pages/users/userDetail";
 import { PersonalUserDetailView } from "../../../models/personalUser";
+import personalUserRepository from "../../../repositories/personalUser";
+import imageRepository from "../../../repositories/image/firebase";
 
 type Props = {
   user: PersonalUserDetailView;
@@ -35,11 +37,22 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   }
   try {
-    const user: PersonalUserDetailView = await (
-      await fetch(
-        `${process.env.VERCEL_URL_PROTOCOL}${process.env.VERCEL_URL}/api/users/${userId}?detailed=true`,
-      )
-    ).json();
+    const personalUser = await personalUserRepository.get(userId);
+    if (!personalUser) {
+      return { notFound: true };
+    }
+    const imageUrl = personalUser.iconImageId
+      ? await imageRepository.resolveUrl(personalUser.iconImageId)
+      : undefined;
+    const user: PersonalUserDetailView = {
+      id: personalUser.id,
+      name: personalUser.name,
+      userId: personalUser.userId,
+      imageUrl,
+      profile: personalUser.profile,
+      url: personalUser.url,
+      twitterUserId: personalUser.twitterUserId,
+    };
     return {
       props: {
         user,
