@@ -47,16 +47,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/__/auth/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=86400, immutable",
-          },
-        ],
-      },
-      {
-        source: "/:path((?!__/auth/).*)",
+        source: "/:path*",
         headers: [
           {
             key: "X-Frame-Options",
@@ -73,6 +64,20 @@ const nextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+      {
+        // Override X-Frame-Options for Firebase Auth iframe
+        source: "/__/auth/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, immutable",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
           },
         ],
       },
