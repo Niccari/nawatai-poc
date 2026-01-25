@@ -56,7 +56,7 @@ const nextConfig = {
         ],
       },
       {
-        source: "/:path*",
+        source: "/((?!__/auth/).*)",
         headers: [
           {
             key: "X-Frame-Options",
