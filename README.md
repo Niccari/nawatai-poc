@@ -82,3 +82,28 @@ The application uses Firebase emulators for local development:
 - Firebase emulator required for local development
 - Form validation with react-hook-form and Zod
 - Data fetching with SWR for caching and revalidation
+
+## Troubleshooting
+
+### Firebase Emulator JDK Version Error
+
+**Error:**
+```
+Error: firebase-tools no longer supports Java version before 21. Please install a JDK at version 21 or above to get a compatible runtime.
+```
+
+**Cause:**
+Firebase Tools v15 requires JDK 21 or higher to run the emulators.
+
+**Solution:**
+Install JDK 21 or higher. You can download it from:
+- [Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
+- [OpenJDK](https://openjdk.org/)
+- [Amazon Corretto](https://aws.amazon.com/corretto/)
+
+After installation, verify your Java version:
+```bash
+$ java -version    # ex) openjdk 25.0.2 2026-01-20
+```
+
+You should see version 21 or higher in the output.
