@@ -6,6 +6,10 @@ Nawatai is a naming brainstorming service for individuals built with Next.js 15,
 
 **Note: This service is an alpha version and may contain bugs and glitches.**
 
+## Preview
+
+![preview](docs/preview.jpg)
+
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
